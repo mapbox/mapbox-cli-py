@@ -16,3 +16,11 @@ script:
 - py.test --cov mbx --cov-report term-missing
 after_success:
 - coveralls
+deploy:
+  on:
+    tags: true
+  provider: pypi
+  distributions: "sdist bdist_wheel"
+  user: seang
+  password:
+    secure: "nGCETHznQiiIOaBM317kW+X+h26m2VbRUn/ptCn9Gy/8lgf8fIPOPMTkDvYpiRZoISwa77SS82uBaPVSVkqGrN1B+O4pKr1KtR8NLSuQZ942NkuprWgHcTuC7LHhpIGUaL8/15NMInMZS6zlkizDR3h2puw+h9+HaeI9Ancnr3FH39597oBrN4exL+CNkIf4qnBNTx+xjr4J6bJb4VNCM+LUNOtr9MlTWqPk+TuFcxWMmk4xZZ6d7HkZTrqFQ+xl0gDaP6JX05fsIkkWkOJRdzEEbFsTppeaV8Z2Stkvhl6aiiWGHK210VQAtWOMyeBF1qB6gbceaD31gjeZ9SYCLrZ3p3/3EW2QSikCaRq6h1vjF3KelQPEobSqCFwf8UF1WpYsfKeW2aXtKHyIhchokp2CVJvfxliWN1zoLOXd8dDmpeyL3EmGmbL3CnzY7tm0s5r5Hw79TFowI47MRBgwuWuvDFhpG8dP/4lZj29/iixh5RnEP3isLm3SnUVOcTVWz9lP9L8+sK1InX/qlGZGS9Dqhp1gHbJpWs3+en2t9hIF7h2PhL2M6BxYeAXs8HBwzSDPjR0u6YhdMI+XBL+wfXo9YRacMepEcd6mLf461KEDHv7YQGM5h1/LMDxEknF4KZUOSVjmpbMvJPFe3ukPJCf3xnhlcNuywdxJNNHys1I="
