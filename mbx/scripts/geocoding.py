@@ -69,12 +69,12 @@ def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output
     In forward (the default) mode the query argument shall be an address
     such as '1600 pennsylvania ave nw'.
 
-      $ mbx geocode '1600 pennsylvania ave nw'
+      $ mbx geocoding '1600 pennsylvania ave nw'
 
     In reverse mode the query argument shall be a JSON encoded array
     of longitude and latitude (in that order) in decimal degrees.
 
-      $ mbx geocode --reverse '[-77.4371, 37.5227]'
+      $ mbx geocoding --reverse '[-77.4371, 37.5227]'
 
     An access token is required, see `mbx --help`.
     """
