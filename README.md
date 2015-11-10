@@ -1,5 +1,6 @@
-# mbx-cli
+# mapbox-cli-py
 
-[![Build Status](https://travis-ci.org/mapbox/mbx-cli.svg)](https://travis-ci.org/mapbox/mbx-cli) [![Coverage Status](https://coveralls.io/repos/mapbox/mbx-cli/badge.svg?branch=master&service=github)](https://coveralls.io/github/mapbox/mbx-cli?branch=master)
+[![Build Status](https://travis-ci.org/mapbox/mapbox-cli-py.svg)](https://travis-ci.org/mapbox/mapbox-cli-py) [![Coverage Status](https://coveralls.io/repos/mapbox/mapbox-cli-py/badge.svg?branch=master&service=github)](https://coveralls.io/github/mapbox/mapbox-cli-py?branch=master)
 
-Command line interface to Mapbox Web Services
+Experimental command line interface to Mapbox Web Services and testbed for
+https://github.com/mapbox/mapbox-sdk-py.

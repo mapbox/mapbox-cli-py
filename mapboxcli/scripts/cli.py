@@ -11,7 +11,7 @@ import click
 from click_plugins import with_plugins
 import cligj
 
-import mbx
+import mapboxcli
 
 
 def configure_logging(verbosity):
@@ -19,11 +19,12 @@ def configure_logging(verbosity):
     logging.basicConfig(stream=sys.stderr, level=log_level)
 
 
-@with_plugins(ep for ep in list(iter_entry_points('mbx.mbx_commands')))
+@with_plugins(
+    ep for ep in list(iter_entry_points('mapboxcli.mapboxcli_commands')))
 @click.group()
 @click.option('--access-token', help="Your Mapbox access token.")
 @cligj.verbose_opt
-@click.version_option(version=mbx.__version__, message='%(version)s')
+@click.version_option(version=mapboxcli.__version__, message='%(version)s')
 @cligj.quiet_opt
 @click.pass_context
 def main_group(ctx, verbose, quiet, access_token):

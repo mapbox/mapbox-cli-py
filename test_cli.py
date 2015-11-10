@@ -3,8 +3,8 @@ import json
 from click.testing import CliRunner
 import responses
 
-from mbx.scripts.cli import main_group
-from mbx.scripts.geocoding import coords_from_query, iter_query
+from mapboxcli.scripts.cli import main_group
+from mapboxcli.scripts.geocoding import coords_from_query, iter_query
 
 
 def test_iter_query_string():

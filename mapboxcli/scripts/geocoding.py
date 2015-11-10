@@ -5,7 +5,7 @@ import re
 import click
 import mapbox
 
-from mbx.compat import map
+from mapboxcli.compat import map
 
 
 class MapboxCLIException(click.ClickException):
