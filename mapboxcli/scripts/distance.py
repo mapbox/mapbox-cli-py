@@ -1,11 +1,4 @@
-import json
-import logging
-import re
-
 import click
-import mapbox
-
-from mbx.compat import map
 
 
 @click.command(short_help="Distance matrix of travel times between waypoints.")
@@ -29,4 +22,3 @@ def distance(ctx, waypoints, profile, output):
     An access token is required, see `mbx --help`.
     """
     pass
-

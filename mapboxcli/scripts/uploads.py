@@ -1,12 +1,4 @@
-import json
-import logging
-import re
-
 import click
-import mapbox
-
-from mbx.compat import map
-
 
 @click.command(short_help="Upload datasets to Mapbox accounts")
 @click.argument('username', required=True)
@@ -26,4 +18,3 @@ def uploads(ctx, waypoints, geojson, profile, alternatives,
     An access token with upload scope is required, see `mbx --help`.
     """
     pass
-

@@ -1,11 +1,4 @@
-import json
-import logging
-import re
-
 import click
-import mapbox
-
-from mbx.compat import map
 
 
 @click.command(short_help="Surface profiles from vector tiles")
@@ -23,7 +16,7 @@ from mbx.compat import map
               help="Save output to a file.")
 @click.pass_context
 def surface(ctx, waypoints, geojson, profile, alternatives,
-               instructions, geometry, steps, output):
+            instructions, geometry, steps, output):
     """Mapbox Surface API enables flexible querying of data stored in
 vector tiles on Mapbox, to create results like elevation profiles.
 
@@ -34,4 +27,3 @@ vector tiles on Mapbox, to create results like elevation profiles.
 An access token is required, see `mbx --help`.
     """
     pass
-

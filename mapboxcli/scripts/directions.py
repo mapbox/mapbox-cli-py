@@ -1,11 +1,4 @@
-import json
-import logging
-import re
-
 import click
-import mapbox
-
-from mbx.compat import map
 
 
 @click.command(short_help="Routing between waypoints.")
@@ -36,4 +29,3 @@ def directions(ctx, waypoints, geojson, profile, alternatives,
     An access token is required, see `mbx --help`.
     """
     pass
-
