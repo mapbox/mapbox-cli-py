@@ -37,5 +37,9 @@ setup(name='mapboxcli',
 
       [mapboxcli.mapboxcli_commands]
       geocoding=mapboxcli.scripts.geocoding:geocoding
+      directions=mapboxcli.scripts.directions:directions
+      distance=mapboxcli.scripts.distance:distance
+      uploads=mapboxcli.scripts.uploads:uploads
+      surface=mapboxcli.scripts.surface:surface
       """
       )
