@@ -5,7 +5,7 @@ from .helpers import MapboxCLIException, normalize_waypoints
 
 
 @click.command(short_help="Distance matrix of travel times between waypoints.")
-@click.argument('waypoints', default='-', nargs=-1)
+@click.argument('waypoints', nargs=-1)
 @click.option('--profile', default="driving", type=click.Choice([
               'driving', 'walking', 'cycling']),
               help="Mapbox direction profile id")

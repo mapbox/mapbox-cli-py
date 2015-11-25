@@ -9,7 +9,7 @@ from .helpers import MapboxCLIException, normalize_waypoints
 @click.argument('mapid', required=True)
 @click.argument('layer', required=True)
 @click.argument('fields', required=True)
-@click.argument('waypoints', default='-', nargs=-1)
+@click.argument('waypoints', nargs=-1)
 @click.option('--zoom', '-z', type=int, default=14,
               help="Zoom level to query (default: 14)")
 @click.option('--interpolate/--no-interpolate', default=True,

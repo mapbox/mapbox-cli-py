@@ -6,7 +6,7 @@ from .helpers import MapboxCLIException, normalize_waypoints
 
 
 @click.command(short_help="Routing between waypoints.")
-@click.argument('waypoints', default='-', nargs=-1)
+@click.argument('waypoints', nargs=-1)
 @click.option('--profile', default="mapbox.driving", type=click.Choice([
               'mapbox.driving', 'mapbox.walking', 'mapbox.cycling']),
               help="Mapbox direction profile id")
