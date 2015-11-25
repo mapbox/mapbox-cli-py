@@ -19,7 +19,11 @@ def test_cli_geocode_fwd():
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', 'bogus', 'geocoding', '--forward', '1600 pennsylvania ave nw'])
+        ['--access-token', 'bogus', 'geocoding', '--forward', '1600 pennsylvania ave nw'],
+        catch_exceptions=False)
+    print(result.output)
+    print(result.exception)
+    print(result.exc_info)
     assert result.exit_code == 0
     assert result.output == '{"query": ["1600", "pennsylvania", "ave", "nw"]}\n'
 
