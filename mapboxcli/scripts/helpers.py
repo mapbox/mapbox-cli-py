@@ -1,6 +1,12 @@
 import json
+import re
 
 import click
+
+
+class MapboxCLIException(click.ClickException):
+    pass
+
 
 def normalize_waypoints(waypoints):
     point_features = []
@@ -32,5 +38,28 @@ def normalize_waypoints(waypoints):
     return point_features
 
 
-class MapboxCLIException(click.ClickException):
-    pass
+def iter_query(query):
+    """Accept a filename, stream, or string.
+    Returns an iterator over lines of the query."""
+    try:
+        itr = click.open_file(query).readlines()
+    except IOError:
+        itr = [query]
+    return itr
+
+
+def coords_from_query(query):
+    """Transform a query line into a (lng, lat) pair of coordinates."""
+    try:
+        coords = json.loads(query)
+    except ValueError:
+        vals = re.split(r"\,*\s*", query.strip())
+        coords = [float(v) for v in vals]
+    return tuple(coords[:2])
+
+
+def echo_headers(headers, file=None):
+    """Echo headers, sorted."""
+    for k, v in sorted(headers.items()):
+        click.echo("{0}: {1}".format(k.title(), v), file=file)
+    click.echo(file=file)
