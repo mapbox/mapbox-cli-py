@@ -1,20 +1,45 @@
 import click
 
+import mapbox
+from .helpers import MapboxCLIException
+
 @click.command(short_help="Upload datasets to Mapbox accounts")
-@click.argument('username', required=True)
-@click.argument('input', nargs=1, required=True)
 @click.argument('tileset', required=True)
-@click.option('--name', help="Name for the data upload")
+@click.argument('infile', required=True)
+@click.option('--name', default=None, help="Name for the data upload")
 @click.pass_context
-def uploads(ctx, waypoints, geojson, profile, alternatives,
-            instructions, geometry, steps, output):
+def upload(ctx, tileset, infile, name):
     """Upload data to Mapbox accounts.
     All endpoints require authentication.
     Uploaded data lands at https://www.mapbox.com/data/
     and can be used in new or existing projects.
 
-      $ mbx uploads username data.geojson username.data
+      $ x-mapbox upload username.data data.geojson
 
-    An access token with upload scope is required, see `mbx --help`.
+    Note that the tileset must start with your username.
+    An access token with upload scope is required, see `x-mapbox --help`.
     """
-    pass
+    stdout = click.open_file('-', 'w')
+    access_token = (ctx.obj and ctx.obj.get('access_token')) or None
+
+    try:
+        username, _ = tileset.split(".")
+    except ValueError:
+        raise MapboxCLIException("tileset must be of the form "
+                                 "<username>.<dataname>")
+
+    service = mapbox.Uploader(username, access_token=access_token)
+    try:
+        res = service.upload(infile, tileset, name)
+    except KeyError as exc:  # TODO better exception from python SDK
+        if exc.message == 'accessKeyId':
+            raise MapboxCLIException(
+                "An access token with upload scope is required")
+        else:
+            raise exc
+        import ipdb; ipdb.set_trace()
+
+    if res.status_code == 201 :
+        click.echo(res.text, file=stdout)
+    else:
+        raise MapboxCLIException(res.text.strip())
