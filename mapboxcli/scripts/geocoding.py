@@ -8,7 +8,7 @@ import mapbox
 from mapboxcli.compat import map
 
 
-class MapboxCLIException(click.ClickException):
+class MapboxCLIException(Exception):
     pass
 
 
