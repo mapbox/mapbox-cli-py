@@ -38,14 +38,14 @@ def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output
     In forward (the default) mode the query argument shall be an address
     such as '1600 pennsylvania ave nw'.
 
-      $ mbx geocode '1600 pennsylvania ave nw'
+      $ x-mapbox geocode '1600 pennsylvania ave nw'
 
     In reverse mode the query argument shall be a JSON encoded array
     of longitude and latitude (in that order) in decimal degrees.
 
-      $ mbx geocode --reverse '[-77.4371, 37.5227]'
+      $ x-mapbox geocode --reverse '[-77.4371, 37.5227]'
 
-    An access token is required, see `mbx --help`.
+    An access token is required, see `x-mapbox --help`.
     """
     verbosity = (ctx.obj and ctx.obj.get('verbosity')) or 2
     logger = logging.getLogger('mapbox')

@@ -22,7 +22,7 @@ def distance(ctx, waypoints, profile, output):
     The output is a json object with a "durations" key
     containing a 2D array of travel times between waypoints.
 
-    An access token is required, see `mbx --help`.
+    An access token is required, see `x-mapbox --help`.
     """
     stdout = click.open_file(output, 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
