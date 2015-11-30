@@ -11,9 +11,10 @@ cache:
   - $HOME/.pip-cache/
 install:
 - pip install -U pip --cache-dir $HOME/.pip-cache
+- pip install -r requirements.txt --cache-dir $HOME/.pip-cache
 - pip install -e .[test] --cache-dir $HOME/.pip-cache
 script:
-- py.test --cov mbx --cov-report term-missing
+- py.test --cov --cov mapboxcli --cov-report term-missing
 after_success:
 - coveralls
 deploy:
