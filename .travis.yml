@@ -12,6 +12,7 @@ cache:
 install:
 - pip install -U pip --cache-dir $HOME/.pip-cache
 - pip install -e .[test] --cache-dir $HOME/.pip-cache
+- pip install -r requirements.txt
 script:
 - py.test --cov mapboxcli --cov-report term-missing
 after_success:
