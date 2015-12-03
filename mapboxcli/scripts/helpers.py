@@ -23,8 +23,8 @@ def normalize_features(features_like):
     for flike in features_like:
         try:
             # It's a file/stream with GeoJSON
-            stdin = click.open_file(flike, 'r')
-            for feature in iter_features(stdin):
+            src = iter(click.open_file(flike, mode='r'))
+            for feature in iter_features(src):
                 features.append(feature)
         except IOError:
             # It's a coordinate string
