@@ -22,6 +22,15 @@ pip install -e .[test]
 * [surface](#surface)
 * [upload](#upload)
 
+For any command that takes waypoints or features as an input you can either specify:
+
+* Coordinate pair(s) of the form `"[0, 0]"` or `"0,0"` or `"0 0"`
+* Sequence of GeoJSON features on `stdin`
+* GeoJSON FeatureCollection on `stdin`
+* Paths to GeoJSON file(s) containing either a single Feature or FeatureCollection.
+
+Note that functions that accept points only, any non-point feature is filtered out.
+
 ### directions
 ```
 Usage: x-mapbox directions [OPTIONS] [WAYPOINTS]...
@@ -112,9 +121,10 @@ Usage: x-mapbox staticmap [OPTIONS] MAPID OUTPUT
   Generate static map images from existing Mapbox map ids. Optionally
   overlay with geojson features.
 
-    $ x-mapbox staticmap --features features.geojson mapbox.satellite
-    out.png   $ x-mapbox staticmap --lon -61.7 --lat 12.1 --zoom 12
-    mapbox.satellite out2.png
+    $ x-mapbox staticmap \
+        --features features.geojson mapbox.satellite out.png
+    $ x-mapbox staticmap \
+        --lon -61.7 --lat 12.1 --zoom 12 mapbox.satellite out2.png
 
   An access token is required, see `x-mapbox --help`.
 

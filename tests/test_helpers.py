@@ -46,6 +46,11 @@ def test_featurecollection_file(expected_waypoints):
     assert _geoms(features) == _geoms(expected_waypoints)
 
 
+def test_featuresequence(expected_waypoints):
+    features = normalize_waypoints(["tests/twopoints_seq.geojson"])
+    assert _geoms(features) == _geoms(expected_waypoints)
+
+
 def test_coordarrays(expected_waypoints):
     inputs = ["[-122.7282, 45.5801]", "[-121.3153, 44.0582]"]
     features = normalize_waypoints(inputs)
