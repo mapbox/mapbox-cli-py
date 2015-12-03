@@ -50,3 +50,15 @@ def test_coordarrays(expected_waypoints):
     inputs = ["[-122.7282, 45.5801]", "[-121.3153, 44.0582]"]
     features = normalize_waypoints(inputs)
     assert _geoms(features) == _geoms(expected_waypoints)
+
+
+def test_coordpairs_comma(expected_waypoints):
+    inputs = ["-122.7282, 45.5801", "-121.3153, 44.0582"]
+    features = normalize_waypoints(inputs)
+    assert _geoms(features) == _geoms(expected_waypoints)
+
+
+def test_coordpairs_space(expected_waypoints):
+    inputs = ["-122.7282 45.5801", "-121.3153 44.0582"]
+    features = normalize_waypoints(inputs)
+    assert _geoms(features) == _geoms(expected_waypoints)

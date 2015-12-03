@@ -14,26 +14,26 @@ def normalize_waypoints(waypoints):
         waypoints = ('-',)
     for wp in waypoints:
         try:
+            # It's a file/stream with GeoJSON
             stdin = click.open_file(wp, 'r')
             waypt = json.loads(stdin.read())
         except IOError:
+            # It's a coordinate string
+            coords = list(coords_from_query(wp))
             waypt = {
                 'type': 'Feature',
                 'properties': {},
                 'geometry': {
                     'type': 'Point',
-                    'coordinates': json.loads(wp)}}
+                    'coordinates': coords}}
 
         if waypt['type'] == 'Feature' and waypt['geometry']['type'] == "Point":
             point_features.append(waypt)
         elif waypt['type'] == 'FeatureCollection':
             for feature in waypt['features']:
-                if feature['geometry']['type'] == "Point":
-                    point_features.append(feature)
-                else:
-                    pass  # TODO
+                point_features.append(feature)
         else:
-            pass  # TODO
+            pass  # TODO, handle non-feature or non-point feature
 
     return point_features
 
