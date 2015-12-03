@@ -27,4 +27,3 @@ def test_cli_static():
          '-'])
 
     assert result.exit_code == 0
-    assert result.output_bytes[1:4] == 'PNG'
