@@ -1,0 +1,30 @@
+from click.testing import CliRunner
+import responses
+
+from mapboxcli.scripts.cli import main_group
+
+
+@responses.activate
+def test_cli_static():
+
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/v4/mapbox.satellite/-61.7,12.1,12/600x600.png256?access_token=bogus',
+        match_querystring=True,
+        body='.PNG...',
+        status=200,
+        content_type='image/png')
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', 'bogus',
+         'staticmap',
+         '--lon', '-61.7',
+         '--lat', '12.1',
+         '--zoom', '12',
+         'mapbox.satellite',
+         '-'])
+
+    assert result.exit_code == 0
+    assert result.output_bytes[1:4] == 'PNG'

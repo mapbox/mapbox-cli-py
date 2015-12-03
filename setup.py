@@ -40,6 +40,7 @@ setup(name='mapboxcli',
       directions=mapboxcli.scripts.directions:directions
       distance=mapboxcli.scripts.distance:distance
       upload=mapboxcli.scripts.uploads:upload
+      staticmap=mapboxcli.scripts.static:staticmap
       surface=mapboxcli.scripts.surface:surface
       """
       )
