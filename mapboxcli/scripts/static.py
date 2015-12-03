@@ -1,7 +1,7 @@
 import click
 
 import mapbox
-from .helpers import MapboxCLIException, normalize_waypoints
+from .helpers import MapboxCLIException, normalize_features
 
 
 @click.command(short_help="Static map images.")
@@ -26,7 +26,7 @@ def staticmap(ctx, mapid, output, features, lat, lon, zoom, size):
     """
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     if features:
-        featiter = normalize_waypoints(features)  # TODO normalize_features
+        featiter = normalize_features(features)
     else:
         featiter = None
 
