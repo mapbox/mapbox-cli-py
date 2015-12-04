@@ -58,18 +58,18 @@ def iter_features(src):
         else:
             feat = json.loads(buffer)
             yield feat
-
-    try:
-        feat = json.loads(first_line)
-        assert feat['type'] == 'Feature'
-        yield feat
-        for line in src:
-            feat = json.loads(line)
+    else:
+        try:
+            feat = json.loads(first_line)
+            assert feat['type'] == 'Feature'
             yield feat
-    except (KeyError, AssertionError, ValueError):
-        text = "".join(chain([first_line], src))
-        for feat in json.loads(text)['features']:
-            yield feat
+            for line in src:
+                feat = json.loads(line)
+                yield feat
+        except (KeyError, AssertionError, ValueError):
+            text = "".join(chain([first_line], src))
+            for feat in json.loads(text)['features']:
+                yield feat
 
 def iter_query(query):
     """Accept a filename, stream, or string.
