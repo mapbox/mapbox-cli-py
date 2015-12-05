@@ -34,7 +34,7 @@ def staticmap(ctx, mapid, output, features, lat, lon, zoom, size):
     res = service.image(mapid,
                         lon=lon, lat=lat, z=zoom,
                         width=size[0], height=size[1],
-                        features=featiter)
+                        features=featiter, sort_keys=True)
 
     if res.status_code == 200:
         output.write(res.content)

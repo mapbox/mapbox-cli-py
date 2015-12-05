@@ -34,7 +34,7 @@ def test_cli_static_features_stdin():
 
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/v4/mapbox.satellite/geojson(%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B-122.7282%2C45.5801%5D%7D%2C%22type%22%3A%22Feature%22%2C%22id%22%3A%220%22%2C%22properties%22%3A%7B%7D%7D%2C%7B%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B-121.3153%2C44.0582%5D%7D%2C%22type%22%3A%22Feature%22%2C%22id%22%3A%221%22%2C%22properties%22%3A%7B%7D%7D%5D%7D)/-61.7,12.1,12/600x600.png256?access_token=bogus',
+        'https://api.mapbox.com/v4/mapbox.satellite/geojson(%7B%22features%22%3A%5B%7B%22geometry%22%3A%7B%22coordinates%22%3A%5B-122.7282%2C45.5801%5D%2C%22type%22%3A%22Point%22%7D%2C%22id%22%3A%220%22%2C%22properties%22%3A%7B%7D%2C%22type%22%3A%22Feature%22%7D%2C%7B%22geometry%22%3A%7B%22coordinates%22%3A%5B-121.3153%2C44.0582%5D%2C%22type%22%3A%22Point%22%7D%2C%22id%22%3A%221%22%2C%22properties%22%3A%7B%7D%2C%22type%22%3A%22Feature%22%7D%5D%2C%22type%22%3A%22FeatureCollection%22%7D)/-61.7,12.1,12/600x600.png256?access_token=bogus',
         match_querystring=True,
         body='.PNG...',
         status=200,
