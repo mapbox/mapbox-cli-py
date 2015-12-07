@@ -22,24 +22,10 @@ def upload(ctx, tileset, infile, name):
     stdout = click.open_file('-', 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
 
-    try:
-        username, _ = tileset.split(".")
-    except ValueError:
-        raise MapboxCLIException("tileset must be of the form "
-                                 "<username>.<dataname>")
+    service = mapbox.Uploader(access_token=access_token)
+    res = service.upload(infile, tileset, name)
 
-    service = mapbox.Uploader(username, access_token=access_token)
-    try:
-        res = service.upload(infile, tileset, name)
-    except KeyError as exc:  # TODO better exception from python SDK
-        if exc.message == 'accessKeyId':
-            raise MapboxCLIException(
-                "An access token with upload scope is required")
-        else:
-            raise exc
-        import ipdb; ipdb.set_trace()
-
-    if res.status_code == 201 :
+    if res.status_code == 201:
         click.echo(res.text, file=stdout)
     else:
         raise MapboxCLIException(res.text.strip())
