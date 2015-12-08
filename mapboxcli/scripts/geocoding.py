@@ -1,42 +1,11 @@
-import json
 import logging
-import re
 
 import click
 import mapbox
 
 from mapboxcli.compat import map
-
-
-class MapboxCLIException(click.ClickException):
-    pass
-
-
-def iter_query(query):
-    """Accept a filename, stream, or string.
-    Returns an iterator over lines of the query."""
-    try:
-        itr = click.open_file(query).readlines()
-    except IOError:
-        itr = [query]
-    return itr
-
-
-def coords_from_query(query):
-    """Transform a query line into a (lng, lat) pair of coordinates."""
-    try:
-        coords = json.loads(query)
-    except ValueError:
-        vals = re.split(r"\,*\s*", query.strip())
-        coords = [float(v) for v in vals]
-    return tuple(coords[:2])
-
-
-def echo_headers(headers, file=None):
-    """Echo headers, sorted."""
-    for k, v in sorted(headers.items()):
-        click.echo("{0}: {1}".format(k.title(), v), file=file)
-    click.echo(file=file)
+from .helpers import (MapboxCLIException, iter_query,
+                      coords_from_query, echo_headers)
 
 
 @click.command(short_help="Geocode an address or coordinates.")
@@ -69,14 +38,14 @@ def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output
     In forward (the default) mode the query argument shall be an address
     such as '1600 pennsylvania ave nw'.
 
-      $ mbx geocode '1600 pennsylvania ave nw'
+      $ mapbox geocode '1600 pennsylvania ave nw'
 
     In reverse mode the query argument shall be a JSON encoded array
     of longitude and latitude (in that order) in decimal degrees.
 
-      $ mbx geocode --reverse '[-77.4371, 37.5227]'
+      $ mapbox geocode --reverse '[-77.4371, 37.5227]'
 
-    An access token is required, see `mbx --help`.
+    An access token is required, see `mapbox --help`.
     """
     verbosity = (ctx.obj and ctx.obj.get('verbosity')) or 2
     logger = logging.getLogger('mapbox')
