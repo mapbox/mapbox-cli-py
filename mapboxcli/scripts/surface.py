@@ -24,11 +24,11 @@ def surface(ctx, mapid, layer, fields, waypoints,
     """Mapbox Surface API enables flexible querying of data stored in
 vector tiles on Mapbox, to create results like elevation profiles.
 
-      $ x-mapbox surface mapbox.mapbox-terrain-v1 contour ele \\
+      $ mapbox surface mapbox.mapbox-terrain-v1 contour ele \\
 \b
             "[-122.781, 45.528]" "[-122.716, 45.525]"
 
-An access token is required, see `x-mapbox --help`.
+An access token is required, see `mapbox --help`.
     """
     stdout = click.open_file(output, 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None

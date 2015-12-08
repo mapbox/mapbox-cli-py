@@ -28,9 +28,9 @@ def directions(ctx, waypoints, geojson, profile, alternatives,
     """Calculate optimal route with turn-by-turn directions
     between up to 25 waypoints.
 
-      $ x-mapbox directions "[-122.681032, 45.528334]" "[-122.71679, 45.525135]"
+      $ mapbox directions "[-122.681032, 45.528334]" "[-122.71679, 45.525135]"
 
-    An access token is required, see `x-mapbox --help`.
+    An access token is required, see `mapbox --help`.
     """
     stdout = click.open_file(output, 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None

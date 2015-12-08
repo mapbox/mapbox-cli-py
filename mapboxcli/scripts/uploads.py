@@ -14,10 +14,10 @@ def upload(ctx, tileset, infile, name):
     Uploaded data lands at https://www.mapbox.com/data/
     and can be used in new or existing projects.
 
-      $ x-mapbox upload username.data data.geojson
+      $ mapbox upload username.data data.geojson
 
     Note that the tileset must start with your username.
-    An access token with upload scope is required, see `x-mapbox --help`.
+    An access token with upload scope is required, see `mapbox --help`.
     """
     stdout = click.open_file('-', 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None

@@ -34,14 +34,14 @@ def main_group(ctx, verbose, quiet, access_token):
     on the https://www.mapbox.com/developers/api/ page when you are
     logged in. The token can be provided on the command line
 
-      $ x-mapbox --access-token MY_TOKEN ...
+      $ mapbox --access-token MY_TOKEN ...
 
     or as an environment variable named MAPBOX_ACCESS_TOKEN or
     MapboxAccessToken.
 
     \b
       $ export MAPBOX_ACCESS_TOKEN=MY_TOKEN
-      $ x-mapbox ...
+      $ mapbox ...
 
     """
     verbosity = verbose - quiet

@@ -33,7 +33,7 @@ setup(name='mapboxcli',
       },
       entry_points="""
       [console_scripts]
-      x-mapbox=mapboxcli.scripts.cli:main_group
+      mapbox=mapboxcli.scripts.cli:main_group
 
       [mapboxcli.mapboxcli_commands]
       geocoding=mapboxcli.scripts.geocoding:geocoding

@@ -19,10 +19,10 @@ def staticmap(ctx, mapid, output, features, lat, lon, zoom, size):
     Generate static map images from existing Mapbox map ids.
     Optionally overlay with geojson features.
 
-      $ x-mapbox staticmap --features features.geojson mapbox.satellite out.png
-      $ x-mapbox staticmap --lon -61.7 --lat 12.1 --zoom 12 mapbox.satellite out2.png
+      $ mapbox staticmap --features features.geojson mapbox.satellite out.png
+      $ mapbox staticmap --lon -61.7 --lat 12.1 --zoom 12 mapbox.satellite out2.png
 
-    An access token is required, see `x-mapbox --help`.
+    An access token is required, see `mapbox --help`.
     """
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     if features:
