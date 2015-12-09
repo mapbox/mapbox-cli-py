@@ -1,0 +1,6 @@
+0.1.0 (2015-12-08)
+------------------
+- Initial release consists of a `mapbox` command and the following
+  sub-commands: directions, distance, geocoding, staticmap, surface, upload.
+  Each corresponds to one of the Mapbox APIs described at
+  https://www.mapbox.com/developers/api/.

@@ -26,8 +26,8 @@ setup(name='mapboxcli',
           'click',
           'click-plugins',
           'cligj',
-          'mapbox',
-          'six==1.8.0'
+          'mapbox==0.5',
+          'six'
       ],
       extras_require={
           'test': ['coveralls', 'pytest>=2.8', 'pytest-cov', 'responses'],
