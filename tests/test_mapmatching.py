@@ -23,3 +23,15 @@ def test_cli_mapmatching():
          "--profile", "mapbox.cycling",
          "tests/line_feature.geojson"])
     assert result.exit_code == 0
+
+def test_cli_mapmatching_invalid():
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', 'bogus',
+         "mapmatching",
+         "--gps-precision", "4",
+         "--profile", "mapbox.cycling",
+         "tests/twopoints.geojson"])
+    assert result.exit_code != 0
