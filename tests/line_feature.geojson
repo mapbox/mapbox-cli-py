@@ -1,0 +1,23 @@
+{
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        -122.716307,
+        45.509932
+      ],
+      [
+        -122.716288,
+        45.510023
+      ],
+      [
+        -122.716241,
+        45.510104
+      ]
+    ]
+  },
+  "type": "Feature",
+  "properties": {
+    "summary": "Southwest Main Street - Sunset Highway (US 26)"
+  }
+}
