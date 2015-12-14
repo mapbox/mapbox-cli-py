@@ -61,7 +61,7 @@ def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output
                 resp = geocoder.forward(
                     q, types=place_type, lat=lat, lon=lon)
             except mapbox.validation.MapboxValidationError as exc:
-                raise click.BadParameter(exc.message)
+                raise click.BadParameter(str(exc))
 
             if include_headers:
                 echo_headers(resp.headers, file=stdout)
@@ -74,7 +74,7 @@ def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output
             try:
                 resp = geocoder.reverse(lon=lon, lat=lat, types=place_type)
             except mapbox.validation.MapboxValidationError as exc:
-                raise click.BadParameter(exc.message)
+                raise click.BadParameter(str(exc))
 
             if include_headers:
                 echo_headers(resp.headers, file=stdout)

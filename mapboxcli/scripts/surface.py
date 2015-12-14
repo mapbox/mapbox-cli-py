@@ -47,7 +47,7 @@ An access token is required, see `mapbox --help`.
             interpolate=interpolate,
             zoom=zoom)
     except mapbox.validation.MapboxValidationError as exc:
-        raise click.BadParameter(exc.message)
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
         if geojson:

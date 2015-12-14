@@ -51,7 +51,7 @@ def directions(ctx, waypoints, geojson, profile, alternatives,
             geometry=geometry,
             profile=profile)
     except mapbox.validation.MapboxValidationError as exc:
-        raise click.BadParameter(exc.message)
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
         if geojson:

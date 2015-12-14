@@ -26,7 +26,7 @@ def upload(ctx, tileset, infile, name):
     try:
         res = service.upload(infile, tileset, name)
     except mapbox.validation.MapboxValidationError as exc:
-        raise click.BadParameter(exc.message)
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 201:
         click.echo(res.text, file=stdout)

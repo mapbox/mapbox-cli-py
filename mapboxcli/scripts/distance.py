@@ -35,7 +35,7 @@ def distance(ctx, waypoints, profile, output):
             point_features,
             profile=profile)
     except mapbox.validation.MapboxValidationError as exc:
-        raise click.BadParameter(exc.message)
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
         click.echo(res.text, file=stdout)
