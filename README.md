@@ -8,9 +8,8 @@ https://github.com/mapbox/mapbox-sdk-py.
 ## Installation
 
 ```
-git checkout git@github.com:mapbox/mapbox-cli-py.git
-cd mapbox-cli-py
-pip install -e .[test]
+pip install https://github.com/mapbox/mapbox-cli-py/releases/download/0.1.0/boto3-1.2.2-py2.py3-none-any.whl
+pip install mapboxcli
 ```
 
 ## Usage
