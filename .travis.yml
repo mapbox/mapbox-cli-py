@@ -17,6 +17,7 @@ install:
 - pip install -U pip
 - pip install -r requirements-dev.txt
 - pip install -e .[test]
+- pip list
 script:
 - py.test --cov mapboxcli --cov-report term-missing
 after_success:
