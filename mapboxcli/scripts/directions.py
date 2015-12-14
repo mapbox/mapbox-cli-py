@@ -15,11 +15,9 @@ from .helpers import MapboxCLIException, normalize_waypoints
 @click.option('--instructions', default="text",
               help="Format for route instructions, must be one of {0}".format(
                   mapbox.Directions().valid_instruction_formats))
-                #  ["text", "html"]))
 @click.option('--geometry', default="geojson",
               help="Geometry encoding, must be one of {0}".format(
                   mapbox.Directions().valid_geom_encoding))
-                #  ['geojson', 'polyline', 'false']))
 @click.option('--steps/--no-steps', default=True,
               help="Include steps in the response")
 @click.option('--geojson/--no-geojson', default=False,

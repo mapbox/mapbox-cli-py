@@ -66,3 +66,46 @@ def test_cli_static_features_stdin():
         input=stdin)
 
     assert result.exit_code == 0
+
+
+def test_cli_bad_size():
+    with open('tests/twopoints_seq.geojson', 'r') as src:
+        stdin = src.read()
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', 'bogus',
+         'staticmap',
+         '--features', '-',
+         '--size', '2000', '2000',
+         '--zoom', '12',
+         'mapbox.satellite',
+         '/dev/null'],
+        input=stdin)
+
+    assert result.exit_code == 2
+
+
+@responses.activate
+def test_cli_static_unauthorized():
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/v4/mapbox.satellite/-61.7,12.1,12/600x600.png256?access_token=INVALID',
+        match_querystring=True,
+        body='{"message":"Not Authorized - Invalid Token"}', status=401,
+        content_type='application/json')
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', 'INVALID',
+         'staticmap',
+         '--lon', '-61.7',
+         '--lat', '12.1',
+         '--zoom', '12',
+         'mapbox.satellite',
+         '/dev/null'])
+
+    assert result.exit_code == 1
+    assert result.output == 'Error: {"message":"Not Authorized - Invalid Token"}\n'
