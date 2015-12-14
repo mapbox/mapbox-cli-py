@@ -1,4 +1,4 @@
--e git+https://github.com/mapbox/mapbox-sdk-py.git@validation#egg=mapbox
+-e git+https://github.com/mapbox/mapbox-sdk-py.git@project-object#egg=mapbox
 click
 click-plugins
 cligj
