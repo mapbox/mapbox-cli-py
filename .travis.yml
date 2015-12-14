@@ -9,10 +9,15 @@ python:
 cache:
   directories:
   - $HOME/.pip-cache/
+env:
+  global:
+  - PIP_CACHE_DIR=$HOME/.pip-cache
+  - PIP_CONSTRAINT=constraints.txt
 install:
-- pip install -U pip --cache-dir $HOME/.pip-cache
-- pip install -e .[test] --cache-dir $HOME/.pip-cache
-- pip install -r requirements.txt
+- pip install -U pip
+- pip install -r requirements-dev.txt
+- pip install -e .[test]
+- pip list
 script:
 - py.test --cov mapboxcli --cov-report term-missing
 after_success:

@@ -1,0 +1,1 @@
+https://github.com/mapbox/mapbox-cli-py/releases/download/0.1.0/boto3-1.2.2-py2.py3-none-any.whl
