@@ -38,7 +38,7 @@ def staticmap(ctx, mapid, output, features, lat, lon, zoom, size):
             lon=lon, lat=lat, z=zoom,
             width=size[0], height=size[1],
             features=featiter, sort_keys=True)
-    except mapbox.validation.MapboxValidationError as exc:
+    except mapbox.errors.ValidationError as exc:
         raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
