@@ -5,7 +5,7 @@ from .helpers import MapboxCLIException
 
 @click.command(short_help="Upload datasets to Mapbox accounts")
 @click.argument('tileset', required=True)
-@click.argument('infile', type=click.File('wb'))
+@click.argument('infile', type=click.File('rb'))
 @click.option('--name', default=None, help="Name for the data upload")
 @click.pass_context
 def upload(ctx, tileset, infile, name):
