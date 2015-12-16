@@ -37,6 +37,7 @@ setup(name='mapboxcli',
       mapbox=mapboxcli.scripts.cli:main_group
 
       [mapboxcli.mapboxcli_commands]
+      config=mapboxcli.scripts.config:config
       geocoding=mapboxcli.scripts.geocoding:geocoding
       directions=mapboxcli.scripts.directions:directions
       distance=mapboxcli.scripts.distance:distance
