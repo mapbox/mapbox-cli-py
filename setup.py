@@ -26,7 +26,7 @@ setup(name='mapboxcli',
           'click',
           'click-plugins',
           'cligj',
-          'mapbox>=0.5',
+          'mapbox>=0.6',
           'six'
       ],
       extras_require={

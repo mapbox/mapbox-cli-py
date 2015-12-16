@@ -2,6 +2,7 @@
 Main click group for CLI
 """
 
+from collections import defaultdict
 import logging
 import os
 import sys
@@ -21,12 +22,12 @@ def configure_logging(verbosity):
 
 
 def read_config(cfg):
-    parser = configparser.RawConfigParser()
-    parser.read([cfg])
+    parser = configparser.ConfigParser()
+    parser.read(cfg)
     rv = {}
     for section in parser.sections():
         for key, value in parser.items(section):
-            rv['%s.%s' % (section, key)] = value
+            rv['{0}.{1}'.format(section, key)] = value
     return rv
 
 
@@ -36,9 +37,8 @@ def read_config(cfg):
 @click.version_option(version=mapboxcli.__version__, message='%(version)s')
 @cligj.verbose_opt
 @cligj.quiet_opt
-@click.option('--access-token', envvar='MAPBOX_ACCESS_TOKEN',
-              help="Your Mapbox access token.")
-@click.option('--config', '-c', type=click.Path(),
+@click.option('--access-token', help="Your Mapbox access token.")
+@click.option('--config', '-c', type=click.Path(resolve_path=True),
               default=os.path.join(click.get_app_dir('mapbox'), 'mapbox.ini'),
               help="Config file")
 @click.pass_context
@@ -59,13 +59,20 @@ def main_group(ctx, verbose, quiet, access_token, config):
       $ mapbox ...
 
     """
-    cfg = read_config(config)
+    ctx.obj = {}
+    ctx.obj['cfg'] = read_config(config)
+    ctx.default_map = ctx.obj['cfg']
+
+    verbosity = ctx.lookup_default('mapbox.verbosity') or 0
     if verbose or quiet:
         verbosity = verbose - quiet
-    else:
-        verbosity = int(cfg.get('mapbox.verbosity', 0))
-    access_token = access_token or cfg.get('mapbox.access-token')
+    verbosity = int(verbosity)
     configure_logging(verbosity)
-    ctx.obj = {}
+
+    access_token = (access_token or os.environ.get('MAPBOX_ACCESS_TOKEN') or
+                    os.environ.get('MapboxAccessToken') or
+                    ctx.lookup_default('mapbox.access-token'))
+
     ctx.obj['verbosity'] = verbosity
     ctx.obj['access_token'] = access_token
+    ctx.obj['config_file'] = config
