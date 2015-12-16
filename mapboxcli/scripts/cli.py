@@ -2,7 +2,6 @@
 Main click group for CLI
 """
 
-from collections import defaultdict
 import logging
 import os
 import sys
