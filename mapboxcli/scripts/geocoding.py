@@ -27,8 +27,8 @@ from .helpers import (MapboxCLIException, iter_query,
          "is also required.")
 @click.option(
     '--place-type', '-t', multiple=True, metavar='NAME', default=None,
-    help="Restrict results to one or more of these place types: {0}.".format(
-        sorted(mapbox.Geocoder().place_types.keys())))
+    type=click.Choice(mapbox.Geocoder().place_types.keys()),
+    help="Restrict results to one or more place types.")
 @click.option('--output', '-o', default='-', help="Save output to a file.")
 @click.pass_context
 def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output):

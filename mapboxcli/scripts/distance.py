@@ -7,8 +7,8 @@ from .helpers import MapboxCLIException, normalize_waypoints
 @click.command(short_help="Distance matrix of travel times between waypoints.")
 @click.argument('waypoints', nargs=-1)
 @click.option('--profile', default="driving",
-              help="Mapbox direction profile id, must be one of {0}".format(
-                  mapbox.Distance().valid_profiles))
+              type=click.Choice(mapbox.Distance().valid_profiles),
+              help="Mapbox direction profile id")
 @click.option('--output', '-o', default='-',
               help="Save output to a file.")
 @click.pass_context

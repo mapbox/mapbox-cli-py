@@ -8,16 +8,16 @@ from .helpers import MapboxCLIException, normalize_waypoints
 @click.command(short_help="Routing between waypoints.")
 @click.argument('waypoints', nargs=-1)
 @click.option('--profile', default="mapbox.driving",
-              help="Mapbox direction profile id, must be one of {0}".format(
-                  mapbox.Directions().valid_profiles))
+              type=click.Choice(mapbox.Directions().valid_profiles),
+              help="Mapbox direction profile id")
 @click.option('--alternatives/--no-alternatives', default=True,
               help="Generate alternative routes?")
 @click.option('--instructions', default="text",
-              help="Format for route instructions, must be one of {0}".format(
-                  mapbox.Directions().valid_instruction_formats))
+              type=click.Choice(mapbox.Directions().valid_instruction_formats),
+              help="Format for route instructions")
 @click.option('--geometry', default="geojson",
-              help="Geometry encoding, must be one of {0}".format(
-                  mapbox.Directions().valid_geom_encoding))
+              type=click.Choice(mapbox.Directions().valid_geom_encoding),
+              help="Geometry encoding")
 @click.option('--steps/--no-steps', default=True,
               help="Include steps in the response")
 @click.option('--geojson/--no-geojson', default=False,
