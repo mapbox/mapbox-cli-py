@@ -8,8 +8,8 @@ from .helpers import MapboxCLIException, normalize_features
 @click.argument('linestring-feature', nargs=1, default="-")
 @click.option("--gps-precision", default=4, type=int,
               help="Assumed precision of tracking device (default 4 meters)")
-@click.option('--profile', default="mapbox.driving", type=click.Choice([
-              'mapbox.driving', 'mapbox.walking', 'mapbox.cycling']),
+@click.option('--profile', default="mapbox.driving",
+              type=click.Choice(mapbox.MapMatcher().valid_profiles),
               help="Mapbox profile id")
 @click.pass_context
 def match(ctx, linestring_feature, profile, gps_precision):
@@ -27,8 +27,13 @@ An access token is required, see `mapbox --help`.
         raise ValueError("Please supply a single linestring feature")
 
     service = mapbox.MapMatcher(access_token=access_token)
-    res = service.match(features[0], profile=profile,
-                        gps_precision=gps_precision)
+    try:
+        res = service.match(
+            features[0],
+            profile=profile,
+            gps_precision=gps_precision)
+    except mapbox.errors.ValidationError as exc:
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
         stdout = click.open_file('-', 'w')
