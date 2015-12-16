@@ -2,7 +2,6 @@
 Main click group for CLI
 """
 
-import ConfigParser
 import logging
 import os
 import sys
@@ -13,6 +12,7 @@ import cligj
 from pkg_resources import iter_entry_points
 
 import mapboxcli
+from mapboxcli.compat import configparser
 
 
 def configure_logging(verbosity):
@@ -21,7 +21,7 @@ def configure_logging(verbosity):
 
 
 def read_config(cfg):
-    parser = ConfigParser.RawConfigParser()
+    parser = configparser.RawConfigParser()
     parser.read([cfg])
     rv = {}
     for section in parser.sections():
