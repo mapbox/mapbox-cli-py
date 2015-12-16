@@ -23,7 +23,11 @@ def upload(ctx, tileset, infile, name):
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
 
     service = mapbox.Uploader(access_token=access_token)
-    res = service.upload(infile, tileset, name)
+
+    try:
+        res = service.upload(infile, tileset, name)
+    except (mapbox.errors.ValidationError, IOError) as exc:
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 201:
         click.echo(res.text)

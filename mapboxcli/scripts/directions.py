@@ -7,15 +7,17 @@ from .helpers import MapboxCLIException, normalize_waypoints
 
 @click.command(short_help="Routing between waypoints.")
 @click.argument('waypoints', nargs=-1)
-@click.option('--profile', default="mapbox.driving", type=click.Choice([
-              'mapbox.driving', 'mapbox.walking', 'mapbox.cycling']),
+@click.option('--profile', default="mapbox.driving",
+              type=click.Choice(mapbox.Directions().valid_profiles),
               help="Mapbox direction profile id")
 @click.option('--alternatives/--no-alternatives', default=True,
               help="Generate alternative routes?")
-@click.option('--instructions', default="text", type=click.Choice(["text", "html"]),
+@click.option('--instructions', default="text",
+              type=click.Choice(mapbox.Directions().valid_instruction_formats),
               help="Format for route instructions")
-@click.option('--geometry', default="geojson", type=click.Choice([
-              'geojson', 'polyline', 'false']), help="Geometry encoding")
+@click.option('--geometry', default="geojson",
+              type=click.Choice(mapbox.Directions().valid_geom_encoding),
+              help="Geometry encoding")
 @click.option('--steps/--no-steps', default=True,
               help="Include steps in the response")
 @click.option('--geojson/--no-geojson', default=False,
@@ -39,12 +41,17 @@ def directions(ctx, waypoints, geojson, profile, alternatives,
         geometry = 'geojson'
 
     service = mapbox.Directions(access_token=access_token)
-    res = service.directions(point_features,
-                             steps=steps,
-                             alternatives=alternatives,
-                             instructions=instructions,
-                             geometry=geometry,
-                             profile=profile)
+
+    try:
+        res = service.directions(
+            point_features,
+            steps=steps,
+            alternatives=alternatives,
+            instructions=instructions,
+            geometry=geometry,
+            profile=profile)
+    except mapbox.errors.ValidationError as exc:
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
         if geojson:

@@ -167,3 +167,20 @@ def test_cli_geocode_rev_headers():
         input='{0},{1}'.format(lon, lat))
     assert result.exit_code == 0
     assert result.output.startswith('Content-Type')
+
+
+def test_cli_geocode_bad_place():
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        ['geocoding', '-t', 'spaceship'],
+        input='Millennium Falcon')
+    assert result.exit_code == 2
+
+    lon, lat = -77.4371, 37.5227
+    result = runner.invoke(
+        main_group,
+        ['geocoding', '-t', 'spaceship', '--reverse'],
+        input='{0},{1}'.format(lon, lat))
+    assert result.exit_code == 2

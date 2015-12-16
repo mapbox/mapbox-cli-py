@@ -31,10 +31,15 @@ def staticmap(ctx, mapid, output, features, lat, lon, zoom, size):
         featiter = None
 
     service = mapbox.Static(access_token=access_token)
-    res = service.image(mapid,
-                        lon=lon, lat=lat, z=zoom,
-                        width=size[0], height=size[1],
-                        features=featiter, sort_keys=True)
+
+    try:
+        res = service.image(
+            mapid,
+            lon=lon, lat=lat, z=zoom,
+            width=size[0], height=size[1],
+            features=featiter, sort_keys=True)
+    except mapbox.errors.ValidationError as exc:
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
         output.write(res.content)

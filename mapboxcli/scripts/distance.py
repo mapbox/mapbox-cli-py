@@ -6,8 +6,8 @@ from .helpers import MapboxCLIException, normalize_waypoints
 
 @click.command(short_help="Distance matrix of travel times between waypoints.")
 @click.argument('waypoints', nargs=-1)
-@click.option('--profile', default="driving", type=click.Choice([
-              'driving', 'walking', 'cycling']),
+@click.option('--profile', default="driving",
+              type=click.Choice(mapbox.Distance().valid_profiles),
               help="Mapbox direction profile id")
 @click.option('--output', '-o', default='-',
               help="Save output to a file.")
@@ -29,8 +29,13 @@ def distance(ctx, waypoints, profile, output):
     point_features = normalize_waypoints(waypoints)
 
     service = mapbox.Distance(access_token=access_token)
-    res = service.distances(point_features,
-                            profile=profile)
+
+    try:
+        res = service.distances(
+            point_features,
+            profile=profile)
+    except mapbox.errors.ValidationError as exc:
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
         click.echo(res.text, file=stdout)

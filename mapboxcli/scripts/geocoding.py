@@ -27,8 +27,8 @@ from .helpers import (MapboxCLIException, iter_query,
          "is also required.")
 @click.option(
     '--place-type', '-t', multiple=True, metavar='NAME', default=None,
-    help="Restrict results to one or more of these place types: {0}.".format(
-        sorted(mapbox.Geocoder().place_types.keys())))
+    type=click.Choice(mapbox.Geocoder().place_types.keys()),
+    help="Restrict results to one or more place types.")
 @click.option('--output', '-o', default='-', help="Save output to a file.")
 @click.pass_context
 def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output):
@@ -57,8 +57,12 @@ def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output
 
     if forward:
         for q in iter_query(query):
-            resp = geocoder.forward(
-                q, types=place_type, lat=lat, lon=lon)
+            try:
+                resp = geocoder.forward(
+                    q, types=place_type, lat=lat, lon=lon)
+            except mapbox.errors.ValidationError as exc:
+                raise click.BadParameter(str(exc))
+
             if include_headers:
                 echo_headers(resp.headers, file=stdout)
             if resp.status_code == 200:
@@ -67,7 +71,11 @@ def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output
                 raise MapboxCLIException(resp.text.strip())
     else:
         for lon, lat in map(coords_from_query, iter_query(query)):
-            resp = geocoder.reverse(lon=lon, lat=lat, types=place_type)
+            try:
+                resp = geocoder.reverse(lon=lon, lat=lat, types=place_type)
+            except mapbox.errors.ValidationError as exc:
+                raise click.BadParameter(str(exc))
+
             if include_headers:
                 echo_headers(resp.headers, file=stdout)
             if resp.status_code == 200:

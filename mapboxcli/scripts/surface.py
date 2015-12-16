@@ -36,13 +36,18 @@ An access token is required, see `mapbox --help`.
     fields = fields.split(",")
 
     service = mapbox.Surface(access_token=access_token)
-    res = service.surface(point_features,
-                          mapid=mapid,
-                          layer=layer,
-                          fields=fields,
-                          geojson=geojson,
-                          interpolate=interpolate,
-                          zoom=zoom)
+
+    try:
+        res = service.surface(
+            point_features,
+            mapid=mapid,
+            layer=layer,
+            fields=fields,
+            geojson=geojson,
+            interpolate=interpolate,
+            zoom=zoom)
+    except mapbox.errors.ValidationError as exc:
+        raise click.BadParameter(str(exc))
 
     if res.status_code == 200:
         if geojson:
