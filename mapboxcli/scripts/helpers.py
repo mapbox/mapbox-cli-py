@@ -68,8 +68,12 @@ def iter_features(src):
                 yield feat
         except (KeyError, AssertionError, ValueError):
             text = "".join(chain([first_line], src))
-            for feat in json.loads(text)['features']:
-                yield feat
+            feats = json.loads(text)
+            if feats['type'] == 'Feature':
+                yield feats
+            elif feats['type'] == 'FeatureCollection':
+                for feat in feats['features']:
+                    yield feat
 
 def iter_query(query):
     """Accept a filename, stream, or string.

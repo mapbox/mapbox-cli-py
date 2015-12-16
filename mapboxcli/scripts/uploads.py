@@ -3,9 +3,10 @@ import click
 import mapbox
 from .helpers import MapboxCLIException
 
+
 @click.command(short_help="Upload datasets to Mapbox accounts")
 @click.argument('tileset', required=True)
-@click.argument('infile', type=click.File('rb'))
+@click.argument('infile', type=click.File('r'), required=False)
 @click.option('--name', default=None, help="Name for the data upload")
 @click.pass_context
 def upload(ctx, tileset, infile, name):
@@ -19,7 +20,6 @@ def upload(ctx, tileset, infile, name):
     Note that the tileset must start with your username.
     An access token with upload scope is required, see `mapbox --help`.
     """
-    stdout = click.open_file('-', 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
 
     service = mapbox.Uploader(access_token=access_token)
@@ -30,6 +30,6 @@ def upload(ctx, tileset, infile, name):
         raise click.BadParameter(str(exc))
 
     if res.status_code == 201:
-        click.echo(res.text, file=stdout)
+        click.echo(res.text)
     else:
         raise MapboxCLIException(res.text.strip())

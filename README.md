@@ -17,6 +17,7 @@ pip install mapboxcli
 * [directions](#directions)
 * [distance](#distance)
 * [geocoding](#geocoding)
+* [mapmatching](#mapmatching)
 * [staticmap](#staticmap)
 * [surface](#surface)
 * [upload](#upload)
@@ -111,6 +112,27 @@ Options:
                          'poi', 'postcode', 'region'].
   -o, --output TEXT      Save output to a file.
   --help                 Show this message and exit.
+```
+
+### mapmatching
+
+```
+$ mapbox mapmatching --help
+Usage: mapbox mapmatching [OPTIONS] [LINESTRING_FEATURE]
+
+  Mapbox Map Matching API lets you use snap your GPS traces to the
+  OpenStreetMap road and path network.
+
+        $ mapbox mapmatching traces.geojson
+
+  An access token is required, see `mapbox --help`.
+
+Options:
+  --gps-precision INTEGER         Assumed precision of tracking device
+                                  (default 4 meters)
+  --profile [mapbox.driving|mapbox.walking|mapbox.cycling]
+                                  Mapbox profile id
+  --help                          Show this message and exit.
 ```
 
 ### staticmap
