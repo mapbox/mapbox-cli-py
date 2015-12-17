@@ -1,3 +1,15 @@
+0.2.0 (2015-12-18)
+------------------
+- Addition of mapbox-mapmatching command (#17).
+- Access tokens can be set in a mapbox.ini config file (#1). See
+  `mapbox --help` for directions.
+- Addition of mapbox-config command (#30).
+- The mapbox-upload infile arg type has been changed to `click.File` (#29).
+- This release requires a patched distribution of `boto3`. Either follow the
+  two step installation process in the README or satisfy the requirement in
+  a single command using pip's `--constraint` option and the mapbox-cli-py
+  constraints.txt file (#22).
+  
 0.1.0 (2015-12-08)
 ------------------
 - Initial release consists of a `mapbox` command and the following
