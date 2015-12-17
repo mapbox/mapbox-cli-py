@@ -288,3 +288,35 @@ def delete_feature(ctx, dataset, puts, deletes, input):
         click.echo(res.text)
     else:
         raise MapboxCLIException(res.text.strip())
+
+@dataset.command(name="create-tileset",
+    short_help="Generate a tileset from a dataset")
+@click.argument('dataset', required=True)
+@click.argument('tileset', required=True)
+@click.option('--name', '-n', default=None, help="Name for the tileset")
+@click.pass_context
+def create_tileset(ctx, dataset, tileset, name):
+    """Create a vector tileset from a dataset.
+
+        $ mapbox dataset create-tileset dataset-id username.data
+
+    Note that the tileset must start with your username and the dataset must be
+    one that you own. To view processing status, visit
+    https://www.mapbox.com/data/. You may not generate another tilesets from
+    the same dataset until the first processing job has completed.
+
+    All endpoints require authentication. An access token with
+    `uploads:write` scope is required, see `mapbox --help`.
+    """
+
+    access_token = (ctx.obj and ctx.obj.get('access_token')) or None
+    service = mapbox.Uploader(access_token=access_token)
+
+    uri = "mapbox://datasets/{username}/{dataset}".format(username=tileset.split('.')[0], dataset=dataset)
+
+    res = service.create(uri, tileset, name)
+
+    if res.status_code == 201:
+        click.echo(res.text)
+    else:
+        raise MapboxCLIException(res.text.strip())
