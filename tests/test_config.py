@@ -12,6 +12,7 @@ def test_config_file(tmpdir):
         cfg.write("verbosity = 11\n")
     runner = CliRunner()
     result = runner.invoke(main_group, ['-c', config, 'config'], catch_exceptions=False)
+    assert config in result.output
     assert "access-token = pk.test_config_file" in result.output
     assert "verbosity = 11" in result.output
 
@@ -23,6 +24,7 @@ def test_config_options():
         main_group,
         ['--access-token', 'pk.test_config_options', '-vvvv', '-q', 'config'],
         catch_exceptions=False)
+    assert "Config file" not in result.output
     assert "access-token = pk.test_config_options" in result.output
     assert "verbosity = 3" in result.output
 
@@ -32,6 +34,7 @@ def test_config_envvar(monkeypatch):
     monkeypatch.setenv('MAPBOX_ACCESS_TOKEN', 'pk.test_config_envvar_2')
     runner = CliRunner()
     result = runner.invoke(main_group, ['config'], catch_exceptions=False)
+    assert "Config file" not in result.output
     assert "access-token = pk.test_config_envvar_2" in result.output
     monkeypatch.undo()
 
@@ -41,5 +44,6 @@ def test_config_envvar_2(monkeypatch):
     monkeypatch.setenv('MapboxAccessToken', 'pk.test_config_envvar_2')
     runner = CliRunner()
     result = runner.invoke(main_group, ['config'], catch_exceptions=False)
+    assert "Config file" not in result.output
     assert "access-token = pk.test_config_envvar_2" in result.output
     monkeypatch.undo()
