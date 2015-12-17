@@ -256,7 +256,7 @@ def delete_feature(ctx, dataset, fid):
 @click.option('--input', '-i', default='-',
     help="File containing features to insert, update, and/or delete")
 @click.pass_context
-def delete_feature(ctx, dataset, puts, deletes, input):
+def batch_update_features(ctx, dataset, puts, deletes, input):
     """Update features of a dataset.
 
     Up to 100 features may be deleted or modified in one request. PUTS
