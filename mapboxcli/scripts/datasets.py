@@ -6,7 +6,7 @@ from .helpers import MapboxCLIException
 
 @click.group(short_help="Read and write from Mapbox-hosted datasets")
 @click.pass_context
-def dataset(ctx):
+def datasets(ctx):
     """Read and write GeoJSON from Mapbox-hosted datasets
 
     All endpoints require authentication. An access token with
@@ -19,7 +19,7 @@ def dataset(ctx):
     service = mapbox.Datasets(access_token=access_token)
     ctx.obj['service'] = service
 
-@dataset.command(short_help="List datasets")
+@datasets.command(short_help="List datasets")
 @click.option('--output', '-o', default='-', help="Save output to a file")
 @click.pass_context
 def list(ctx, output):
@@ -42,7 +42,7 @@ def list(ctx, output):
     else:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(short_help="Create an empty dataset")
+@datasets.command(short_help="Create an empty dataset")
 @click.option('--name', '-n', default=None, help="Name for the dataset")
 @click.option('--description', '-d', default=None,
     help="Description for the dataset")
@@ -67,7 +67,7 @@ def create(ctx, name, description):
     else:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="read-dataset",
+@datasets.command(name="read-dataset",
     short_help="Return information about a dataset")
 @click.argument('dataset', required=True)
 @click.option('--output', '-o', default='-', help="Save output to a file")
@@ -95,7 +95,7 @@ def read_dataset(ctx, dataset, output):
     else:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="update-dataset",
+@datasets.command(name="update-dataset",
     short_help="Update information about a dataset")
 @click.argument('dataset', required=True)
 @click.option('--name', '-n', default=None, help="Name for the dataset")
@@ -122,7 +122,7 @@ def update_dataset(ctx, dataset, name, description):
     else:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="delete-dataset", short_help="Delete a dataset")
+@datasets.command(name="delete-dataset", short_help="Delete a dataset")
 @click.argument('dataset', required=True)
 @click.pass_context
 def delete_dataset(ctx, dataset):
@@ -140,7 +140,7 @@ def delete_dataset(ctx, dataset):
     if res.status_code != 204:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="list-features", short_help="List features in a dataset")
+@datasets.command(name="list-features", short_help="List features in a dataset")
 @click.argument('dataset', required=True)
 @click.option('--reverse', '-r', default=False, help="Read features in reverse")
 @click.option('--start', '-s', default=None, help="Feature id to begin reading from")
@@ -167,7 +167,7 @@ def list_features(ctx, dataset, reverse, start, limit, output):
     else:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="read-feature",
+@datasets.command(name="read-feature",
     short_help="Read a single feature from a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
@@ -193,7 +193,7 @@ def read_feature(ctx, dataset, fid, output):
     else:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="put-feature",
+@datasets.command(name="put-feature",
     short_help="Insert or update a single feature in a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
@@ -228,7 +228,7 @@ def put_feature(ctx, dataset, fid, feature, input):
     else:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="delete-feature",
+@datasets.command(name="delete-feature",
     short_help="Delete a single feature from a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
@@ -248,7 +248,7 @@ def delete_feature(ctx, dataset, fid):
     if res.status_code != 204:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="batch-update-feature",
+@datasets.command(name="batch-update-feature",
     short_help="Insert, update, or delete multiple features in a dataset")
 @click.argument('dataset', required=True)
 @click.argument('puts', required=False, default=None)
@@ -289,7 +289,7 @@ def batch_update_features(ctx, dataset, puts, deletes, input):
     else:
         raise MapboxCLIException(res.text.strip())
 
-@dataset.command(name="create-tileset",
+@datasets.command(name="create-tileset",
     short_help="Generate a tileset from a dataset")
 @click.argument('dataset', required=True)
 @click.argument('tileset', required=True)

@@ -47,7 +47,7 @@ def test_cli_dataset_list_stdout():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'list'])
 
     assert result.exit_code == 0
@@ -91,7 +91,7 @@ def test_cli_dataset_list_tofile(tmpdir):
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'list',
          '--output', tmpfile])
 
@@ -123,7 +123,7 @@ def test_cli_dataset_create_noargs():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'create'])
 
     assert result.exit_code == 0
@@ -155,7 +155,7 @@ def test_cli_dataset_create_withargs():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'create',
          '--name', name,
          '-d', description])
@@ -188,7 +188,7 @@ def test_cli_dataset_read_dataset_stdout():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'read-dataset', id])
 
     assert result.exit_code == 0
@@ -220,7 +220,7 @@ def test_cli_dataset_read_dataset_tofile(tmpdir):
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'read-dataset', id,
          '-o', tmpfile])
 
@@ -254,7 +254,7 @@ def test_cli_dataset_update_dataset():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'update-dataset', id,
          '--name', name,
          '-d', description])
@@ -277,7 +277,7 @@ def test_cli_dataset_delete_dataset():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'delete-dataset', id])
 
     assert result.exit_code == 0
@@ -298,7 +298,7 @@ def test_cli_dataset_list_features_stdout():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'list-features', id])
 
     assert result.exit_code == 0
@@ -320,7 +320,7 @@ def test_cli_dataset_list_features_pagination():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'list-features', 'dataset-1',
          '--start', id,
          '--limit', '1',
@@ -349,7 +349,7 @@ def test_cli_dataset_list_features_tofile(tmpdir):
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'list-features', id,
          '--output', tmpfile])
 
@@ -381,7 +381,7 @@ def test_cli_dataset_read_feature_stdout():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'read-feature', dataset, id])
 
     assert result.exit_code == 0
@@ -412,7 +412,7 @@ def test_cli_dataset_read_feature_tofile(tmpdir):
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'read-feature', dataset, id,
          '--output', tmpfile])
 
@@ -447,7 +447,7 @@ def test_cli_dataset_put_feature_inline():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'put-feature', dataset, id, feature])
 
     assert result.exit_code == 0
@@ -485,7 +485,7 @@ def test_cli_dataset_put_feature_fromfile(tmpdir):
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'put-feature', dataset, id,
          '--input', tmpfile])
 
@@ -519,7 +519,7 @@ def test_cli_dataset_put_feature_stdin():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'put-feature', dataset, id],
         input=feature)
 
@@ -542,7 +542,7 @@ def test_cli_dataset_delete_feature():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'delete-feature', dataset, id])
 
     assert result.exit_code == 0
@@ -572,7 +572,7 @@ def test_cli_dataset_batch_update_feature_inline():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'batch-update-feature', dataset, puts, deletes])
 
     assert result.exit_code == 0
@@ -608,7 +608,7 @@ def test_cli_dataset_batch_update_feature_fromfile(tmpdir):
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'batch-update-feature', dataset,
          '--input', tmpfile])
 
@@ -640,7 +640,7 @@ def test_cli_dataset_batch_update_feature_stdin():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'batch-update-feature', dataset],
         input=expected)
 
@@ -678,7 +678,7 @@ def test_cli_dataset_create_tileset():
     result = runner.invoke(
         main_group,
         ['--access-token', access_token,
-         'dataset',
+         'datasets',
          'create-tileset',
          dataset,
          tileset,
