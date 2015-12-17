@@ -322,10 +322,10 @@ def create_tileset(ctx, dataset, tileset, name):
 
         $ mapbox datasets create-tileset dataset-id username.data
 
-    Note that the tileset must start with your username and the dataset
-    must be one that you own. To view processing status, visit
-    https://www.mapbox.com/data/. You may not generate another tilesets
-    from the same dataset until the first processing job has completed.
+    Note that the tileset must start with your username and the dataset must be
+    one that you own which contains data. To view processing status, visit
+    https://www.mapbox.com/data/. You may not generate another tilesets from
+    the same dataset until the first processing job has completed.
 
     All endpoints require authentication. An access token with
     `uploads:write` scope is required, see `mapbox --help`.
@@ -343,3 +343,178 @@ def create_tileset(ctx, dataset, tileset, name):
         click.echo(res.text)
     else:
         raise MapboxCLIException(res.text.strip())
+
+@datasets.command(name="put-features",
+    short_help="Add or update features in a dataset")
+@click.argument('dataset', required=True)
+@click.argument('puts', required=False)
+@click.option('--input', '-i', default='-',
+    help="File containing features to insert and/or update")
+@click.pass_context
+def put_features(ctx, dataset, puts, input):
+    """Insert or update features in a dataset.
+
+        $ mapbox dataset put-features 'puts'
+
+    PUTS should be a JSON array of GeoJSON features to insert or update. This
+    function will perform multiple API requests in order to write any number of
+    inserts and/or updates.
+
+    All endpoints require authentication. An access token with
+    `datasets:write` scope is required, see `mapbox --help`.
+    """
+
+    if puts:
+        puts = json.loads(puts)
+
+    if puts is None:
+        stdin = click.open_file(input, 'r')
+        puts = json.loads(stdin.read())
+
+    service = ctx.obj.get('service')
+
+    output = []
+
+    while (len(puts) > 0):
+        res = service.batch_update_features(dataset, puts[:100])
+
+        if res.status_code == 200:
+            output = output + json.loads(res.text)['put']
+            del puts[:100]
+        else:
+            raise MapboxCLIException(res.text.strip())
+
+    click.echo(json.dumps(output))
+
+@datasets.command(name="delete-features",
+    short_help="Remove features from a dataset")
+@click.argument('dataset', required=True)
+@click.argument('deletes', required=False)
+@click.option('--input', '-i', default='-',
+    help="File containing features ids to remove")
+@click.pass_context
+def delete_features(ctx, dataset, deletes, input):
+    """Remove features from a dataset.
+
+        $ mapbox dataset delete-features 'deletes'
+
+    DELETES should be a JSON array of GeoJSON features to remove. This
+    function will perform multiple API requests in order to perform any number
+    of deletes.
+
+    All endpoints require authentication. An access token with
+    `datasets:write` scope is required, see `mapbox --help`.
+    """
+
+    if deletes:
+        deletes = json.loads(deletes)
+
+    if deletes is None:
+        print input
+        stdin = click.open_file(input, 'r')
+        deletes = json.loads(stdin.read())
+
+    service = ctx.obj.get('service')
+
+    output = []
+
+    while (len(deletes) > 0):
+        res = service.batch_update_features(dataset, None, deletes[:100])
+
+        if res.status_code == 200:
+            output = output + json.loads(res.text)['delete']
+            del deletes[:100]
+        else:
+            raise MapboxCLIException(res.text.strip())
+
+    click.echo(json.dumps(output))
+
+@datasets.command(name="put-dataset",
+    short_help="Create or completely replace a hosted dataset")
+@click.argument('dataset', required=False)
+@click.argument('collection', required=False)
+@click.option('--input', '-i', default='-',
+    help="File containing a FeatureCollection to host on Mapbox")
+@click.option('--name', '-n', default=None, help="Name for a new dataset")
+@click.option('--description', '-d', default=None,
+    help="Description for a new dataset")
+@click.pass_context
+def put_dataset(ctx, dataset, collection, input, name, description):
+    """Create a new hosted dataset from a GeoJSON FeatureCollection, or replace
+    an existing one with the provided data.
+
+        $ mapbox dataset put-dataset 'collection'
+
+    COLLECTION should be a GeoJSON FeatureCollection that you want to host on
+    Mapbox.
+
+        $ mapbox dataset put-dataset dataset 'collection'
+
+    If DATASET is specified, it must represent an existing dataset that
+    will be replaced by the data provided.
+
+    All endpoints require authentication. An access token with
+    `datasets:write` and `datasets:read` scopes are required,
+    see `mapbox --help`.
+    """
+
+    if collection:
+        collection = json.loads(collection)
+
+    if collection is None:
+        stdin = click.open_file(input, 'r')
+        collection = json.loads(stdin.read())
+
+    features = collection['features']
+    service = ctx.obj.get('service')
+
+    def list_features(existing_ids=[], start=None):
+        res = service.list_features(dataset, start=start)
+
+        if res.status_code == 200:
+            collection = json.loads(res.text)
+
+            if len(collection['features']) != 0:
+                ids = [feature['id'] for feature in collection['features']]
+                existing_ids = existing_ids + ids
+                list_features(existing_ids, ids[-1])
+            else:
+                purge_features(existing_ids)
+
+        else:
+            raise MapboxCLIException(res.text.strip())
+
+    def purge_features(existing_ids):
+        while (len(existing_ids) > 0):
+            res = service.batch_update_features(dataset, delete=existing_ids[:100])
+
+            if res.status_code == 200:
+                del existing_ids[:100]
+            else:
+                raise MapboxCLIException(res.text.strip())
+
+        insert_features()
+
+    def insert_features(output=[]):
+        while (len(features) > 0):
+            res = service.batch_update_features(dataset, features[:100])
+
+            if res.status_code == 200:
+                added = json.loads(res.text)['put']
+                output = output + added
+                del features[:100]
+            else:
+                raise MapboxCLIException(res.text.strip())
+
+        click.echo(json.dumps({"type":"FeatureCollection","id":dataset,"features":output}))
+
+    if dataset is None:
+        res = service.create(name, description)
+
+        if res.status_code == 200:
+            dataset = json.loads(res.text)['id']
+            list_features()
+        else:
+            raise MapboxCLIException(res.text.strip())
+    else:
+        list_features()
