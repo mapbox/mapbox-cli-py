@@ -79,7 +79,8 @@ def main_group(ctx, verbose, quiet, access_token, config):
     ctx.obj['cfg'] = cfg
     ctx.default_map = cfg
 
-    verbosity = ctx.lookup_default('mapbox.verbosity') or 0
+    verbosity = (os.environ.get('MAPBOX_VERBOSE') or
+                 ctx.lookup_default('mapbox.verbosity') or 0)
     if verbose or quiet:
         verbosity = verbose - quiet
     verbosity = int(verbosity)
