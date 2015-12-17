@@ -1,4 +1,5 @@
 import base64
+import re
 
 from click.testing import CliRunner
 import responses
@@ -301,6 +302,34 @@ def test_cli_dataset_list_features_stdout():
 
     assert result.exit_code == 0
     assert result.output.strip() == collection.strip()
+
+@responses.activate
+def test_cli_dataset_list_features_pagination():
+    id = "cii9dtexw0039uelz7nzk1lq3"
+    collection='{"type":"FeatureCollection","features":[]}'
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/datasets/v1/{0}/dataset-1/features'.format(username),
+        match_querystring=False,
+        status=200, body=collection,
+        content_type='application/json'
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', access_token,
+         'dataset',
+         'list-features', 'dataset-1',
+         '--start', id,
+         '--limit', '1',
+         '--reverse', True])
+
+    url = responses.calls[0].request.url
+    assert re.search('start=cii9dtexw0039uelz7nzk1lq3', url) != None
+    assert re.search('limit=1', url) != None
+    assert re.search('reverse=true', url) != None
+    assert result.exit_code == 0
 
 @responses.activate
 def test_cli_dataset_list_features_tofile(tmpdir):

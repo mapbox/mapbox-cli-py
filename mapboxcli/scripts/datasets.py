@@ -141,10 +141,13 @@ def delete_dataset(ctx, dataset):
         raise MapboxCLIException(res.text.strip())
 
 @dataset.command(name="list-features", short_help="List features in a dataset")
-@click.option('--output', '-o', default='-', help="Save output to a file")
 @click.argument('dataset', required=True)
+@click.option('--reverse', '-r', default=False, help="Read features in reverse")
+@click.option('--start', '-s', default=None, help="Feature id to begin reading from")
+@click.option('--limit', '-l', default=None, help="Maximum number of features to return")
+@click.option('--output', '-o', default='-', help="Save output to a file")
 @click.pass_context
-def list_features(ctx, dataset, output):
+def list_features(ctx, dataset, reverse, start, limit, output):
     """Get features of a dataset.
 
     Prints the features of the dataset as a GeoJSON feature collection.
@@ -157,7 +160,7 @@ def list_features(ctx, dataset, output):
 
     stdout = click.open_file(output, 'w')
     service = ctx.obj.get('service')
-    res = service.list_features(dataset)
+    res = service.list_features(dataset, reverse, start, limit)
 
     if res.status_code == 200:
         click.echo(res.text, file=stdout)
@@ -246,7 +249,7 @@ def delete_feature(ctx, dataset, fid):
         raise MapboxCLIException(res.text.strip())
 
 @dataset.command(name="batch-update-feature",
-    short_help="Insert or update multiple features in a dataset")
+    short_help="Insert, update, or delete multiple features in a dataset")
 @click.argument('dataset', required=True)
 @click.argument('puts', required=False, default=None)
 @click.argument('deletes', required=False, default=None)
