@@ -3,6 +3,7 @@
 import json
 
 import click
+import cligj
 
 import mapbox
 from mapboxcli.errors import MapboxCLIException
@@ -231,11 +232,13 @@ def put_feature(ctx, dataset, fid, feature, input):
     `datasets:write` scope is required, see `mapbox --help`.
     """
 
-    if feature is None:
-        stdin = click.open_file(input, 'r')
-        feature = stdin.read()
-
-    feature = json.loads(feature)
+    if feature:
+        feature_list = list(
+            cligj.normalize_feature_inputs(None, 'features', feature))
+        if len(feature_list) != 1:
+            raise click.BadParameter(
+                "put-features requires a single feature, see batch methods")
+        feature = feature_list[0]
 
     service = ctx.obj.get('service')
     res = service.update_feature(dataset, fid, feature)
@@ -291,7 +294,8 @@ def batch_update_features(ctx, dataset, puts, deletes, input):
     """
 
     if puts:
-        puts = json.loads(puts)
+        puts = list(
+            cligj.normalize_feature_inputs(None, 'features', puts))
 
     if deletes:
         deletes = json.loads(deletes)
