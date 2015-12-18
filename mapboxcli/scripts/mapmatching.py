@@ -1,30 +1,31 @@
 import click
+import cligj
 
 import mapbox
-from .helpers import MapboxCLIException, normalize_features
-
+from mapboxcli.errors import MapboxCLIException
 
 @click.command('mapmatching', short_help="Snap GPS traces to OpenStreetMap")
-@click.argument('linestring-feature', nargs=1, default="-")
+@cligj.features_in_arg
 @click.option("--gps-precision", default=4, type=int,
               help="Assumed precision of tracking device (default 4 meters)")
 @click.option('--profile', default="mapbox.driving",
               type=click.Choice(mapbox.MapMatcher().valid_profiles),
               help="Mapbox profile id")
 @click.pass_context
-def match(ctx, linestring_feature, profile, gps_precision):
+def match(ctx, features, profile, gps_precision):
     """Mapbox Map Matching API lets you use snap your GPS traces
 to the OpenStreetMap road and path network.
 
-      $ mapbox mapmatching traces.geojson
+      $ mapbox mapmatching trace.geojson
 
 An access token is required, see `mapbox --help`.
     """
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
 
-    features = normalize_features([linestring_feature])
-    if len(features) > 1 or features[0]['geometry']['type'] != 'LineString':
-        raise ValueError("Please supply a single linestring feature")
+    features = list(features)
+    if len(features) != 1:
+        raise click.BadParameter(
+            "Mapmatching requires a single LineString feature")
 
     service = mapbox.MapMatcher(access_token=access_token)
     try:

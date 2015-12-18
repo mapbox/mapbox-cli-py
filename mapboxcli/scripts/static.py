@@ -1,7 +1,8 @@
 import click
+import cligj
 
 import mapbox
-from .helpers import MapboxCLIException, normalize_features
+from mapboxcli.errors import MapboxCLIException
 
 
 @click.command(short_help="Static map images.")
@@ -26,9 +27,8 @@ def staticmap(ctx, mapid, output, features, lat, lon, zoom, size):
     """
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     if features:
-        featiter = normalize_features(features)
-    else:
-        featiter = None
+        features = list(
+            cligj.normalize_feature_inputs(None, 'features', features))
 
     service = mapbox.Static(access_token=access_token)
 
@@ -37,7 +37,7 @@ def staticmap(ctx, mapid, output, features, lat, lon, zoom, size):
             mapid,
             lon=lon, lat=lat, z=zoom,
             width=size[0], height=size[1],
-            features=featiter, sort_keys=True)
+            features=features, sort_keys=True)
     except mapbox.errors.ValidationError as exc:
         raise click.BadParameter(str(exc))
 

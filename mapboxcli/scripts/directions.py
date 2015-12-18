@@ -1,12 +1,14 @@
-import click
 import json
 
+import click
+import cligj
 import mapbox
-from .helpers import MapboxCLIException, normalize_waypoints
+
+from mapboxcli.errors import MapboxCLIException
 
 
 @click.command(short_help="Routing between waypoints.")
-@click.argument('waypoints', nargs=-1)
+@cligj.features_in_arg
 @click.option('--profile', default="mapbox.driving",
               type=click.Choice(mapbox.Directions().valid_profiles),
               help="Mapbox direction profile id")
@@ -25,7 +27,7 @@ from .helpers import MapboxCLIException, normalize_waypoints
 @click.option('--output', '-o', default='-',
               help="Save output to a file.")
 @click.pass_context
-def directions(ctx, waypoints, geojson, profile, alternatives,
+def directions(ctx, features, geojson, profile, alternatives,
                instructions, geometry, steps, output):
     """Calculate optimal route with turn-by-turn directions
     between up to 25 waypoints.
@@ -36,7 +38,6 @@ def directions(ctx, waypoints, geojson, profile, alternatives,
     """
     stdout = click.open_file(output, 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
-    point_features = normalize_waypoints(waypoints)
     if geojson:
         geometry = 'geojson'
 
@@ -44,7 +45,7 @@ def directions(ctx, waypoints, geojson, profile, alternatives,
 
     try:
         res = service.directions(
-            point_features,
+            features,
             steps=steps,
             alternatives=alternatives,
             instructions=instructions,
