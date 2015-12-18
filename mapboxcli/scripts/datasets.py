@@ -1,10 +1,14 @@
-import click
+# Datasets.
+
 import json
+
+import click
 
 import mapbox
 from .helpers import MapboxCLIException
 
-@click.group(short_help="Read and write from Mapbox-hosted datasets")
+
+@click.group(short_help="Read and write Mapbox datasets (has subcommands)")
 @click.pass_context
 def datasets(ctx):
     """Read and write GeoJSON from Mapbox-hosted datasets
@@ -18,6 +22,7 @@ def datasets(ctx):
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     service = mapbox.Datasets(access_token=access_token)
     ctx.obj['service'] = service
+
 
 @datasets.command(short_help="List datasets")
 @click.option('--output', '-o', default='-', help="Save output to a file")
@@ -42,10 +47,11 @@ def list(ctx, output):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(short_help="Create an empty dataset")
 @click.option('--name', '-n', default=None, help="Name for the dataset")
 @click.option('--description', '-d', default=None,
-    help="Description for the dataset")
+              help="Description for the dataset")
 @click.pass_context
 def create(ctx, name, description):
     """Create a new dataset.
@@ -67,8 +73,9 @@ def create(ctx, name, description):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(name="read-dataset",
-    short_help="Return information about a dataset")
+                  short_help="Return information about a dataset")
 @click.argument('dataset', required=True)
 @click.option('--output', '-o', default='-', help="Save output to a file")
 @click.pass_context
@@ -95,12 +102,13 @@ def read_dataset(ctx, dataset, output):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(name="update-dataset",
-    short_help="Update information about a dataset")
+                  short_help="Update information about a dataset")
 @click.argument('dataset', required=True)
 @click.option('--name', '-n', default=None, help="Name for the dataset")
 @click.option('--description', '-d', default=None,
-    help="Description for the dataset")
+              help="Description for the dataset")
 @click.pass_context
 def update_dataset(ctx, dataset, name, description):
     """Update the name and description of a dataset.
@@ -122,6 +130,7 @@ def update_dataset(ctx, dataset, name, description):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(name="delete-dataset", short_help="Delete a dataset")
 @click.argument('dataset', required=True)
 @click.pass_context
@@ -140,12 +149,18 @@ def delete_dataset(ctx, dataset):
     if res.status_code != 204:
         raise MapboxCLIException(res.text.strip())
 
-@datasets.command(name="list-features", short_help="List features in a dataset")
+
+@datasets.command(name="list-features",
+                  short_help="List features in a dataset")
 @click.argument('dataset', required=True)
-@click.option('--reverse', '-r', default=False, help="Read features in reverse")
-@click.option('--start', '-s', default=None, help="Feature id to begin reading from")
-@click.option('--limit', '-l', default=None, help="Maximum number of features to return")
-@click.option('--output', '-o', default='-', help="Save output to a file")
+@click.option('--reverse', '-r', default=False,
+              help="Read features in reverse")
+@click.option('--start', '-s', default=None,
+              help="Feature id to begin reading from")
+@click.option('--limit', '-l', default=None,
+              help="Maximum number of features to return")
+@click.option('--output', '-o', default='-',
+              help="Save output to a file")
 @click.pass_context
 def list_features(ctx, dataset, reverse, start, limit, output):
     """Get features of a dataset.
@@ -167,8 +182,9 @@ def list_features(ctx, dataset, reverse, start, limit, output):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(name="read-feature",
-    short_help="Read a single feature from a dataset")
+                  short_help="Read a single feature from a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
 @click.option('--output', '-o', default='-', help="Save output to a file")
@@ -193,13 +209,14 @@ def read_feature(ctx, dataset, fid, output):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(name="put-feature",
-    short_help="Insert or update a single feature in a dataset")
+                  short_help="Insert or update a single feature in a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
 @click.argument('feature', required=False, default=None)
 @click.option('--input', '-i', default='-',
-    help="File containing a feature to put")
+              help="File containing a feature to put")
 @click.pass_context
 def put_feature(ctx, dataset, fid, feature, input):
     """Create or update a dataset feature.
@@ -228,8 +245,9 @@ def put_feature(ctx, dataset, fid, feature, input):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(name="delete-feature",
-    short_help="Delete a single feature from a dataset")
+                  short_help="Delete a single feature from a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
 @click.pass_context
@@ -248,20 +266,23 @@ def delete_feature(ctx, dataset, fid):
     if res.status_code != 204:
         raise MapboxCLIException(res.text.strip())
 
-@datasets.command(name="batch-update-feature",
+
+@datasets.command(
+    name="batch-update-features",
     short_help="Insert, update, or delete multiple features in a dataset")
 @click.argument('dataset', required=True)
 @click.argument('puts', required=False, default=None)
 @click.argument('deletes', required=False, default=None)
-@click.option('--input', '-i', default='-',
+@click.option(
+    '--input', '-i', default='-',
     help="File containing features to insert, update, and/or delete")
 @click.pass_context
 def batch_update_features(ctx, dataset, puts, deletes, input):
     """Update features of a dataset.
 
     Up to 100 features may be deleted or modified in one request. PUTS
-    should be a JSON array of GeoJSON features to insert or updated. DELETES
-    should be a JSON array of feature ids to be deleted.
+    should be a JSON array of GeoJSON features to insert or updated.
+    DELETES should be a JSON array of feature ids to be deleted.
 
         $ mapbox dataset batch-update-feature dataset-id 'puts' 'deletes'
 
@@ -289,8 +310,9 @@ def batch_update_features(ctx, dataset, puts, deletes, input):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(name="create-tileset",
-    short_help="Generate a tileset from a dataset")
+                  short_help="Generate a tileset from a dataset")
 @click.argument('dataset', required=True)
 @click.argument('tileset', required=True)
 @click.option('--name', '-n', default=None, help="Name for the tileset")
@@ -300,10 +322,10 @@ def create_tileset(ctx, dataset, tileset, name):
 
         $ mapbox dataset create-tileset dataset-id username.data
 
-    Note that the tileset must start with your username and the dataset must be
-    one that you own. To view processing status, visit
-    https://www.mapbox.com/data/. You may not generate another tilesets from
-    the same dataset until the first processing job has completed.
+    Note that the tileset must start with your username and the dataset
+    must be one that you own. To view processing status, visit
+    https://www.mapbox.com/data/. You may not generate another tilesets
+    from the same dataset until the first processing job has completed.
 
     All endpoints require authentication. An access token with
     `uploads:write` scope is required, see `mapbox --help`.
@@ -312,7 +334,8 @@ def create_tileset(ctx, dataset, tileset, name):
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     service = mapbox.Uploader(access_token=access_token)
 
-    uri = "mapbox://datasets/{username}/{dataset}".format(username=tileset.split('.')[0], dataset=dataset)
+    uri = "mapbox://datasets/{username}/{dataset}".format(
+        username=tileset.split('.')[0], dataset=dataset)
 
     res = service.create(uri, tileset, name)
 

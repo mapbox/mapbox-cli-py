@@ -573,14 +573,14 @@ def test_cli_dataset_batch_update_feature_inline():
         main_group,
         ['--access-token', access_token,
          'datasets',
-         'batch-update-feature', dataset, puts, deletes])
+         'batch-update-features', dataset, puts, deletes])
 
     assert result.exit_code == 0
     assert result.output.strip() == expected
 
 @responses.activate
 def test_cli_dataset_batch_update_feature_fromfile(tmpdir):
-    tmpfile = str(tmpdir.join('test.batch-update-feature.json'))
+    tmpfile = str(tmpdir.join('test.batch-update-features.json'))
     dataset = "dataset-3"
     puts = """
     [
@@ -609,7 +609,7 @@ def test_cli_dataset_batch_update_feature_fromfile(tmpdir):
         main_group,
         ['--access-token', access_token,
          'datasets',
-         'batch-update-feature', dataset,
+         'batch-update-features', dataset,
          '--input', tmpfile])
 
     assert result.exit_code == 0
@@ -641,7 +641,7 @@ def test_cli_dataset_batch_update_feature_stdin():
         main_group,
         ['--access-token', access_token,
          'datasets',
-         'batch-update-feature', dataset],
+         'batch-update-features', dataset],
         input=expected)
 
     assert result.exit_code == 0
