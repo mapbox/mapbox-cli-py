@@ -21,6 +21,7 @@ pip install mapboxcli
 * [staticmap](#staticmap)
 * [surface](#surface)
 * [upload](#upload)
+* [datasets](#datasets)
 
 For any command that takes waypoints or features as an input you can either specify:
 
@@ -197,4 +198,239 @@ Usage: mapbox upload [OPTIONS] TILESET INFILE
 Options:
   --name TEXT  Name for the data upload
   --help       Show this message and exit.
+```
+
+### datasets
+```
+Usage: mapbox datasets [OPTIONS] COMMAND [ARGS]...
+
+  Read and write GeoJSON from Mapbox-hosted datasets
+
+  All endpoints require authentication. An access token with appropriate
+  dataset scopes is required, see `mapbox --help`.
+
+  Note that this API is currently a limited-access beta.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  batch-update-feature  Insert, update, or delete multiple features in a
+                        dataset
+  create                Create an empty dataset
+  create-tileset        Generate a tileset from a dataset
+  delete-dataset        Delete a dataset
+  delete-feature        Delete a single feature from a dataset
+  list                  List datasets
+  list-features         List features in a dataset
+  put-feature           Insert or update a single feature in a dataset
+  read-dataset          Return information about a dataset
+  read-feature          Read a single feature from a dataset
+  update-dataset        Update information about a dataset
+```
+
+### datasets list
+```
+Usage: mapbox datasets list [OPTIONS]
+
+  List datasets.
+
+  Prints a list of objects describing datasets.
+
+      $ mapbox dataset list
+
+  All endpoints require authentication. An access token with `datasets:read`
+  scope is required, see `mapbox --help`.
+
+Options:
+  -o, --output TEXT  Save output to a file
+  --help             Show this message and exit.
+```
+
+### datasets create
+```
+Usage: mapbox datasets create [OPTIONS]
+
+  Create a new dataset.
+
+  Prints a JSON object containing the attributes of the new dataset.
+
+      $ mapbox dataset create
+
+  All endpoints require authentication. An access token with
+  `datasets:write` scope is required, see `mapbox --help`.
+
+Options:
+  -n, --name TEXT         Name for the dataset
+  -d, --description TEXT  Description for the dataset
+  --help                  Show this message and exit.
+```
+
+### datasets read-dataset
+```
+Usage: mapbox datasets read-dataset [OPTIONS] DATASET
+
+  Read the attributes of a dataset.
+
+  Prints a JSON object containing the attributes of a dataset. The
+  attributes: owner (a Mapbox account), id (dataset id), created (Unix
+  timestamp), modified (timestamp), name (string), and description (string).
+
+      $ mapbox dataset read-dataset dataset-id
+
+  All endpoints require authentication. An access token with `datasets:read`
+  scope is required, see `mapbox --help`.
+
+Options:
+  -o, --output TEXT  Save output to a file
+  --help             Show this message and exit.
+```
+
+### datasets update-dataset
+```
+Usage: mapbox datasets update-dataset [OPTIONS] DATASET
+
+  Update the name and description of a dataset.
+
+  Prints a JSON object containing the updated dataset attributes.
+
+      $ mapbox dataset update-dataset dataset-id
+
+  All endpoints require authentication. An access token with
+  `datasets:write` scope is required, see `mapbox --help`.
+
+Options:
+  -n, --name TEXT         Name for the dataset
+  -d, --description TEXT  Description for the dataset
+  --help                  Show this message and exit.
+```
+
+### datasets delete-dataset
+```
+Usage: mapbox datasets delete-dataset [OPTIONS] DATASET
+
+  Delete a dataset.
+
+      $ mapbox dataset delete-dataset dataset-id
+
+  All endpoints require authentication. An access token with
+  `datasets:write` scope is required, see `mapbox --help`.
+
+Options:
+  --help  Show this message and exit.
+```
+
+### datasets list-features
+```
+Usage: mapbox datasets list-features [OPTIONS] DATASET
+
+  Get features of a dataset.
+
+  Prints the features of the dataset as a GeoJSON feature collection.
+
+      $ mapbox dataset list-features dataset-id
+
+  All endpoints require authentication. An access token with `datasets:read`
+  scope is required, see `mapbox --help`.
+
+Options:
+  -r, --reverse TEXT  Read features in reverse
+  -s, --start TEXT    Feature id to begin reading from
+  -l, --limit TEXT    Maximum number of features to return
+  -o, --output TEXT   Save output to a file
+  --help              Show this message and exit.
+```
+
+### datasets put-feature
+```
+Usage: mapbox datasets put-feature [OPTIONS] DATASET FID [FEATURE]
+
+  Create or update a dataset feature.
+
+  The semantics of HTTP PUT apply: if the dataset has no feature with the
+  given `fid` a new feature will be created. Returns a GeoJSON
+  representation of the new or updated feature.
+
+      $ mapbox dataset put-feature dataset-id feature-id 'geojson-feature'
+
+  All endpoints require authentication. An access token with
+  `datasets:write` scope is required, see `mapbox --help`.
+
+Options:
+  -i, --input TEXT  File containing a feature to put
+  --help            Show this message and exit.
+```
+
+### datasets read-feature
+```
+Usage: mapbox datasets read-feature [OPTIONS] DATASET FID
+
+  Read a dataset feature.
+
+  Prints a GeoJSON representation of the feature.
+
+      $ mapbox dataset read-feature dataset-id feature-id
+
+  All endpoints require authentication. An access token with `datasets:read`
+  scope is required, see `mapbox --help`.
+
+Options:
+  -o, --output TEXT  Save output to a file
+  --help             Show this message and exit.
+```
+
+### datasets delete-feature
+```
+Usage: mapbox datasets delete-feature [OPTIONS] DATASET FID
+
+  Delete a feature.
+
+      $ mapbox dataset delete-feature dataset-id feature-id
+
+  All endpoints require authentication. An access token with
+  `datasets:write` scope is required, see `mapbox --help`.
+
+Options:
+  --help  Show this message and exit.
+```
+
+### datasets batch-update-feature
+```
+Usage: mapbox datasets batch-update-feature [OPTIONS] DATASET [PUTS] [DELETES]
+
+  Update features of a dataset.
+
+  Up to 100 features may be deleted or modified in one request. PUTS should
+  be a JSON array of GeoJSON features to insert or updated. DELETES should
+  be a JSON array of feature ids to be deleted.
+
+      $ mapbox dataset batch-update-feature dataset-id 'puts' 'deletes'
+
+  All endpoints require authentication. An access token with
+  `datasets:write` scope is required, see `mapbox --help`.
+
+Options:
+  -i, --input TEXT  File containing features to insert, update, and/or delete
+  --help            Show this message and exit.
+```
+
+### datasets create-tileset
+```
+Usage: mapbox datasets create-tileset [OPTIONS] DATASET TILESET
+
+  Create a vector tileset from a dataset.
+
+      $ mapbox dataset create-tileset dataset-id username.data
+
+  Note that the tileset must start with your username and the dataset must
+  be one that you own. To view processing status, visit
+  https://www.mapbox.com/data/. You may not generate another tilesets from
+  the same dataset until the first processing job has completed.
+
+  All endpoints require authentication. An access token with `uploads:write`
+  scope is required, see `mapbox --help`.
+
+Options:
+  -n, --name TEXT  Name for the tileset
+  --help           Show this message and exit.
 ```
