@@ -1,18 +1,19 @@
 import click
+import cligj
 
 import mapbox
-from .helpers import MapboxCLIException, normalize_waypoints
+from mapboxcli.errors import MapboxCLIException
 
 
 @click.command(short_help="Distance matrix of travel times between waypoints.")
-@click.argument('waypoints', nargs=-1)
+@cligj.features_in_arg
 @click.option('--profile', default="driving",
               type=click.Choice(mapbox.Distance().valid_profiles),
               help="Mapbox direction profile id")
 @click.option('--output', '-o', default='-',
               help="Save output to a file.")
 @click.pass_context
-def distance(ctx, waypoints, profile, output):
+def distance(ctx, features, profile, output):
     """The Distance API returns all travel times between
     many points (also known as Distance Matrix). This is often
     used as input for solving routing optimization problems.
@@ -26,13 +27,11 @@ def distance(ctx, waypoints, profile, output):
     """
     stdout = click.open_file(output, 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
-    point_features = normalize_waypoints(waypoints)
-
     service = mapbox.Distance(access_token=access_token)
 
     try:
         res = service.distances(
-            point_features,
+            features,
             profile=profile)
     except mapbox.errors.ValidationError as exc:
         raise click.BadParameter(str(exc))

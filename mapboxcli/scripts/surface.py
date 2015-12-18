@@ -1,15 +1,17 @@
-import click
 import json
 
+import click
+import cligj
+
 import mapbox
-from .helpers import MapboxCLIException, normalize_waypoints
+from mapboxcli.errors import MapboxCLIException
 
 
 @click.command(short_help="Surface profiles from vector tiles")
 @click.argument('mapid', required=True)
 @click.argument('layer', required=True)
 @click.argument('fields', required=True)
-@click.argument('waypoints', nargs=-1)
+@cligj.features_in_arg
 @click.option('--zoom', '-z', type=int, default=14,
               help="Zoom level to query (default: 14)")
 @click.option('--interpolate/--no-interpolate', default=True,
@@ -19,7 +21,7 @@ from .helpers import MapboxCLIException, normalize_waypoints
 @click.option('--output', '-o', default='-',
               help="Save output to a file.")
 @click.pass_context
-def surface(ctx, mapid, layer, fields, waypoints,
+def surface(ctx, mapid, layer, fields, features,
             zoom, interpolate, geojson, output):
     """Mapbox Surface API enables flexible querying of data stored in
 vector tiles on Mapbox, to create results like elevation profiles.
@@ -32,14 +34,13 @@ An access token is required, see `mapbox --help`.
     """
     stdout = click.open_file(output, 'w')
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
-    point_features = normalize_waypoints(waypoints)
     fields = fields.split(",")
 
     service = mapbox.Surface(access_token=access_token)
 
     try:
         res = service.surface(
-            point_features,
+            features,
             mapid=mapid,
             layer=layer,
             fields=fields,

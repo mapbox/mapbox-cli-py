@@ -5,7 +5,7 @@ import json
 import click
 
 import mapbox
-from .helpers import MapboxCLIException
+from mapboxcli.errors import MapboxCLIException
 
 
 @click.group(short_help="Read and write Mapbox datasets (has subcommands)")

@@ -1,11 +1,40 @@
 import logging
+from itertools import chain
+import json
+import re
 
 import click
 import mapbox
 
 from mapboxcli.compat import map
-from .helpers import (MapboxCLIException, iter_query,
-                      coords_from_query, echo_headers)
+from mapboxcli.errors import MapboxCLIException
+
+
+def iter_query(query):
+    """Accept a filename, stream, or string.
+    Returns an iterator over lines of the query."""
+    try:
+        itr = click.open_file(query).readlines()
+    except IOError:
+        itr = [query]
+    return itr
+
+
+def coords_from_query(query):
+    """Transform a query line into a (lng, lat) pair of coordinates."""
+    try:
+        coords = json.loads(query)
+    except ValueError:
+        vals = re.split(r"\,*\s*", query.strip())
+        coords = [float(v) for v in vals]
+    return tuple(coords[:2])
+
+
+def echo_headers(headers, file=None):
+    """Echo headers, sorted."""
+    for k, v in sorted(headers.items()):
+        click.echo("{0}: {1}".format(k.title(), v), file=file)
+    click.echo(file=file)
 
 
 @click.command(short_help="Geocode an address or coordinates.")

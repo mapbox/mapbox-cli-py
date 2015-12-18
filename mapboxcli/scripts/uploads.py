@@ -1,7 +1,7 @@
 import click
 
 import mapbox
-from .helpers import MapboxCLIException
+from mapboxcli.errors import MapboxCLIException
 
 
 @click.command(short_help="Upload datasets to Mapbox accounts")
