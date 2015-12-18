@@ -22,7 +22,7 @@ def config(ctx):
     if 'MAPBOX_ACCESS_TOKEN' in os.environ:
         click.echo("MAPBOX_ACCESS_TOKEN = {0}".format(
             os.environ['MAPBOX_ACCESS_TOKEN']))
-    elif 'MapboxAccessToken' in os.environ:
+    if 'MapboxAccessToken' in os.environ:
         click.echo("MapboxAccessToken = {0}".format(
             os.environ['MapboxAccessToken']))
     if 'MAPBOX_VERBOSE' in os.environ:

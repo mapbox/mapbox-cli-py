@@ -49,8 +49,8 @@ def main_group(ctx, verbose, quiet, access_token, config):
 
       $ mapbox --access-token MY_TOKEN ...
 
-    as an environment variable named MAPBOX_ACCESS_TOKEN or
-    MapboxAccessToken
+    as an environment variable named MAPBOX_ACCESS_TOKEN (higher
+    precedence) or MapboxAccessToken (lower precedence).
 
     \b
       $ export MAPBOX_ACCESS_TOKEN=MY_TOKEN
