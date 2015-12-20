@@ -44,7 +44,7 @@ def main_group(ctx, verbose, quiet, access_token, config):
     """This is the command line interface to Mapbox web services.
 
     Mapbox web services require an access token. Your token is shown
-    on the https://www.mapbox.com/developers/api/ page when you are
+    on the https://www.mapbox.com/studio/account/tokens/ page when you are
     logged in. The token can be provided on the command line
 
       $ mapbox --access-token MY_TOKEN ...
