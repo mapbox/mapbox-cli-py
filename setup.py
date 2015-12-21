@@ -45,6 +45,6 @@ setup(name='mapboxcli',
       upload=mapboxcli.scripts.uploads:upload
       staticmap=mapboxcli.scripts.static:staticmap
       surface=mapboxcli.scripts.surface:surface
-      dataset=mapboxcli.scripts.datasets:datasets
+      datasets=mapboxcli.scripts.datasets:datasets
       """
       )
