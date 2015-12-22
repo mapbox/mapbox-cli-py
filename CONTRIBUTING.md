@@ -1,6 +1,6 @@
 # Contributing
 
-If you want to add an issue or pull request, please ensure that the [existing issues](https://github.com/mapbox/mapbox=cli-py/issues?utf8=✓&q=) don't already cover your question or contribution
+If you want to add an issue or pull request, please ensure that the [existing issues](https://github.com/mapbox/mapbox-cli-py/issues?utf8=✓&q=) don't already cover your question or contribution.
 
 To get started contributing code to the `mapbox-cli-py` project:
 
