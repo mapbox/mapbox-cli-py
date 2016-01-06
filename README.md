@@ -254,23 +254,23 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  batch-update-features  Insert, update, or delete multiple features in a
-                         dataset
-  create                 Create an empty dataset
-  create-tileset         Generate a tileset from a dataset
-  delete-dataset         Delete a dataset
-  delete-feature         Delete a single feature from a dataset
-  list                   List datasets
-  list-features          List features in a dataset
-  put-feature            Insert or update a single feature in a dataset
-  read-dataset           Return information about a dataset
-  read-feature           Read a single feature from a dataset
-  update-dataset         Update information about a dataset
+  batch-update-feature  Insert, update, or delete multiple features in a
+                        dataset
+  create-dataset        Create an empty dataset
+  create-tileset        Generate a tileset from a dataset
+  delete-dataset        Delete a dataset
+  delete-feature        Delete a single feature from a dataset
+  list-datasets         List datasets
+  list-features         List features in a dataset
+  put-feature           Insert or update a single feature in a dataset
+  read-dataset          Return information about a dataset
+  read-feature          Read a single feature from a dataset
+  update-dataset        Update information about a dataset
 ```
 
-### datasets list
+### datasets list-datasets
 ```
-Usage: mapbox datasets list [OPTIONS]
+Usage: mapbox datasets list-datasets [OPTIONS]
 
   List datasets.
 
@@ -286,9 +286,9 @@ Options:
   --help             Show this message and exit.
 ```
 
-### datasets create
+### datasets create-dataset
 ```
-Usage: mapbox datasets create [OPTIONS]
+Usage: mapbox datasets create-dataset [OPTIONS]
 
   Create a new dataset.
 
