@@ -377,11 +377,10 @@ def ls(ctx, uri):
         res = service.list()
 
         if res.status_code == 200:
-            click.echo(res.text)
             for dataset in json.loads(res.text):
                 dataset['name'] = dataset.get('name', None)
                 dataset['description'] = dataset.get('description', None)
-                click.echo("mapbox://datasets/{id}\t{name}: {description}".format(**dataset))
+                click.echo("mapbox://datasets/{owner}/{id}\t{name}: {description}".format(**dataset))
         else:
             raise MapboxCLIException(res.text.strip())
 
@@ -481,6 +480,30 @@ def append_features(ctx, source, destination, sequence, use_rs):
     service = ctx.obj.get('service')
     features = get_features(service, source)
     write_features(features, True, sequence, use_rs, service, destination)
+
+@datasets.command(name="cat",
+    short_help="Print the contents of a dataset to stdout")
+@click.argument('source', required=True)
+@cligj.sequence_opt
+@cligj.use_rs_opt
+@click.pass_context
+def cat_features(ctx, source, sequence, use_rs):
+    """Print the contents of a dataset to stdout. Data to print is indicated by
+    a dataset URI.
+
+        $ mapbox datasets cat \
+        $   mapbox://datasets/username/dataset-A
+
+    All endpoints require authentication. An access token with
+    `uploads:read` scope is required, see `mapbox --help`.
+    """
+
+    # Parse the given uri to insure it is a dataset
+    user, dataset, fid = parse_dataset_uri(source)
+
+    service = ctx.obj.get('service')
+    features = get_features(service, source)
+    write_features(features, False, sequence, use_rs, service, "-")
 
 def id():
     """Create a random ID string of 32 ascii characters"""
