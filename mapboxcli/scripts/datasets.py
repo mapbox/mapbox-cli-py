@@ -397,36 +397,46 @@ def ls(ctx, uri):
 @click.pass_context
 def put_features(ctx, source, destination, sequence, use_rs):
     """Move data from one dataset or file to another, overwriting the
-    destination file or dataset
+    destination.
 
     Data to copy is indicated by either a dataset URI, a file path, or - to
     represent stdin/stdout. Below are some example operations:
 
     To replace dataset-B with the contents of dataset-A:
 
-        $ mapbox datasets put \
-        $   mapbox://datasets/username/dataset-A \
+        \b
+        $ mapbox datasets put \\
+        $   mapbox://datasets/username/dataset-A \\
         $   mapbox://datasets/username/dataset-B
 
     To replace dataset-A with the contents of a local file:
 
-        $ mapbox datasets put \
-        $   ~/path/to/my/data.geojson \
+        \b
+        $ mapbox datasets put \\
+        $   ~/path/to/my/data.geojson \\
         $   mapbox://datasets/username/dataset-A
 
     To print the content of a dataset-A to stdout, as line-delimited GeoJSON
     features:
 
-        $ mapbox datasets put --sequence mapbox://datasets/username/dataset-A -
+        \b
+        $ mapbox datasets put --sequence \\
+        $   mapbox://datasets/username/dataset-A \\
+        $   -
 
     To download all the features in dataset-A to a local file, as a GeoJSON
     FeatureCollection:
 
-        $ mapbox datasets put mapbox://datasets/username/dataset-A ~/data.geojson
+        \b
+        $ mapbox datasets put \\
+        $   mapbox://datasets/username/dataset-A \\
+        $   ~/data.geojson
 
     To print feature-1 from dataset-A to stdout:
 
-        $ mapbox datasets put mapbox://datasets/username/dataset-A/feature-1 -
+        $ mapbox datasets put \\
+        $   mapbox://datasets/username/dataset-A/feature-1 \\
+        $   -
 
     All endpoints require authentication. An access token with
     `uploads:read` and/or `uploads:write` scope may be required,
@@ -446,7 +456,9 @@ def put_features(ctx, source, destination, sequence, use_rs):
 @click.pass_context
 def append_features(ctx, source, destination, sequence, use_rs):
     """Move data from one dataset or file to another, appending to the
-    destination file or dataset. Note that in order to append to a file, the
+    destination file or dataset.
+
+    Note that in order to append to a file, the
     file must be a sequence of GeoJSON features and not a FeatureCollection. You
     must specify --sequence in this case.
 
@@ -455,21 +467,24 @@ def append_features(ctx, source, destination, sequence, use_rs):
 
     To append the features from dataset-A to dataset-B:
 
-        $ mapbox datasets append \
-        $   mapbox://datasets/username/dataset-A \
+        \b
+        $ mapbox datasets append \\
+        $   mapbox://datasets/username/dataset-A \\
         $   mapbox://datasets/username/dataset-B
 
     To append the features in a local file to dataset-A:
 
-        $ mapbox datasets append \
-        $   ~/path/to/my/data.geojson \
+        \b
+        $ mapbox datasets append \\
+        $   ~/path/to/my/data.geojson \\
         $   mapbox://datasets/username/dataset-A
 
     To download all the features in dataset-A and append them to a local,
     line-delimited GeoJSON file
 
-        $ mapbox datasets append --sequence \
-        $   mapbox://datasets/username/dataset-A \
+        \b
+        $ mapbox datasets append --sequence \\
+        $   mapbox://datasets/username/dataset-A \\
         $   ~/data.ldgeojson
 
     All endpoints require authentication. An access token with
@@ -488,11 +503,11 @@ def append_features(ctx, source, destination, sequence, use_rs):
 @cligj.use_rs_opt
 @click.pass_context
 def cat_features(ctx, source, sequence, use_rs):
-    """Print the contents of a dataset to stdout. Data to print is indicated by
-    a dataset URI.
+    """Print the contents of a dataset to stdout.
 
-        $ mapbox datasets cat \
-        $   mapbox://datasets/username/dataset-A
+    Data to print is indicated by a dataset URI.
+
+        $ mapbox datasets cat mapbox://datasets/username/dataset-A
 
     All endpoints require authentication. An access token with
     `uploads:read` scope is required, see `mapbox --help`.
