@@ -43,7 +43,7 @@ def test_config_envvar(monkeypatch):
 def test_config_envvar_2(monkeypatch):
     """Get access token from MapboxAccessToken."""
     monkeypatch.setenv('MapboxAccessToken', 'pk.test_config_envvar_2')
-    monkeypatch.delenv('MAPBOX_ACCESS_TOKEN')
+    monkeypatch.delenv('MAPBOX_ACCESS_TOKEN', raising=False)
     runner = CliRunner()
     result = runner.invoke(main_group, ['config'], catch_exceptions=False)
     assert "Config file" not in result.output
