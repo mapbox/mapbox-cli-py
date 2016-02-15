@@ -59,8 +59,15 @@ def echo_headers(headers, file=None):
     type=click.Choice(mapbox.Geocoder().place_types.keys()),
     help="Restrict results to one or more place types.")
 @click.option('--output', '-o', default='-', help="Save output to a file.")
+@click.option('--dataset', '-d', default='mapbox.places',
+              type=click.Choice(("mapbox.places", "mapbox.places-permanent")),
+              help="Source dataset for geocoding, [default: mapbox.places]")
+@click.option('--country', default=None,
+              help="Restrict forward geocoding to specified country codes,"
+                   "comma-separated")
 @click.pass_context
-def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output):
+def geocoding(ctx, query, forward, include_headers, lat, lon,
+              place_type, output, dataset, country):
     """This command returns places matching an address (forward mode) or
     places matching coordinates (reverse mode).
 
@@ -82,13 +89,16 @@ def geocoding(ctx, query, forward, include_headers, lat, lon, place_type, output
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     stdout = click.open_file(output, 'w')
 
-    geocoder = mapbox.Geocoder(access_token=access_token)
+    geocoder = mapbox.Geocoder(name=dataset, access_token=access_token)
 
     if forward:
+        if country:
+            country = [x.lower() for x in country.split(",")]
+
         for q in iter_query(query):
             try:
                 resp = geocoder.forward(
-                    q, types=place_type, lat=lat, lon=lon)
+                    q, types=place_type, lat=lat, lon=lon, country=country)
             except mapbox.errors.ValidationError as exc:
                 raise click.BadParameter(str(exc))
 
