@@ -184,3 +184,25 @@ def test_cli_geocode_bad_place():
         ['geocoding', '-t', 'spaceship', '--reverse'],
         input='{0},{1}'.format(lon, lat))
     assert result.exit_code == 2
+
+
+def test_cli_geocode_bad_dataset():
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        ['geocoding', '-d', 'mapbox.spaceships'],
+        input='Millennium Falcon')
+    assert result.exit_code == 2
+    assert "Invalid value" in result.output
+
+
+def test_cli_geocode_invalid_country():
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        ['geocoding', '--country', 'US,Tatooine'],
+        input='Millennium Falcon')
+    assert result.exit_code == 2
+    assert "Invalid value" in result.output
