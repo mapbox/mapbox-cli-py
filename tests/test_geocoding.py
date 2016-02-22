@@ -42,7 +42,7 @@ def test_cli_geocode_fwd_env_token():
     result = runner.invoke(
         main_group,
         ['geocoding', '--forward', '1600 pennsylvania ave nw'],
-        env={'MapboxAccessToken': 'bogus'})
+        env={'MAPBOX_ACCESS_TOKEN': 'bogus'})
     assert result.exit_code == 0
     assert result.output == '{"query": ["1600", "pennsylvania", "ave", "nw"]}\n'
 
@@ -89,7 +89,7 @@ def test_cli_geocode_reverse_env_token():
         main_group,
         ['geocoding', '--reverse'],
         input='{0},{1}'.format(lon, lat),
-        env={'MapboxAccessToken': 'bogus'})
+        env={'MAPBOX_ACCESS_TOKEN': 'bogus'})
     assert result.exit_code == 0
     assert result.output.strip() == body
 
