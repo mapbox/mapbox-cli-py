@@ -28,7 +28,7 @@ def staticmap(ctx, mapid, output, features, lat, lon, zoom, size):
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     if features:
         features = list(
-            cligj.normalize_feature_inputs(None, 'features', features))
+            cligj.normalize_feature_inputs(None, 'features', [features]))
 
     service = mapbox.Static(access_token=access_token)
 
