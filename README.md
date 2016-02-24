@@ -7,10 +7,39 @@ https://github.com/mapbox/mapbox-sdk-py.
 
 ## Installation
 
+**For users on OS X**, we recommend installing with [homebrew](http://brew.sh/)
 ```
-pip install https://github.com/mapbox/mapbox-cli-py/releases/download/0.1.0/boto3-1.2.2-py2.py3-none-any.whl
-pip install mapboxcli
+$ brew install mapbox/cli/mapbox
 ```
+
+**For users familiar with Python** and who already have [`pip`](https://pip.pypa.io/en/stable/installing/) installed on their system, you can create a [virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) and install with
+```
+(venv)$ pip install mapboxcli
+```
+
+Installing globally is *not recommended* but some users may want to do so under certain circumstances
+```
+$ sudo pip install mapboxcli
+```
+
+If you're interested in contributing, you'll want to [install from master branch](https://github.com/mapbox/mapbox-cli-py/blob/master/CONTRIBUTING.md#contributing).
+
+## Setup 
+
+Use of the `mapbox` command line interface requires an access token.
+Your token is shown on the [API access tokens](https://www.mapbox.com/studio/account/tokens/) page when you are logged in. 
+The token can be provided on the command line
+
+    $ mapbox --access-token MY_TOKEN ...
+
+or as an environment variable named `MAPBOX_ACCESS_TOKEN`
+
+    $ export MAPBOX_ACCESS_TOKEN=MY_TOKEN
+    $ mapbox ...
+
+
+
+
 
 ## Usage
 
