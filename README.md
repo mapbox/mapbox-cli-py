@@ -29,16 +29,16 @@ Use of the `mapbox` command line interface requires an access token.
 Your token is shown on the [API access tokens](https://www.mapbox.com/studio/account/tokens/) page when you are logged in.
 The token can be provided on the command line
 
+```
 $ mapbox --access-token MY_TOKEN ...
+```
 
 or as an environment variable named `MAPBOX_ACCESS_TOKEN`
 
+```
 $ export MAPBOX_ACCESS_TOKEN=MY_TOKEN
 $ mapbox ...
-
-
-
-
+```
 
 ## Usage
 
