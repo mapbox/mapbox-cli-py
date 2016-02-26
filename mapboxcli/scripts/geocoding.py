@@ -74,12 +74,12 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
     In forward (the default) mode the query argument shall be an address
     such as '1600 pennsylvania ave nw'.
 
-      $ mapbox geocode '1600 pennsylvania ave nw'
+      $ mapbox geocoding '1600 pennsylvania ave nw'
 
     In reverse mode the query argument shall be a JSON encoded array
     of longitude and latitude (in that order) in decimal degrees.
 
-      $ mapbox geocode --reverse '[-77.4371, 37.5227]'
+      $ mapbox geocoding --reverse '[-77.4371, 37.5227]'
 
     An access token is required, see `mapbox --help`.
     """

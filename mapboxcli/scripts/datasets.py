@@ -32,7 +32,7 @@ def list(ctx, output):
 
     Prints a list of objects describing datasets.
 
-        $ mapbox dataset list
+        $ mapbox datasets list
 
     All endpoints require authentication. An access token with
     `datasets:read` scope is required, see `mapbox --help`.
@@ -59,7 +59,7 @@ def create(ctx, name, description):
     Prints a JSON object containing the attributes
     of the new dataset.
 
-        $ mapbox dataset create
+        $ mapbox datasets create
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -87,7 +87,7 @@ def read_dataset(ctx, dataset, output):
     id (dataset id), created (Unix timestamp), modified
     (timestamp), name (string), and description (string).
 
-        $ mapbox dataset read-dataset dataset-id
+        $ mapbox datasets read-dataset dataset-id
 
     All endpoints require authentication. An access token with
     `datasets:read` scope is required, see `mapbox --help`.
@@ -116,7 +116,7 @@ def update_dataset(ctx, dataset, name, description):
     Prints a JSON object containing the updated dataset
     attributes.
 
-        $ mapbox dataset update-dataset dataset-id
+        $ mapbox datasets update-dataset dataset-id
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -137,7 +137,7 @@ def update_dataset(ctx, dataset, name, description):
 def delete_dataset(ctx, dataset):
     """Delete a dataset.
 
-        $ mapbox dataset delete-dataset dataset-id
+        $ mapbox datasets delete-dataset dataset-id
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -167,7 +167,7 @@ def list_features(ctx, dataset, reverse, start, limit, output):
 
     Prints the features of the dataset as a GeoJSON feature collection.
 
-        $ mapbox dataset list-features dataset-id
+        $ mapbox datasets list-features dataset-id
 
     All endpoints require authentication. An access token with
     `datasets:read` scope is required, see `mapbox --help`.
@@ -194,7 +194,7 @@ def read_feature(ctx, dataset, fid, output):
 
     Prints a GeoJSON representation of the feature.
 
-        $ mapbox dataset read-feature dataset-id feature-id
+        $ mapbox datasets read-feature dataset-id feature-id
 
     All endpoints require authentication. An access token with
     `datasets:read` scope is required, see `mapbox --help`.
@@ -225,7 +225,7 @@ def put_feature(ctx, dataset, fid, feature, input):
     with the given `fid` a new feature will be created. Returns a
     GeoJSON representation of the new or updated feature.
 
-        $ mapbox dataset put-feature dataset-id feature-id 'geojson-feature'
+        $ mapbox datasets put-feature dataset-id feature-id 'geojson-feature'
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -254,7 +254,7 @@ def put_feature(ctx, dataset, fid, feature, input):
 def delete_feature(ctx, dataset, fid):
     """Delete a feature.
 
-        $ mapbox dataset delete-feature dataset-id feature-id
+        $ mapbox datasets delete-feature dataset-id feature-id
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -284,7 +284,7 @@ def batch_update_features(ctx, dataset, puts, deletes, input):
     should be a JSON array of GeoJSON features to insert or updated.
     DELETES should be a JSON array of feature ids to be deleted.
 
-        $ mapbox dataset batch-update-feature dataset-id 'puts' 'deletes'
+        $ mapbox datasets batch-update-features dataset-id 'puts' 'deletes'
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -320,7 +320,7 @@ def batch_update_features(ctx, dataset, puts, deletes, input):
 def create_tileset(ctx, dataset, tileset, name):
     """Create a vector tileset from a dataset.
 
-        $ mapbox dataset create-tileset dataset-id username.data
+        $ mapbox datasets create-tileset dataset-id username.data
 
     Note that the tileset must start with your username and the dataset
     must be one that you own. To view processing status, visit
