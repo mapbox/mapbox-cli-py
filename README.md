@@ -23,18 +23,18 @@ $ sudo pip install mapboxcli
 
 If you're interested in contributing, you'll want to [install from master branch](https://github.com/mapbox/mapbox-cli-py/blob/master/CONTRIBUTING.md#contributing).
 
-## Setup 
+## Setup
 
 Use of the `mapbox` command line interface requires an access token.
-Your token is shown on the [API access tokens](https://www.mapbox.com/studio/account/tokens/) page when you are logged in. 
+Your token is shown on the [API access tokens](https://www.mapbox.com/studio/account/tokens/) page when you are logged in.
 The token can be provided on the command line
 
-    $ mapbox --access-token MY_TOKEN ...
+$ mapbox --access-token MY_TOKEN ...
 
 or as an environment variable named `MAPBOX_ACCESS_TOKEN`
 
-    $ export MAPBOX_ACCESS_TOKEN=MY_TOKEN
-    $ mapbox ...
+$ export MAPBOX_ACCESS_TOKEN=MY_TOKEN
+$ mapbox ...
 
 
 
@@ -62,18 +62,17 @@ Note that functions that accept points only, any non-point feature is filtered o
 
 ### directions
 ```
-Usage: mapbox directions [OPTIONS] [WAYPOINTS]...
+Usage: mapbox directions [OPTIONS] FEATURES...
 
   Calculate optimal route with turn-by-turn directions between up to 25
   waypoints.
 
-    $ mapbox directions "[-122.681032, 45.528334]" "[-122.71679,
-    45.525135]"
+    $ mapbox directions "[-122.681032, 45.528334]" "[-122.71679, 45.525135]"
 
   An access token is required, see `mapbox --help`.
 
 Options:
-  --profile [mapbox.driving|mapbox.walking|mapbox.cycling]
+  --profile [mapbox.driving|mapbox.cycling|mapbox.walking]
                                   Mapbox direction profile id
   --alternatives / --no-alternatives
                                   Generate alternative routes?
@@ -89,7 +88,7 @@ Options:
 
 ### distance
 ```
-Usage: mapbox distance [OPTIONS] [WAYPOINTS]...
+Usage: mapbox distance [OPTIONS] FEATURES...
 
   The Distance API returns all travel times between many points (also known
   as Distance Matrix). This is often used as input for solving routing
@@ -103,7 +102,7 @@ Usage: mapbox distance [OPTIONS] [WAYPOINTS]...
   An access token is required, see `mapbox --help`.
 
 Options:
-  --profile [driving|walking|cycling]
+  --profile [driving|cycling|walking]
                                   Mapbox direction profile id
   -o, --output TEXT               Save output to a file.
   --help                          Show this message and exit.
@@ -129,37 +128,38 @@ Usage: mapbox geocoding [OPTIONS] [QUERY]
   An access token is required, see `mapbox --help`.
 
 Options:
-  --forward / --reverse  Perform a forward or reverse geocode. [default:
-                         forward]
-  -i, --include          Include HTTP headers in the output.
-  --lat FLOAT            Bias results toward this latitude (decimal degrees).
-                         --lon is also required.
-  --lon FLOAT            Bias results toward this longitude (decimal degrees).
-                         --lat is also required.
-  -t, --place-type NAME  Restrict results to one or more of these place types:
-                         ['address', 'country', 'neighborhood', 'place',
-                         'poi', 'postcode', 'region'].
-  -o, --output TEXT      Save output to a file.
-  --help                 Show this message and exit.
+  --forward / --reverse           Perform a forward or reverse geocode.
+                                  [default: forward]
+  -i, --include                   Include HTTP headers in the output.
+  --lat FLOAT                     Bias results toward this latitude (decimal
+                                  degrees). --lon is also required.
+  --lon FLOAT                     Bias results toward this longitude (decimal
+                                  degrees). --lat is also required.
+  -t, --place-type NAME           Restrict results to one or more place types.
+  -o, --output TEXT               Save output to a file.
+  -d, --dataset [mapbox.places|mapbox.places-permanent]
+                                  Source dataset for geocoding, [default:
+                                  mapbox.places]
+  --country TEXT                  Restrict forward geocoding to specified
+                                  country codes,comma-separated
+  --help                          Show this message and exit.
 ```
 
 ### mapmatching
-
 ```
-$ mapbox mapmatching --help
-Usage: mapbox mapmatching [OPTIONS] [LINESTRING_FEATURE]
+Usage: mapbox mapmatching [OPTIONS] FEATURES...
 
   Mapbox Map Matching API lets you use snap your GPS traces to the
   OpenStreetMap road and path network.
 
-        $ mapbox mapmatching traces.geojson
+        $ mapbox mapmatching trace.geojson
 
   An access token is required, see `mapbox --help`.
 
 Options:
   --gps-precision INTEGER         Assumed precision of tracking device
                                   (default 4 meters)
-  --profile [mapbox.driving|mapbox.walking|mapbox.cycling]
+  --profile [mapbox.driving|mapbox.cycling|mapbox.walking]
                                   Mapbox profile id
   --help                          Show this message and exit.
 ```
@@ -171,10 +171,9 @@ Usage: mapbox staticmap [OPTIONS] MAPID OUTPUT
   Generate static map images from existing Mapbox map ids. Optionally
   overlay with geojson features.
 
-    $ mapbox staticmap \
-        --features features.geojson mapbox.satellite out.png
-    $ mapbox staticmap \
-        --lon -61.7 --lat 12.1 --zoom 12 mapbox.satellite out2.png
+    $ mapbox staticmap --features features.geojson mapbox.satellite out.png
+    $ mapbox staticmap --lon -61.7 --lat 12.1 --zoom 12 mapbox.satellite
+    out2.png
 
   An access token is required, see `mapbox --help`.
 
@@ -189,7 +188,7 @@ Options:
 
 ### surface
 ```
-Usage: mapbox surface [OPTIONS] MAPID LAYER FIELDS [WAYPOINTS]...
+Usage: mapbox surface [OPTIONS] MAPID LAYER FIELDS FEATURES...
 
   Mapbox Surface API enables flexible querying of data stored in vector
   tiles on Mapbox, to create results like elevation profiles.
@@ -212,7 +211,7 @@ Options:
 
 ### upload
 ```
-Usage: mapbox upload [OPTIONS] TILESET INFILE
+Usage: mapbox upload [OPTIONS] TILESET [INFILE]
 
   Upload data to Mapbox accounts. All endpoints require authentication.
   Uploaded data lands at https://www.mapbox.com/data/ and can be used in new
@@ -243,18 +242,18 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  batch-update-feature  Insert, update, or delete multiple features in a
-                        dataset
-  create                Create an empty dataset
-  create-tileset        Generate a tileset from a dataset
-  delete-dataset        Delete a dataset
-  delete-feature        Delete a single feature from a dataset
-  list                  List datasets
-  list-features         List features in a dataset
-  put-feature           Insert or update a single feature in a dataset
-  read-dataset          Return information about a dataset
-  read-feature          Read a single feature from a dataset
-  update-dataset        Update information about a dataset
+  batch-update-features  Insert, update, or delete multiple features in a
+                         dataset
+  create                 Create an empty dataset
+  create-tileset         Generate a tileset from a dataset
+  delete-dataset         Delete a dataset
+  delete-feature         Delete a single feature from a dataset
+  list                   List datasets
+  list-features          List features in a dataset
+  put-feature            Insert or update a single feature in a dataset
+  read-dataset           Return information about a dataset
+  read-feature           Read a single feature from a dataset
+  update-dataset         Update information about a dataset
 ```
 
 ### datasets list
@@ -422,9 +421,10 @@ Options:
   --help  Show this message and exit.
 ```
 
-### datasets batch-update-feature
+### datasets batch-update-features
 ```
-Usage: mapbox datasets batch-update-feature [OPTIONS] DATASET [PUTS] [DELETES]
+Usage: mapbox datasets batch-update-features [OPTIONS] DATASET [PUTS]
+                                             [DELETES]
 
   Update features of a dataset.
 
