@@ -118,12 +118,12 @@ Usage: mapbox geocoding [OPTIONS] [QUERY]
   In forward (the default) mode the query argument shall be an address such
   as '1600 pennsylvania ave nw'.
 
-    $ mapbox geocode '1600 pennsylvania ave nw'
+    $ mapbox geocoding '1600 pennsylvania ave nw'
 
   In reverse mode the query argument shall be a JSON encoded array of
   longitude and latitude (in that order) in decimal degrees.
 
-    $ mapbox geocode --reverse '[-77.4371, 37.5227]'
+    $ mapbox geocoding --reverse '[-77.4371, 37.5227]'
 
   An access token is required, see `mapbox --help`.
 
@@ -264,7 +264,7 @@ Usage: mapbox datasets list [OPTIONS]
 
   Prints a list of objects describing datasets.
 
-      $ mapbox dataset list
+      $ mapbox datasets list
 
   All endpoints require authentication. An access token with `datasets:read`
   scope is required, see `mapbox --help`.
@@ -282,7 +282,7 @@ Usage: mapbox datasets create [OPTIONS]
 
   Prints a JSON object containing the attributes of the new dataset.
 
-      $ mapbox dataset create
+      $ mapbox datasets create
 
   All endpoints require authentication. An access token with
   `datasets:write` scope is required, see `mapbox --help`.
@@ -303,7 +303,7 @@ Usage: mapbox datasets read-dataset [OPTIONS] DATASET
   attributes: owner (a Mapbox account), id (dataset id), created (Unix
   timestamp), modified (timestamp), name (string), and description (string).
 
-      $ mapbox dataset read-dataset dataset-id
+      $ mapbox datasets read-dataset dataset-id
 
   All endpoints require authentication. An access token with `datasets:read`
   scope is required, see `mapbox --help`.
@@ -321,7 +321,7 @@ Usage: mapbox datasets update-dataset [OPTIONS] DATASET
 
   Prints a JSON object containing the updated dataset attributes.
 
-      $ mapbox dataset update-dataset dataset-id
+      $ mapbox datasets update-dataset dataset-id
 
   All endpoints require authentication. An access token with
   `datasets:write` scope is required, see `mapbox --help`.
@@ -338,7 +338,7 @@ Usage: mapbox datasets delete-dataset [OPTIONS] DATASET
 
   Delete a dataset.
 
-      $ mapbox dataset delete-dataset dataset-id
+      $ mapbox datasets delete-dataset dataset-id
 
   All endpoints require authentication. An access token with
   `datasets:write` scope is required, see `mapbox --help`.
@@ -355,7 +355,7 @@ Usage: mapbox datasets list-features [OPTIONS] DATASET
 
   Prints the features of the dataset as a GeoJSON feature collection.
 
-      $ mapbox dataset list-features dataset-id
+      $ mapbox datasets list-features dataset-id
 
   All endpoints require authentication. An access token with `datasets:read`
   scope is required, see `mapbox --help`.
@@ -378,7 +378,7 @@ Usage: mapbox datasets put-feature [OPTIONS] DATASET FID [FEATURE]
   given `fid` a new feature will be created. Returns a GeoJSON
   representation of the new or updated feature.
 
-      $ mapbox dataset put-feature dataset-id feature-id 'geojson-feature'
+      $ mapbox datasets put-feature dataset-id feature-id 'geojson-feature'
 
   All endpoints require authentication. An access token with
   `datasets:write` scope is required, see `mapbox --help`.
@@ -396,7 +396,7 @@ Usage: mapbox datasets read-feature [OPTIONS] DATASET FID
 
   Prints a GeoJSON representation of the feature.
 
-      $ mapbox dataset read-feature dataset-id feature-id
+      $ mapbox datasets read-feature dataset-id feature-id
 
   All endpoints require authentication. An access token with `datasets:read`
   scope is required, see `mapbox --help`.
@@ -412,7 +412,7 @@ Usage: mapbox datasets delete-feature [OPTIONS] DATASET FID
 
   Delete a feature.
 
-      $ mapbox dataset delete-feature dataset-id feature-id
+      $ mapbox datasets delete-feature dataset-id feature-id
 
   All endpoints require authentication. An access token with
   `datasets:write` scope is required, see `mapbox --help`.
@@ -432,7 +432,7 @@ Usage: mapbox datasets batch-update-features [OPTIONS] DATASET [PUTS]
   be a JSON array of GeoJSON features to insert or updated. DELETES should
   be a JSON array of feature ids to be deleted.
 
-      $ mapbox dataset batch-update-feature dataset-id 'puts' 'deletes'
+      $ mapbox datasets batch-update-features dataset-id 'puts' 'deletes'
 
   All endpoints require authentication. An access token with
   `datasets:write` scope is required, see `mapbox --help`.
@@ -448,7 +448,7 @@ Usage: mapbox datasets create-tileset [OPTIONS] DATASET TILESET
 
   Create a vector tileset from a dataset.
 
-      $ mapbox dataset create-tileset dataset-id username.data
+      $ mapbox datasets create-tileset dataset-id username.data
 
   Note that the tileset must start with your username and the dataset must
   be one that you own. To view processing status, visit
