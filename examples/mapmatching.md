@@ -51,7 +51,7 @@ $ cat trace.geojson | mapbox staticmap --features - mapbox.streets oldtrace.png
 
 And the corrected 
 ```
-$ mapbox mapmatching trace.geojson | mapbox staticmap --features - mapbox.streets trace.png
+$ cat newtrace.geojson | mapbox staticmap --features - mapbox.streets newtrace.png
 ```
 
 ![trace](trace.png)
