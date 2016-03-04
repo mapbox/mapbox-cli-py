@@ -1,15 +1,7 @@
 # Datasets.
 
 import json
-import random
-import string
 import click
-import cligj
-
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib import parse as urlparse
 
 import mapbox
 from mapboxcli.errors import MapboxCLIException
@@ -81,8 +73,8 @@ def create_dataset(ctx, name, description):
         raise MapboxCLIException(res.text.strip())
 
 
-@datasetsapi.command(name="read-dataset",
-                  short_help="Return information about a dataset")
+@datasetsapi.command(
+    name="read-dataset", short_help="Return information about a dataset")
 @click.argument('dataset', required=True)
 @click.option('--output', '-o', default='-', help="Save output to a file")
 @click.pass_context
@@ -110,8 +102,8 @@ def read_dataset(ctx, dataset, output):
         raise MapboxCLIException(res.text.strip())
 
 
-@datasetsapi.command(name="update-dataset",
-                  short_help="Update information about a dataset")
+@datasetsapi.command(
+    name="update-dataset", short_help="Update information about a dataset")
 @click.argument('dataset', required=True)
 @click.option('--name', '-n', default=None, help="Name for the dataset")
 @click.option('--description', '-d', default=None,
@@ -157,8 +149,8 @@ def delete_dataset(ctx, dataset):
         raise MapboxCLIException(res.text.strip())
 
 
-@datasetsapi.command(name="list-features",
-                  short_help="List one page of features from a dataset")
+@datasetsapi.command(
+    name="list-features", short_help="List one page of features from a dataset")
 @click.argument('dataset', required=True)
 @click.option('--reverse', '-r', default=False,
               help="Read features in reverse")
@@ -190,8 +182,8 @@ def list_features(ctx, dataset, reverse, start, limit, output):
         raise MapboxCLIException(res.text.strip())
 
 
-@datasetsapi.command(name="read-feature",
-                  short_help="Read a single feature from a dataset")
+@datasetsapi.command(
+    name="read-feature", short_help="Read a single feature from a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
 @click.option('--output', '-o', default='-', help="Save output to a file")
@@ -217,8 +209,8 @@ def read_feature(ctx, dataset, fid, output):
         raise MapboxCLIException(res.text.strip())
 
 
-@datasetsapi.command(name="put-feature",
-                  short_help="Insert or update a single feature in a dataset")
+@datasetsapi.command(
+    name="put-feature", short_help="Insert or update a single feature in a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
 @click.argument('feature', required=False, default=None)
@@ -253,8 +245,8 @@ def put_feature(ctx, dataset, fid, feature, input):
         raise MapboxCLIException(res.text.strip())
 
 
-@datasetsapi.command(name="delete-feature",
-                  short_help="Delete a single feature from a dataset")
+@datasetsapi.command(
+    name="delete-feature", short_help="Delete a single feature from a dataset")
 @click.argument('dataset', required=True)
 @click.argument('fid', required=True)
 @click.pass_context
