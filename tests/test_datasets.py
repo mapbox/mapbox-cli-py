@@ -48,7 +48,7 @@ def test_cli_dataset_list_stdout():
         main_group,
         ['--access-token', access_token,
          'datasets',
-         'list'])
+         'list-datasets'])
 
     assert result.exit_code == 0
     assert result.output.strip() == datasets.strip()
@@ -92,7 +92,7 @@ def test_cli_dataset_list_tofile(tmpdir):
         main_group,
         ['--access-token', access_token,
          'datasets',
-         'list',
+         'list-datasets',
          '--output', tmpfile])
 
     assert result.exit_code == 0
@@ -124,7 +124,7 @@ def test_cli_dataset_create_noargs():
         main_group,
         ['--access-token', access_token,
          'datasets',
-         'create'])
+         'create-dataset'])
 
     assert result.exit_code == 0
     assert result.output.strip() == created.strip()
@@ -156,7 +156,7 @@ def test_cli_dataset_create_withargs():
         main_group,
         ['--access-token', access_token,
          'datasets',
-         'create',
+         'create-dataset',
          '--name', name,
          '-d', description])
 
