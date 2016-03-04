@@ -254,29 +254,222 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  batch-update-feature  Insert, update, or delete multiple features in a
-                        dataset
-  create-dataset        Create an empty dataset
-  create-tileset        Generate a tileset from a dataset
-  delete-dataset        Delete a dataset
-  delete-feature        Delete a single feature from a dataset
-  list-datasets         List datasets
-  list-features         List features in a dataset
-  put-feature           Insert or update a single feature in a dataset
-  read-dataset          Return information about a dataset
-  read-feature          Read a single feature from a dataset
-  update-dataset        Update information about a dataset
+  append          Move data from one dataset or file to another, appending to
+                  the destination
+  read            Print the contents of a dataset to stdout
+  create-tileset  Generate a tileset from a dataset
+  list            List datasets or features in a dataset
+  put             Move data from one dataset or file to another, overwriting
+                  the destination
+```
+
+### datasets append
+```
+Usage: mapbox datasets append [OPTIONS] SOURCE DESTINATION
+
+  Move data from one dataset or file to another, appending to the
+  destination file or dataset.
+
+  Note that in order to append to a file, the file must be a sequence of
+  GeoJSON features and not a FeatureCollection. You must specify --sequence
+  in this case.
+
+  Data to copy is indicated by either a dataset URI, a file path, or - to
+  represent stdin/stdout. Below are some example operations:
+
+  To append the features from dataset-A to dataset-B:
+
+          $ mapbox datasets append \
+          $   mapbox://datasets/username/dataset-A \
+          $   mapbox://datasets/username/dataset-B
+
+  To append the features in a local file to dataset-A:
+
+          $ mapbox datasets append \
+          $   ~/path/to/my/data.geojson \
+          $   mapbox://datasets/username/dataset-A
+
+  To download all the features in dataset-A and append them to a local,
+  line-delimited GeoJSON file
+
+          $ mapbox datasets append --sequence \
+          $   mapbox://datasets/username/dataset-A \
+          $   ~/data.ldgeojson
+
+  All endpoints require authentication. An access token with `uploads:read`
+  and/or `uploads:write` scope may be required, see `mapbox --help`.
+
+Options:
+  --sequence / --no-sequence  Write a LF-delimited sequence of texts
+                              containing individual objects or write a single
+                              JSON text containing a feature collection object
+                              (the default).
+  --rs / --no-rs              Use RS (0x1E) as a prefix for individual texts
+                              in a sequence as per http://tools.ietf.org/html
+                              /draft-ietf-json-text-sequence-13 (default is
+                              False).
+  --help                      Show this message and exit.
+```
+
+### datasets read
+```
+Usage: mapbox datasets read [OPTIONS] SOURCE
+
+  Print the contents of a dataset to stdout.
+
+  Data to print is indicated by a dataset URI.
+
+      $ mapbox datasets cat mapbox://datasets/username/dataset-A
+
+  All endpoints require authentication. An access token with `uploads:read`
+  scope is required, see `mapbox --help`.
+
+Options:
+  --sequence / --no-sequence  Write a LF-delimited sequence of texts
+                              containing individual objects or write a single
+                              JSON text containing a feature collection object
+                              (the default).
+  --rs / --no-rs              Use RS (0x1E) as a prefix for individual texts
+                              in a sequence as per http://tools.ietf.org/html
+                              /draft-ietf-json-text-sequence-13 (default is
+                              False).
+  --help                      Show this message and exit.
+```
+
+### datasets put
+```
+Usage: mapbox datasets put [OPTIONS] SOURCE DESTINATION
+
+  Move data from one dataset or file to another, overwriting the
+  destination.
+
+  Data to copy is indicated by either a dataset URI, a file path, or - to
+  represent stdin/stdout. Below are some example operations:
+
+  To replace dataset-B with the contents of dataset-A:
+
+          $ mapbox datasets put \
+          $   mapbox://datasets/username/dataset-A \
+          $   mapbox://datasets/username/dataset-B
+
+  To replace dataset-A with the contents of a local file:
+
+          $ mapbox datasets put \
+          $   ~/path/to/my/data.geojson \
+          $   mapbox://datasets/username/dataset-A
+
+  To print the content of a dataset-A to stdout, as line-delimited GeoJSON
+  features:
+
+          $ mapbox datasets put --sequence \
+          $   mapbox://datasets/username/dataset-A \
+          $   -
+
+  To download all the features in dataset-A to a local file, as a GeoJSON
+  FeatureCollection:
+
+          $ mapbox datasets put \
+          $   mapbox://datasets/username/dataset-A \
+          $   ~/data.geojson
+
+  To print feature-1 from dataset-A to stdout:
+
+      $ mapbox datasets put \     $
+      mapbox://datasets/username/dataset-A/feature-1 \     $   -
+
+  All endpoints require authentication. An access token with `uploads:read`
+  and/or `uploads:write` scope may be required, see `mapbox --help`.
+
+Options:
+  --sequence / --no-sequence  Write a LF-delimited sequence of texts
+                              containing individual objects or write a single
+                              JSON text containing a feature collection object
+                              (the default).
+  --rs / --no-rs              Use RS (0x1E) as a prefix for individual texts
+                              in a sequence as per http://tools.ietf.org/html
+                              /draft-ietf-json-text-sequence-13 (default is
+                              False).
+  --help                      Show this message and exit.
+```
+
+### datasets list
+```
+Usage: mapbox datasets list [OPTIONS] URI
+
+  List datasets or features in a dataset.
+
+      $ mapbox datasets list mapbox://datasets/username     $ mapbox
+      datasets list mapbox://datasets/username/dataset-id
+
+  Use this function to list available datasets, printing their URI, name,
+  and description. If a URI for a specific dataset is given, the URIs for
+  individual features within that dataset are listed.
+
+  All endpoints require authentication. An access token with `uploads:read`
+  scope is required, see `mapbox --help`.
+
+Options:
+  --help  Show this message and exit.
+```
+
+### datasets create-tileset
+```
+Usage: mapbox datasets create-tileset [OPTIONS] DATASET TILESET
+
+  Create a vector tileset from a dataset.
+
+      $ mapbox datasets create-tileset dataset-id username.data
+
+  Note that the tileset must start with your username and the dataset must
+  be one that you own which contains data. To view processing status, visit
+  https://www.mapbox.com/data/. You may not generate another tilesets from
+  the same dataset until the first processing job has completed.
+
+  All endpoints require authentication. An access token with `uploads:write`
+  scope is required, see `mapbox --help`.
+
+Options:
+  -n, --name TEXT  Name for the tileset
+  --help           Show this message and exit.
+```
+
+### datasetsapi
+```
+Usage: mapbox datasetsapi [OPTIONS] COMMAND [ARGS]...
+
+  Low-level read and write functions for Mapbox datasets
+
+  All endpoints require authentication. An access token with appropriate
+  dataset scopes is required, see `mapbox --help`.
+
+  Note that this API is currently a limited-access beta.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  batch-update-features  Insert, update, or delete multiple features in a
+                         dataset
+  create-dataset         Create an empty dataset
+  delete-dataset         Delete a dataset
+  delete-feature         Delete a single feature from a dataset
+  list-datasets          List datasets
+  list-features          List one page of features from a dataset
+  put-feature            Insert or update a single feature in a dataset
+  read-dataset           Return information about a dataset
+  read-feature           Read a single feature from a dataset
+  update-dataset         Update information about a dataset
 ```
 
 ### datasets list-datasets
 ```
-Usage: mapbox datasets list-datasets [OPTIONS]
+Usage: mapbox datasetsapi list-datasets [OPTIONS]
 
   List datasets.
 
   Prints a list of objects describing datasets.
 
-      $ mapbox datasets list
+      $ mapbox datasets list-datasets
 
   All endpoints require authentication. An access token with `datasets:read`
   scope is required, see `mapbox --help`.
@@ -286,15 +479,15 @@ Options:
   --help             Show this message and exit.
 ```
 
-### datasets create-dataset
+### datasetsapi create-dataset
 ```
-Usage: mapbox datasets create-dataset [OPTIONS]
+Usage: mapbox datasetsapi create-dataset [OPTIONS]
 
   Create a new dataset.
 
   Prints a JSON object containing the attributes of the new dataset.
 
-      $ mapbox datasets create
+      $ mapbox datasets create-dataset
 
   All endpoints require authentication. An access token with
   `datasets:write` scope is required, see `mapbox --help`.
@@ -305,9 +498,9 @@ Options:
   --help                  Show this message and exit.
 ```
 
-### datasets read-dataset
+### datasetsapi read-dataset
 ```
-Usage: mapbox datasets read-dataset [OPTIONS] DATASET
+Usage: mapbox datasetsapi read-dataset [OPTIONS] DATASET
 
   Read the attributes of a dataset.
 
@@ -325,9 +518,9 @@ Options:
   --help             Show this message and exit.
 ```
 
-### datasets update-dataset
+### datasetsapi update-dataset
 ```
-Usage: mapbox datasets update-dataset [OPTIONS] DATASET
+Usage: mapbox datasetsapi update-dataset [OPTIONS] DATASET
 
   Update the name and description of a dataset.
 
@@ -344,9 +537,9 @@ Options:
   --help                  Show this message and exit.
 ```
 
-### datasets delete-dataset
+### datasetsapi api delete-dataset
 ```
-Usage: mapbox datasets delete-dataset [OPTIONS] DATASET
+Usage: mapbox datasetsapi delete-dataset [OPTIONS] DATASET
 
   Delete a dataset.
 
@@ -359,9 +552,9 @@ Options:
   --help  Show this message and exit.
 ```
 
-### datasets list-features
+### datasetsapi list-features
 ```
-Usage: mapbox datasets list-features [OPTIONS] DATASET
+Usage: mapbox datasetsapi list-features [OPTIONS] DATASET
 
   Get features of a dataset.
 
@@ -380,9 +573,9 @@ Options:
   --help              Show this message and exit.
 ```
 
-### datasets put-feature
+### datasetsapi put-feature
 ```
-Usage: mapbox datasets put-feature [OPTIONS] DATASET FID [FEATURE]
+Usage: mapbox datasetsapi put-feature [OPTIONS] DATASET FID [FEATURE]
 
   Create or update a dataset feature.
 
@@ -400,9 +593,9 @@ Options:
   --help            Show this message and exit.
 ```
 
-### datasets read-feature
+### datasetsapi read-feature
 ```
-Usage: mapbox datasets read-feature [OPTIONS] DATASET FID
+Usage: mapbox datasetsapi read-feature [OPTIONS] DATASET FID
 
   Read a dataset feature.
 
@@ -418,9 +611,9 @@ Options:
   --help             Show this message and exit.
 ```
 
-### datasets delete-feature
+### datasetsapi delete-feature
 ```
-Usage: mapbox datasets delete-feature [OPTIONS] DATASET FID
+Usage: mapbox datasetsapi delete-feature [OPTIONS] DATASET FID
 
   Delete a feature.
 
@@ -433,10 +626,10 @@ Options:
   --help  Show this message and exit.
 ```
 
-### datasets batch-update-features
+### datasetsapi batch-update-features
 ```
-Usage: mapbox datasets batch-update-features [OPTIONS] DATASET [PUTS]
-                                             [DELETES]
+Usage: mapbox datasetsapi batch-update-features [OPTIONS] DATASET [PUTS]
+                                                [DELETES]
 
   Update features of a dataset.
 
@@ -452,25 +645,4 @@ Usage: mapbox datasets batch-update-features [OPTIONS] DATASET [PUTS]
 Options:
   -i, --input TEXT  File containing features to insert, update, and/or delete
   --help            Show this message and exit.
-```
-
-### datasets create-tileset
-```
-Usage: mapbox datasets create-tileset [OPTIONS] DATASET TILESET
-
-  Create a vector tileset from a dataset.
-
-      $ mapbox datasets create-tileset dataset-id username.data
-
-  Note that the tileset must start with your username and the dataset must
-  be one that you own. To view processing status, visit
-  https://www.mapbox.com/data/. You may not generate another tilesets from
-  the same dataset until the first processing job has completed.
-
-  All endpoints require authentication. An access token with `uploads:write`
-  scope is required, see `mapbox --help`.
-
-Options:
-  -n, --name TEXT  Name for the tileset
-  --help           Show this message and exit.
 ```
