@@ -6,7 +6,10 @@ import string
 import click
 import cligj
 
-from urlparse import urlparse
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib import parse as urlparse
 
 import mapbox
 from mapboxcli.errors import MapboxCLIException
