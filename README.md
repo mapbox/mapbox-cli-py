@@ -211,7 +211,7 @@ Options:
 
 ### upload
 ```
-Usage: mapbox upload [OPTIONS] TILESET [INFILE]
+Usage: mapbox upload [OPTIONS] TILESET INFILE
 
   Upload data to Mapbox accounts. All endpoints require authentication.
   Uploaded data lands at https://www.mapbox.com/data/ and can be used in new
