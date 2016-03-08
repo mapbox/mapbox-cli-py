@@ -39,11 +39,17 @@ def upload(ctx, args, name):
         tileset = args[0]
     elif len(args) == 2:
         # Infile and Tileset are specified
-        infile = click.File("rb")(args[0])
+        try:
+            infile = click.File("rb")(args[0])
+        except click.ClickException:
+            raise click.UsageError(
+                "Could not open file: {} "
+                "(check order of command arguments: INFILE TILESET)".format(args[0]))
+
         tileset = args[1]
     else:
         raise click.UsageError(
-            "Must supply either 1 argument (tileset) or 2 (infile tileset)")
+            "Must provide either one argument (TILESET) or two (INFILE TILESET)")
 
     if name is None:
         name = tileset.split(".")[-1]
