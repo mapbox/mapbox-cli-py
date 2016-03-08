@@ -43,7 +43,7 @@ def upload(ctx, args, name):
             infile = click.File("rb")(args[0])
         except click.ClickException:
             raise click.UsageError(
-                "Could not open file: {} "
+                "Could not open file: {0} "
                 "(check order of command arguments: INFILE TILESET)".format(args[0]))
 
         tileset = args[1]
