@@ -103,14 +103,14 @@ def ls(ctx, uri):
         for feature in features_gen(service, dataset):
             click.echo("mapbox://datasets/{0}/{1}/{2}".format(user, dataset, feature['id']))
 
-@datasets.command(name="put",
+@datasets.command(name="copy",
     short_help="Move data from one dataset or file to another, overwriting the destination")
 @click.argument('source', required=True)
 @click.argument('destination', required=True)
 @cligj.sequence_opt
 @cligj.use_rs_opt
 @click.pass_context
-def put_features(ctx, source, destination, sequence, use_rs):
+def copy_features(ctx, source, destination, sequence, use_rs):
     """Move data from one dataset or file to another, overwriting the
     destination.
 
@@ -120,14 +120,14 @@ def put_features(ctx, source, destination, sequence, use_rs):
     To replace dataset-B with the contents of dataset-A:
 
         \b
-        $ mapbox datasets put \\
+        $ mapbox datasets copy \\
         $   mapbox://datasets/username/dataset-A \\
         $   mapbox://datasets/username/dataset-B
 
     To replace dataset-A with the contents of a local file:
 
         \b
-        $ mapbox datasets put \\
+        $ mapbox datasets copy \\
         $   ~/path/to/my/data.geojson \\
         $   mapbox://datasets/username/dataset-A
 
@@ -135,7 +135,7 @@ def put_features(ctx, source, destination, sequence, use_rs):
     features:
 
         \b
-        $ mapbox datasets put --sequence \\
+        $ mapbox datasets copy --sequence \\
         $   mapbox://datasets/username/dataset-A \\
         $   -
 
@@ -143,13 +143,13 @@ def put_features(ctx, source, destination, sequence, use_rs):
     FeatureCollection:
 
         \b
-        $ mapbox datasets put \\
+        $ mapbox datasets copy \\
         $   mapbox://datasets/username/dataset-A \\
         $   ~/data.geojson
 
     To print feature-1 from dataset-A to stdout:
 
-        $ mapbox datasets put \\
+        $ mapbox datasets copy \\
         $   mapbox://datasets/username/dataset-A/feature-1 \\
         $   -
 
@@ -211,29 +211,6 @@ def append_features(ctx, source, destination, sequence, use_rs):
     features = get_features(service, source)
     write_features(features, True, sequence, use_rs, service, destination)
 
-@datasets.command(name="read",
-    short_help="Print the contents of a dataset to stdout")
-@click.argument('source', required=True)
-@cligj.sequence_opt
-@cligj.use_rs_opt
-@click.pass_context
-def read_features(ctx, source, sequence, use_rs):
-    """Print the contents of a dataset to stdout.
-
-    Data to print is indicated by a dataset URI.
-
-        $ mapbox datasets cat mapbox://datasets/username/dataset-A
-
-    All endpoints require authentication. An access token with
-    `uploads:read` scope is required, see `mapbox --help`.
-    """
-
-    # Parse the given uri to insure it is a dataset
-    user, dataset, fid = parse_dataset_uri(source)
-
-    service = ctx.obj.get('service')
-    features = get_features(service, source)
-    write_features(features, False, sequence, use_rs, service, "-")
 
 def id():
     """Create a random ID string of 32 ascii characters"""
@@ -258,7 +235,7 @@ def write_features(features, append, sequence, use_rs, service, uri):
     except MapboxCLIException:
         # We will be writing to a file or stdout. In append-mode, we can't write
         # FeatureCollection output, so --sequence must be specified
-        if append == True and sequence is None and uri != "-":
+        if append == True and not sequence and uri != "-":
             raise MapboxCLIException('Cannot append to a file without --sequence')
 
         dst = click.open_file(uri, 'a' if append else 'w')
