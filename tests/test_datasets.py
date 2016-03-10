@@ -6,23 +6,28 @@ from click.testing import CliRunner
 import responses
 
 from mapboxcli.scripts.cli import main_group
+from mapboxcli.scripts import datasets
+from mapboxcli.errors import MapboxCLIException
+
 import mapbox
 
 username = 'testuser'
 access_token = 'sk.{0}.test'.format(
     base64.b64encode(b'{"u":"testuser"}').decode('utf-8'))
+service = mapbox.Datasets(access_token=access_token)
 
 null_island = {
-    "type":"FeatureCollection",
-    "features":[
+    "type": "FeatureCollection",
+    "features": [
         {
-            "id":"a",
-            "type":"Feature",
-            "properties": {"name":"Null"},
-            "geometry": {"type":"Point","coordinates":[0,0]}
+            "id": "a",
+            "type": "Feature",
+            "properties": {"name": "Null"},
+            "geometry": {"type": "Point", "coordinates": [0, 0]}
         }
     ]
 }
+
 
 @responses.activate
 def test_cli_datasets_create_tileset():
@@ -45,7 +50,9 @@ def test_cli_datasets_create_tileset():
 
     responses.add(
         responses.POST,
-        'https://api.mapbox.com/uploads/v1/{0}?access_token={1}'.format(owner, access_token),
+        'https://api.mapbox.com/uploads/v1/{0}?access_token={1}'.format(
+            owner, access_token
+        ),
         status=201, body=expected,
         match_querystring=True,
         content_type='application/json'
@@ -92,7 +99,9 @@ def test_cli_datasets_list_datasets():
 
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}?access_token={1}'.format(username, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}?access_token={1}'.format(
+            username, access_token
+        ),
         match_querystring=True,
         body=datasets, status=200,
         content_type='application/json'
@@ -135,7 +144,8 @@ def test_cli_datasets_list_features():
 
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{2}/features?access_token={1}'.format(username, access_token, dataset),
+        'https://api.mapbox.com/datasets/v1/{0}/{2}/features?access_token={1}'
+        .format(username, access_token, dataset),
         match_querystring=True,
         body=features, status=200,
         content_type='application/json'
@@ -143,7 +153,8 @@ def test_cli_datasets_list_features():
 
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{2}/features?access_token={1}&start=b'.format(username, access_token, dataset),
+        'https://api.mapbox.com/datasets/v1/{0}/{2}/features?access_token={1}&start=b'
+        .format(username, access_token, dataset),
         match_querystring=True,
         body="""{"type":"FeatureCollection","features":[]}""",
         content_type='application/json'
@@ -169,12 +180,13 @@ def test_cli_datasets_list_features():
 
 @responses.activate
 def test_cli_datasets_copy_file_to_dataset():
-    dataset="abc"
+    dataset = "abc"
 
     # first it will list the dataset's features ...
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, dataset, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, dataset, access_token),
         match_querystring=True,
         body=json.dumps(null_island),
         content_type='application/json'
@@ -183,7 +195,8 @@ def test_cli_datasets_copy_file_to_dataset():
     # ... then it will batch delete ...
     responses.add(
         responses.POST,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, dataset, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, dataset, access_token),
         match_querystring=True,
         body='{"put":[],"delete":["a"]}',
         content_type='application/json'
@@ -192,7 +205,8 @@ def test_cli_datasets_copy_file_to_dataset():
     # ... then it will paginate ...
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'.format(username, dataset, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'
+        .format(username, dataset, access_token),
         match_querystring=True,
         body='{"type":"FeatureCollection","features":[]}',
         content_type='application/json'
@@ -201,7 +215,8 @@ def test_cli_datasets_copy_file_to_dataset():
     # ... then it will write new features
     responses.add(
         responses.POST,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, dataset, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, dataset, access_token),
         match_querystring=True,
         body='{"put":[],"delete":[]}',
         content_type='application/json'
@@ -247,7 +262,8 @@ def test_cli_datasets_copy_dataset_to_file():
     # ... then it will paginate.
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'.format(username, dataset, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'
+        .format(username, dataset, access_token),
         match_querystring=True,
         body='{"type":"FeatureCollection","features":[]}',
         content_type='application/json'
@@ -273,7 +289,8 @@ def test_cli_datasets_copy_dataset_to_stdout():
     # first it will list the dataset's features ...
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, dataset, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, dataset, access_token),
         match_querystring=True,
         body=json.dumps(null_island),
         content_type='application/json'
@@ -282,7 +299,8 @@ def test_cli_datasets_copy_dataset_to_stdout():
     # ... then it will paginate.
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'.format(username, dataset, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'
+        .format(username, dataset, access_token),
         match_querystring=True,
         body='{"type":"FeatureCollection","features":[]}',
         content_type='application/json'
@@ -309,7 +327,8 @@ def test_cli_datasets_copy_dataset_to_dataset():
     # first it will list the dataset B's features ...
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, datasetB, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, datasetB, access_token),
         match_querystring=True,
         body=json.dumps(null_island),
         content_type='application/json'
@@ -318,7 +337,8 @@ def test_cli_datasets_copy_dataset_to_dataset():
     # ... then it will batch delete ...
     responses.add(
         responses.POST,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, datasetB, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, datasetB, access_token),
         match_querystring=True,
         body='{"put":[],"delete":["a"]}',
         content_type='application/json'
@@ -327,7 +347,8 @@ def test_cli_datasets_copy_dataset_to_dataset():
     # ... then it will paginate ...
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'.format(username, datasetB, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'
+        .format(username, datasetB, access_token),
         match_querystring=True,
         body='{"type":"FeatureCollection","features":[]}',
         content_type='application/json'
@@ -336,7 +357,8 @@ def test_cli_datasets_copy_dataset_to_dataset():
     # ... then it will list dataset A's features...
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, datasetA, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, datasetA, access_token),
         match_querystring=True,
         body=json.dumps(null_island),
         content_type='application/json'
@@ -345,7 +367,8 @@ def test_cli_datasets_copy_dataset_to_dataset():
     # ... paginate ...
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'.format(username, datasetA, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'
+        .format(username, datasetA, access_token),
         match_querystring=True,
         body='{"type":"FeatureCollection","features":[]}',
         content_type='application/json'
@@ -354,7 +377,8 @@ def test_cli_datasets_copy_dataset_to_dataset():
     # ... then it will write new features
     responses.add(
         responses.POST,
-        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, datasetB, access_token),
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, datasetB, access_token),
         match_querystring=True,
         body='{"put":[],"delete":[]}',
         content_type='application/json'
@@ -369,16 +393,15 @@ def test_cli_datasets_copy_dataset_to_dataset():
          'mapbox://datasets/{0}/{1}'.format(username, datasetA),
          'mapbox://datasets/{0}/{1}'.format(username, datasetB)])
 
-
     assert result.exit_code == 0
 
-    assert responses.calls[0].request.method == 'GET' # list dataset B
-    assert responses.calls[1].request.method == 'POST' # batch delete from dataset B
+    assert responses.calls[0].request.method == 'GET'  # list dataset B
+    assert responses.calls[1].request.method == 'POST'  # batch delete from dataset B
     assert responses.calls[1].request.body == '{"delete": ["a"]}'
-    assert responses.calls[2].request.method == 'GET' # paginate dataset B
-    assert responses.calls[3].request.method == 'GET' # list dataset A
-    assert responses.calls[4].request.method == 'GET' # paginate dataset A
-    assert responses.calls[5].request.method == 'POST' # batch write dataset B
+    assert responses.calls[2].request.method == 'GET'  # paginate dataset B
+    assert responses.calls[3].request.method == 'GET'  # list dataset A
+    assert responses.calls[4].request.method == 'GET'  # paginate dataset A
+    assert responses.calls[5].request.method == 'POST'  # batch write dataset B
 
     found = json.loads(responses.calls[5].request.body)
     expected = {"put": [null_island['features'][0]]}
@@ -387,7 +410,7 @@ def test_cli_datasets_copy_dataset_to_dataset():
 
 @responses.activate
 def test_cli_datasets_append_file_to_dataset():
-    dataset="abc"
+    dataset = "abc"
 
     # should just write new features
     responses.add(
@@ -507,10 +530,198 @@ def test_cli_datasets_append_dataset_to_dataset():
 
     assert result.exit_code == 0
 
-    assert responses.calls[0].request.method == 'GET' # list dataset A
-    assert responses.calls[1].request.method == 'GET' # paginate dataset A
-    assert responses.calls[2].request.method == 'POST' # batch write dataset B
+    assert responses.calls[0].request.method == 'GET'  # list dataset A
+    assert responses.calls[1].request.method == 'GET'  # paginate dataset A
+    assert responses.calls[2].request.method == 'POST'  # batch write dataset B
 
     found = json.loads(responses.calls[2].request.body)
     expected = {"put": [null_island['features'][0]]}
     assert found == expected
+
+
+@responses.activate
+def test_datasets_batch_write_features():
+    dataset = "abc"
+    features = [
+        {
+            "type": "Feature",
+            "id": "a",
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [0, 0]
+            }
+        }, {
+            "type": "Feature",
+            "id": "b",
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [1, 1]
+            }
+        }
+    ]
+
+    responses.add(
+        responses.POST,
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, dataset, access_token),
+        match_querystring=True,
+        body=json.dumps({"put": features, "delete": []}),
+        content_type='application/json'
+    )
+
+    datasets.batch_write_features(service, dataset, features)
+
+    assert len(responses.calls) == 1
+    assert responses.calls[0].request.method == 'POST'
+    assert json.loads(responses.calls[0].request.body) == {"put": features}
+
+
+@responses.activate
+def test_datasets_batch_write_features_exception():
+    dataset = 'abc'
+
+    responses.add(
+        responses.POST,
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, dataset, access_token),
+        match_querystring=True,
+        body=json.dumps({"Message": "humbug"}),
+        content_type='application/json',
+        status=401
+    )
+
+    try:
+        datasets.batch_write_features(service, dataset, ["bah"])
+    except MapboxCLIException:
+        assert True
+    else:
+        assert False
+
+
+@responses.activate
+def test_datasets_write_features_append_to_dataset():
+    dataset = 'abc'
+    features = []
+    for i in range(1, 124):
+        features.append({
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [180 % i, 90 % i]
+            }
+        })
+
+    responses.add(
+        responses.POST,
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, dataset, access_token),
+        match_querystring=True,
+        body=json.dumps({"put": [], "delete": []}),
+        content_type='application/json'
+    )
+
+    datasets.write_features(
+        features,
+        True,
+        None,
+        None,
+        service,
+        'mapbox://datasets/{0}/{1}'.format(username, dataset)
+    )
+
+    assert len(responses.calls) == 2
+    for call in responses.calls:
+        assert call.request.method == 'POST'
+
+    first = json.loads(responses.calls[0].request.body)
+    assert len(first['put']) == 100
+
+    for f in first['put']:
+        assert len(f['id']) == 32  # auto-assigned ids
+
+    second = json.loads(responses.calls[1].request.body)
+    assert len(second['put']) == 23
+
+    for f in second['put']:
+        assert len(f['id']) == 32
+
+
+@responses.activate
+def test_datasets_write_features_copy_to_dataset():
+    dataset = 'abc'
+    features = []
+    for i in range(1, 124):
+        features.append({
+            "type": "Feature",
+            "id": str(i),
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [180 % i, 90 % i]
+            }
+        })
+
+    # first it will list the dataset's features ...
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, dataset, access_token),
+        match_querystring=True,
+        body=json.dumps(null_island),
+        content_type='application/json'
+    )
+
+    # ... then it will batch delete ...
+    responses.add(
+        responses.POST,
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'
+        .format(username, dataset, access_token),
+        match_querystring=True,
+        body='{"put":[],"delete":["a"]}',
+        content_type='application/json'
+    )
+
+    # ... then it will paginate ...
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}&start=a'.format(username, dataset, access_token),
+        match_querystring=True,
+        body='{"type":"FeatureCollection","features":[]}',
+        content_type='application/json'
+    )
+
+    # ... and then start posting new features
+    responses.add(
+        responses.POST,
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features?access_token={2}'.format(username, dataset, access_token),
+        match_querystring=True,
+        body=json.dumps({"put": [], "delete": []}),
+        content_type='application/json'
+    )
+
+    datasets.write_features(
+        features,
+        False,
+        None,
+        None,
+        service,
+        'mapbox://datasets/{0}/{1}'.format(username, dataset)
+    )
+
+    assert len(responses.calls) == 5
+
+    methods = [call.request.method for call in responses.calls]
+    assert methods == ['GET', 'POST', 'GET', 'POST', 'POST']
+
+    first = json.loads(responses.calls[3].request.body)
+    assert len(first['put']) == 100
+
+    for f in first['put']:
+        assert len(f['id']) < 4  # did not auto-assign ids
+
+    second = json.loads(responses.calls[4].request.body)
+    assert len(second['put']) == 23
+
+    for f in second['put']:
+        assert len(f['id']) < 4
