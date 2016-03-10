@@ -31,7 +31,7 @@ def list_datasets(ctx, output):
 
     Prints a list of objects describing datasets.
 
-        $ mapbox datasets list-datasets
+        $ mapbox datasetsapi list-datasets
 
     All endpoints require authentication. An access token with
     `datasets:read` scope is required, see `mapbox --help`.
@@ -58,7 +58,7 @@ def create_dataset(ctx, name, description):
     Prints a JSON object containing the attributes
     of the new dataset.
 
-        $ mapbox datasets create-dataset
+        $ mapbox datasetsapi create-dataset
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -86,7 +86,7 @@ def read_dataset(ctx, dataset, output):
     id (dataset id), created (Unix timestamp), modified
     (timestamp), name (string), and description (string).
 
-        $ mapbox datasets read-dataset dataset-id
+        $ mapbox datasetsapi read-dataset dataset-id
 
     All endpoints require authentication. An access token with
     `datasets:read` scope is required, see `mapbox --help`.
@@ -115,7 +115,7 @@ def update_dataset(ctx, dataset, name, description):
     Prints a JSON object containing the updated dataset
     attributes.
 
-        $ mapbox datasets update-dataset dataset-id
+        $ mapbox datasetsapi update-dataset dataset-id
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -136,7 +136,7 @@ def update_dataset(ctx, dataset, name, description):
 def delete_dataset(ctx, dataset):
     """Delete a dataset.
 
-        $ mapbox datasets delete-dataset dataset-id
+        $ mapbox datasetsapi delete-dataset dataset-id
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -166,7 +166,7 @@ def list_features(ctx, dataset, reverse, start, limit, output):
 
     Prints the features of the dataset as a GeoJSON feature collection.
 
-        $ mapbox datasets list-features dataset-id
+        $ mapbox datasetsapi list-features dataset-id
 
     All endpoints require authentication. An access token with
     `datasets:read` scope is required, see `mapbox --help`.
@@ -193,7 +193,7 @@ def read_feature(ctx, dataset, fid, output):
 
     Prints a GeoJSON representation of the feature.
 
-        $ mapbox datasets read-feature dataset-id feature-id
+        $ mapbox datasetsapi read-feature dataset-id feature-id
 
     All endpoints require authentication. An access token with
     `datasets:read` scope is required, see `mapbox --help`.
@@ -224,7 +224,7 @@ def put_feature(ctx, dataset, fid, feature, input):
     with the given `fid` a new feature will be created. Returns a
     GeoJSON representation of the new or updated feature.
 
-        $ mapbox datasets put-feature dataset-id feature-id 'geojson-feature'
+        $ mapbox datasetsapi put-feature dataset-id feature-id 'geojson-feature'
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -253,7 +253,7 @@ def put_feature(ctx, dataset, fid, feature, input):
 def delete_feature(ctx, dataset, fid):
     """Delete a feature.
 
-        $ mapbox datasets delete-feature dataset-id feature-id
+        $ mapbox datasetsapi delete-feature dataset-id feature-id
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
@@ -283,7 +283,7 @@ def batch_update_features(ctx, dataset, puts, deletes, input):
     should be a JSON array of GeoJSON features to insert or updated.
     DELETES should be a JSON array of feature ids to be deleted.
 
-        $ mapbox datasets batch-update-features dataset-id 'puts' 'deletes'
+        $ mapbox datasetsapi batch-update-features dataset-id 'puts' 'deletes'
 
     All endpoints require authentication. An access token with
     `datasets:write` scope is required, see `mapbox --help`.
