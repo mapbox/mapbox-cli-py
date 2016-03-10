@@ -5,11 +5,12 @@ import random
 import string
 import click
 import cligj
+import math
 
 try:
     from urlparse import urlparse
 except ImportError:
-    from urllib import parse as urlparse
+    from urllib.parse import urlparse
 
 import mapbox
 from mapboxcli.errors import MapboxCLIException
@@ -216,7 +217,7 @@ def id():
     """Create a random ID string of 32 ascii characters"""
 
     characters = string.ascii_letters + string.digits
-    return ''.join([random.choice(characters) for n in xrange(32)])
+    return ''.join([random.choice(characters) for n in range(32)])
 
 def batch_write_features(service, dataset, features):
     """Perform a single batch feature PUT API call"""
@@ -351,8 +352,16 @@ def features_list(service, dataset, reverse=None, start=None, limit=None):
 def features_gen(service, dataset, reverse=None, start=None, limit=None):
     """Generator function to make a number of API requests and yield features"""
 
-    max_features = Ellipsis if limit is None else float(limit)
-    limit = None if limit > 100 else limit
+    try:
+        unlimited = math.inf
+    except AttributeError:
+        unlimited = float('inf')
+
+    max_features = unlimited if limit is None else float(limit)
+
+    if limit:
+        limit = min(100, float(limit))
+
     features = features_list(service, dataset, reverse, start, limit)
     total = 0
 

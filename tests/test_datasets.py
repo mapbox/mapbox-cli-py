@@ -166,6 +166,7 @@ def test_cli_datasets_list_features():
 
     assert len(responses.calls) == 2
 
+
 @responses.activate
 def test_cli_datasets_copy_file_to_dataset():
     dataset="abc"
@@ -228,6 +229,7 @@ def test_cli_datasets_copy_file_to_dataset():
     expected = {"put": json.loads(fixture.read())['features']}
     assert found == expected
 
+
 @responses.activate
 def test_cli_datasets_copy_dataset_to_file():
     dataset = "abc"
@@ -263,6 +265,7 @@ def test_cli_datasets_copy_dataset_to_file():
     assert result.exit_code == 0
     assert json.loads(open(filepath, 'r').read()) == null_island
 
+
 @responses.activate
 def test_cli_datasets_copy_dataset_to_stdout():
     dataset = "abc"
@@ -296,6 +299,7 @@ def test_cli_datasets_copy_dataset_to_stdout():
 
     assert result.exit_code == 0
     assert json.loads(result.output) == null_island
+
 
 @responses.activate
 def test_cli_datasets_copy_dataset_to_dataset():
@@ -365,6 +369,7 @@ def test_cli_datasets_copy_dataset_to_dataset():
          'mapbox://datasets/{0}/{1}'.format(username, datasetA),
          'mapbox://datasets/{0}/{1}'.format(username, datasetB)])
 
+
     assert result.exit_code == 0
 
     assert responses.calls[0].request.method == 'GET' # list dataset B
@@ -378,6 +383,7 @@ def test_cli_datasets_copy_dataset_to_dataset():
     found = json.loads(responses.calls[5].request.body)
     expected = {"put": [null_island['features'][0]]}
     assert found == expected
+
 
 @responses.activate
 def test_cli_datasets_append_file_to_dataset():
@@ -456,6 +462,7 @@ def test_cli_datasets_append_dataset_to_file():
 
     assert result.exit_code == 0
     assert json.loads(open(filepath, 'r').read()) == null_island['features'][0]
+
 
 @responses.activate
 def test_cli_datasets_append_dataset_to_dataset():
