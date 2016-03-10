@@ -348,12 +348,7 @@ def features_list(service, dataset, reverse=None, start=None, limit=None):
 def features_gen(service, dataset, reverse=None, start=None, limit=None):
     """Generator function to make a number of API requests and yield features"""
 
-    try:
-        unlimited = math.inf
-    except AttributeError:
-        unlimited = float('inf')
-
-    max_features = unlimited if limit is None else float(limit)
+    max_features = float('inf') if limit is None else float(limit)
 
     if limit:
         limit = min(100, float(limit))
