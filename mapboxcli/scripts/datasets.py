@@ -7,6 +7,8 @@ import click
 import cligj
 import math
 
+from uuid import uuid4
+
 try:
     from urlparse import urlparse
 except ImportError:
@@ -213,12 +215,6 @@ def append_features(ctx, source, destination, sequence, use_rs):
     write_features(features, True, sequence, use_rs, service, destination)
 
 
-def id():
-    """Create a random ID string of 32 ascii characters"""
-
-    characters = string.ascii_letters + string.digits
-    return ''.join([random.choice(characters) for n in range(32)])
-
 def batch_write_features(service, dataset, features):
     """Perform a single batch feature PUT API call"""
 
@@ -257,7 +253,7 @@ def write_features(features, append, sequence, use_rs, service, uri):
             to_put = []
             for feature in features:
                 if feature.get('id') is None:
-                    feature['id'] = id()
+                    feature['id'] = uuid4().hex
 
                 to_put.append(feature)
 
