@@ -725,3 +725,71 @@ def test_datasets_write_features_copy_to_dataset():
 
     for f in second['put']:
         assert len(f['id']) < 4
+
+
+def test_datasets_write_features_append_to_file_without_sequence():
+    tmp, filepath = tempfile.mkstemp()
+
+    try:
+        datasets.write_features([], True, None, None, service, filepath)
+    except MapboxCLIException:
+        assert True
+    else:
+        assert False
+
+
+def test_datasets_write_features_append_to_file():
+    tmp, filepath = tempfile.mkstemp()
+
+    with open(filepath, 'w') as f:
+        f.write('first line\n')
+
+    datasets.write_features(null_island['features'], True, True, None, service, filepath)
+
+    with open(filepath, 'r') as f:
+        data = f.read()
+
+    assert data.startswith('first line\n')
+
+
+def test_datasets_write_features_overwrite_file():
+    tmp, filepath = tempfile.mkstemp()
+
+    with open(filepath, 'w') as f:
+        f.write('first line\n')
+
+    datasets.write_features(null_island['features'], False, True, None, service, filepath)
+
+    with open(filepath, 'r') as f:
+        data = f.read()
+
+    assert not data.startswith('first line\n')
+
+
+def test_datasets_write_features_stdout_sequence(capsys):
+    datasets.write_features(null_island['features'], False, True, None, service, '-')
+    out, err = capsys.readouterr()
+    assert out == json.dumps(null_island['features'][0]) + '\n'
+
+
+def test_datasets_write_features_file_rs(capsys):
+    tmp, filepath = tempfile.mkstemp()
+    datasets.write_features(
+        [null_island['features'][0], null_island['features'][0]],
+        False,
+        True,
+        True,
+        service,
+        '-'
+    )
+
+    out, err = capsys.readouterr()
+    island = json.dumps(null_island['features'][0]) + '\n'
+
+    assert out.split(u'\x1e') == ['', island, island]
+
+
+def test_datasets_write_feature_stdout_collection(capsys):
+    datasets.write_features(null_island['features'], False, None, None, service, '-')
+    out, err = capsys.readouterr()
+    assert json.loads(out) == null_island
