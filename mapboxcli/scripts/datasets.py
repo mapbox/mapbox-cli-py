@@ -240,7 +240,7 @@ def write_features(features, append, sequence, use_rs, service, uri):
         if sequence:
             for feature in features:
                 if use_rs:
-                    click.echo(b'\x1e', nl=False)
+                    click.echo(u'\x1e', nl=False)
                 click.echo(json.dumps(feature), file=dst)
         else:
             click.echo(json.dumps(
