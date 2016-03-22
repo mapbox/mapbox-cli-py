@@ -192,3 +192,15 @@ def test_cli_upload_stdin(monkeypatch):
          username + '.test-data'],
         input='{"type":"FeatureCollection","features":[]}')
     assert result.exit_code == 0
+
+
+def test_too_many_args():
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['upload',
+         username + '.test-data',
+         'tests/twopoints.geojson',
+         'useless-arg'])
+
+    assert result.exit_code == 2
