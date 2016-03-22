@@ -5,11 +5,10 @@ from mapboxcli.errors import MapboxCLIException
 
 
 @click.command(short_help="Upload datasets to Mapbox accounts")
-@click.argument('infile', type=click.File('r'), required=True)
-@click.argument('tileset', required=True)
+@click.argument('args', nargs=-1, required=True, metavar="[INFILE] TILESET")
 @click.option('--name', default=None, help="Name for the data upload")
 @click.pass_context
-def upload(ctx, infile, tileset, name):
+def upload(ctx, args, name):
     """Upload data to Mapbox accounts.
     All endpoints require authentication.
     Uploaded data lands at https://www.mapbox.com/data/
@@ -32,6 +31,25 @@ def upload(ctx, infile, tileset, name):
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
 
     service = mapbox.Uploader(access_token=access_token)
+
+    if len(args) == 1:
+        # Tileset specified, file from stdin
+        click.echo("Reading data from stdin (Hit Ctl-C to cancel) ...", err=True)
+        infile = click.File("rb")("-")
+        tileset = args[0]
+    elif len(args) == 2:
+        # Infile and Tileset are specified
+        try:
+            infile = click.File("rb")(args[0])
+        except click.ClickException:
+            raise click.UsageError(
+                "Could not open file: {0} "
+                "(check order of command arguments: INFILE TILESET)".format(args[0]))
+
+        tileset = args[1]
+    else:
+        raise click.UsageError(
+            "Must provide either one argument (TILESET) or two (INFILE TILESET)")
 
     if name is None:
         name = tileset.split(".")[-1]
