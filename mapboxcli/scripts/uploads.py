@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import click
 
 import mapbox
@@ -35,7 +37,7 @@ def upload(ctx, args, name):
     if len(args) == 1:
         # Tileset specified, file from stdin
         click.echo("Reading data from stdin (Hit Ctl-C to cancel) ...", err=True)
-        infile = click.File("rb")("-")
+        infile = BytesIO(click.File("rb")("-").read())
         tileset = args[0]
     elif len(args) == 2:
         # Infile and Tileset are specified
