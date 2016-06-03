@@ -65,9 +65,12 @@ def echo_headers(headers, file=None):
 @click.option('--country', default=None,
               help="Restrict forward geocoding to specified country codes,"
                    "comma-separated")
+@click.option('--bbox', default=None,
+              help="Restrict forward geocoding to specified bounding box,"
+                   "a list of format [minX,minY,maxX,maxY]")
 @click.pass_context
 def geocoding(ctx, query, forward, include_headers, lat, lon,
-              place_type, output, dataset, country):
+              place_type, output, dataset, country, bbox):
     """This command returns places matching an address (forward mode) or
     places matching coordinates (reverse mode).
 
@@ -98,7 +101,7 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
         for q in iter_query(query):
             try:
                 resp = geocoder.forward(
-                    q, types=place_type, lat=lat, lon=lon, country=country)
+                    q, types=place_type, lat=lat, lon=lon, country=country, bbox=bbox)
             except mapbox.errors.ValidationError as exc:
                 raise click.BadParameter(str(exc))
 
