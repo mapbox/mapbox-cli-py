@@ -40,7 +40,7 @@ def test_cli_geocode_fwd_bbox():
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', 'bogus', 'geocoding', '--forward', '1600 pennsylvania ave nw', '--bbox', [-78.3284,38.6039,-78.0428,38.7841]],
+        ['--access-token', 'bogus', 'geocoding', '--forward', '1600 pennsylvania ave nw', '--bbox', '[-78.3284,38.6039,-78.0428,38.7841]'],
         catch_exceptions=False)
     print(result.output)
     print(result.exception)
