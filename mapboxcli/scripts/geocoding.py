@@ -67,7 +67,7 @@ def echo_headers(headers, file=None):
                    "comma-separated")
 @click.option('--bbox', default=None,
               help="Restrict forward geocoding to specified bounding box,"
-                   "a list of format [minX,minY,maxX,maxY]")
+                   "given in minX,minY,maxX,maxY coordinates.")
 @click.pass_context
 def geocoding(ctx, query, forward, include_headers, lat, lon,
               place_type, output, dataset, country, bbox):
@@ -97,6 +97,12 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
     if forward:
         if country:
             country = [x.lower() for x in country.split(",")]
+
+        if bbox:
+            try:
+                bbox = tuple(map(float, bbox.split(',')))
+            except ValueError:
+                bbox = json.loads(bbox)
 
         for q in iter_query(query):
             try:
