@@ -1,3 +1,7 @@
+0.4.0 (2016-06-08)
+------------------
+- Add support for geocoder bounding box filter (#70)
+
 0.3.1 (2016-02-23)
 ------------------
 - Bug fix for staticmap feature input (#60)
