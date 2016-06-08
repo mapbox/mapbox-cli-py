@@ -27,6 +27,27 @@ def test_cli_geocode_fwd():
     assert result.exit_code == 0
     assert result.output == '{"query": ["1600", "pennsylvania", "ave", "nw"]}\n'
 
+@responses.activate
+def test_cli_geocode_fwd_bbox():
+
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/geocoding/v5/mapbox.places/1600%20pennsylvania%20ave%20nw.json?access_token=bogus&bbox=-78.3284%2C38.6039%2C-78.0428%2C38.7841',
+        match_querystring=True,
+        body='{"query": ["1600", "pennsylvania", "ave", "nw"]}', status=200,
+        content_type='application/json')
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', 'bogus', 'geocoding', '--forward', '1600 pennsylvania ave nw', '--bbox', '[-78.3284,38.6039,-78.0428,38.7841]'],
+        catch_exceptions=False)
+    print(result.output)
+    print(result.exception)
+    print(result.exc_info)
+    assert result.exit_code == 0
+    assert result.output == '{"query": ["1600", "pennsylvania", "ave", "nw"]}\n'
+
 
 @responses.activate
 def test_cli_geocode_fwd_env_token():
