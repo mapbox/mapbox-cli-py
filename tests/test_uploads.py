@@ -30,7 +30,12 @@ class MockSession(object):
     def __init__(self, *args, **kwargs):
         self.bucket = None
         self.key = None
-        pass
+        self.body = None
+        self.resource_name = None
+
+    def Bucket(self, bucket):
+        self.bucket = bucket
+        return self
 
     def resource(self, name):
         self.resource_name = name
@@ -46,6 +51,11 @@ class MockSession(object):
         assert self.bucket
         assert self.key
         self.body = Body
+        return True
+
+    def upload_file(self, src, dst):
+        assert self.bucket
+        self.key = dst
         return True
 
 
