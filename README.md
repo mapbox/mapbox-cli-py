@@ -211,13 +211,22 @@ Options:
 
 ### upload
 ```
-Usage: mapbox upload [OPTIONS] TILESET [INFILE]
+Usage: mapbox upload [OPTIONS] [INFILE] TILESET
 
   Upload data to Mapbox accounts. All endpoints require authentication.
   Uploaded data lands at https://www.mapbox.com/data/ and can be used in new
   or existing projects.
 
-    $ mapbox upload username.data data.geojson
+  You can specify the input file and tileset id
+
+    $ mapbox upload mydata.geojson username.data
+
+  Or specify just the tileset id and take an input file on stdin
+
+    $ cat mydata.geojson | mapbox upload username.data
+
+  The --name option defines the title as it appears in Studio and defaults
+  to the last part of the tileset id, e.g. "data"
 
   Note that the tileset must start with your username. An access token with
   upload scope is required, see `mapbox --help`.
