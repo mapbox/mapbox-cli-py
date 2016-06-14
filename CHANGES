@@ -1,6 +1,7 @@
 0.4.0 (2016-06-08)
 ------------------
-- Add support for geocoder bounding box filter (#70)
+- Add support for geocoder bounding box filter (#73)
+- mapbox upload arguments in INPUT OUTPUT order, takes input on stdin (#68)
 
 0.3.1 (2016-02-23)
 ------------------
