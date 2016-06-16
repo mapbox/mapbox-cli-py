@@ -140,6 +140,9 @@ Options:
   -d, --dataset [mapbox.places|mapbox.places-permanent]
                                   Source dataset for geocoding, [default:
                                   mapbox.places]
+  --bbox TEXT                     Restrict forward geocoding to specified
+                                  bounding box,given in minX,minY,maxX,maxY
+                                  coordinates.
   --country TEXT                  Restrict forward geocoding to specified
                                   country codes,comma-separated
   --help                          Show this message and exit.
