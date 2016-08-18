@@ -33,6 +33,7 @@ def datasets(ctx):
     service = mapbox.Datasets(access_token=access_token)
     ctx.obj['service'] = service
 
+
 @datasets.command(name="create-tileset",
                   short_help="Generate a tileset from a dataset")
 @click.argument('dataset', required=True)
@@ -66,8 +67,9 @@ def create_tileset(ctx, dataset, tileset, name):
     else:
         raise MapboxCLIException(res.text.strip())
 
+
 @datasets.command(name='list',
-    short_help='List datasets or features in a dataset')
+                  short_help='List datasets or features in a dataset')
 @click.argument('uri', required=True)
 @click.pass_context
 def ls(ctx, uri):
@@ -106,8 +108,9 @@ def ls(ctx, uri):
         for feature in features_gen(service, dataset):
             click.echo("mapbox://datasets/{0}/{1}/{2}".format(user, dataset, feature['id']))
 
+
 @datasets.command(name="copy",
-    short_help="Move data from one dataset or file to another, overwriting the destination")
+                  short_help="Move data from one dataset or file to another, overwriting the destination")
 @click.argument('source', required=True)
 @click.argument('destination', required=True)
 @cligj.sequence_opt
@@ -165,8 +168,9 @@ def copy_features(ctx, source, destination, sequence, use_rs):
     features = get_features(service, source)
     write_features(features, False, sequence, use_rs, service, destination)
 
+
 @datasets.command(name="append",
-    short_help="Move data from one dataset or file to another, appending to the destination")
+                  short_help="Move data from one dataset or file to another, appending to the destination")
 @click.argument('source', required=True)
 @click.argument('destination', required=True)
 @cligj.sequence_opt
@@ -223,6 +227,7 @@ def batch_write_features(service, dataset, features):
     if res.status_code != 200:
         raise MapboxCLIException(res.text.strip())
 
+
 def write_features(features, append, sequence, use_rs, service, uri):
     """Write features to a destination, either stdout, a dataset, or a file"""
 
@@ -232,7 +237,7 @@ def write_features(features, append, sequence, use_rs, service, uri):
     except MapboxCLIException:
         # We will be writing to a file or stdout. In append-mode, we can't write
         # FeatureCollection output, so --sequence must be specified
-        if append == True and not sequence and uri != "-":
+        if append is True and not sequence and uri != "-":
             raise MapboxCLIException('Cannot append to a file without --sequence')
 
         dst = click.open_file(uri, 'a' if append else 'w')
@@ -264,7 +269,7 @@ def write_features(features, append, sequence, use_rs, service, uri):
             if len(to_put) > 0:
                 batch_write_features(service, dataset, to_put)
 
-        if append == True:
+        if append is True:
             # If we are in append-mode, just write the features to the dataset
             return write_to_dataset()
 
@@ -293,6 +298,7 @@ def write_features(features, append, sequence, use_rs, service, uri):
 
         list_features()
 
+
 def get_features(service, uri):
     """Get features from stdin, a dataset, or a file"""
 
@@ -317,6 +323,7 @@ def get_features(service, uri):
             for feature in features_gen(service, dataset):
                 yield feature
 
+
 def parse_dataset_uri(uri):
     """Parse a dataset uri, returning user, dataset id, and feature id"""
 
@@ -335,6 +342,7 @@ def parse_dataset_uri(uri):
 
     return path
 
+
 def features_list(service, dataset, reverse=None, start=None):
     """Makes one API request, returns a list of features"""
 
@@ -344,6 +352,7 @@ def features_list(service, dataset, reverse=None, start=None):
         raise MapboxCLIException(res.text.strip())
 
     return json.loads(res.text)['features']
+
 
 def features_gen(service, dataset, reverse=None, start=None):
     """Generator function to make a number of API requests and yield features"""
