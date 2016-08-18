@@ -283,6 +283,35 @@ def test_cli_datasets_copy_dataset_to_file():
 
 
 @responses.activate
+def test_cli_datasets_copy_feature_to_stdout():
+    dataset = "abc"
+    fid = "def"
+
+    # first it will list the dataset's features ...
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/datasets/v1/{0}/{1}/features/{3}?access_token={2}'
+        .format(username, dataset, access_token, fid),
+        match_querystring=True,
+        body=json.dumps(null_island['features'][0]),
+        content_type='application/json'
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', access_token,
+         'datasets',
+         'copy',
+         'mapbox://datasets/{0}/{1}/{2}'.format(username, dataset, fid),
+         '-'])
+
+    assert result.exit_code == 0
+    print(result.output)
+    assert json.loads(result.output) == {"type": "FeatureCollection", "features": [null_island['features'][0]]}
+
+
+@responses.activate
 def test_cli_datasets_copy_dataset_to_stdout():
     dataset = "abc"
 
