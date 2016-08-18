@@ -335,35 +335,24 @@ def parse_dataset_uri(uri):
 
     return path
 
-def features_list(service, dataset, reverse=None, start=None, limit=None):
+def features_list(service, dataset, reverse=None, start=None):
     """Makes one API request, returns a list of features"""
 
-    res = service.list_features(dataset, reverse, start, limit)
+    res = service.list_features(dataset, reverse, start)
 
     if res.status_code != 200:
         raise MapboxCLIException(res.text.strip())
 
     return json.loads(res.text)['features']
 
-def features_gen(service, dataset, reverse=None, start=None, limit=None):
+def features_gen(service, dataset, reverse=None, start=None):
     """Generator function to make a number of API requests and yield features"""
 
-    max_features = float('inf') if limit is None else float(limit)
-
-    if limit:
-        limit = min(100, float(limit))
-
-    features = features_list(service, dataset, reverse, start, limit)
-    total = 0
+    features = features_list(service, dataset, reverse, start)
 
     while len(features) > 0:
         for feature in features:
-            total = total + 1
-            if total <= max_features:
-                yield feature
+            yield feature
 
-        if total < max_features:
-            last = features[-1]['id']
-            features = features_list(service, dataset, reverse, last, limit)
-        else:
-            features = []
+        last = features[-1]['id']
+        features = features_list(service, dataset, reverse, last)
