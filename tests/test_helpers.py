@@ -19,6 +19,12 @@ def test_coords_from_query_json():
 def test_coords_from_query_csv():
     assert coords_from_query("-100, 40") == (-100, 40)
 
+def test_coords_from_query_csv_ws():
+    assert coords_from_query("-100, \n    \t 40") == (-100, 40)
+
+def test_coords_from_query_csv_no_ws():
+    assert coords_from_query("-100,40") == (-100, 40)
+
 
 def test_coords_from_query_ws():
     assert coords_from_query("-100 40") == (-100, 40)
