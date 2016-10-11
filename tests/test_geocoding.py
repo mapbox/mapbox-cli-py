@@ -227,3 +227,23 @@ def test_cli_geocode_invalid_country():
         input='Millennium Falcon')
     assert result.exit_code == 2
     assert "Invalid value" in result.output
+
+
+@responses.activate
+def test_cli_geocode_fwd_first_feature():
+
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/geocoding/v5/mapbox.places/1600%20pennsylvania%20ave%20nw.json?access_token=bogus',
+        match_querystring=True,
+        body='{"features": [{"name": "first"}, {"name": "second"}]}', status=200,
+        content_type='application/json')
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', 'bogus', 'geocoding', '--first-feature',
+         '--forward', '1600 pennsylvania ave nw'],
+        catch_exceptions=False)
+    assert result.exit_code == 0
+    assert result.output == '{"name": "first"}\n'

@@ -68,9 +68,12 @@ def echo_headers(headers, file=None):
 @click.option('--bbox', default=None,
               help="Restrict forward geocoding to specified bounding box,"
                    "given in minX,minY,maxX,maxY coordinates.")
+@click.option('--first-feature', is_flag=True, default=False,
+              help="Return only the first (most relevant) forward geocoding result "
+              "as a GeoJSON Feature, not a FeatureCollection")
 @click.pass_context
 def geocoding(ctx, query, forward, include_headers, lat, lon,
-              place_type, output, dataset, country, bbox):
+              place_type, output, dataset, country, bbox, first_feature):
     """This command returns places matching an address (forward mode) or
     places matching coordinates (reverse mode).
 
@@ -114,7 +117,12 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
             if include_headers:
                 echo_headers(resp.headers, file=stdout)
             if resp.status_code == 200:
-                click.echo(resp.text, file=stdout)
+                if not first_feature:
+                    click.echo(resp.text, file=stdout)
+                else:
+                    collection = json.loads(resp.text)
+                    feat = collection['features'][0]
+                    click.echo(json.dumps(feat), file=stdout)
             else:
                 raise MapboxCLIException(resp.text.strip())
     else:
