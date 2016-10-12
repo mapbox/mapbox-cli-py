@@ -250,7 +250,7 @@ def test_cli_geocode_fwd_limit():
 
 
 @responses.activate
-def test_cli_geocode_fwd_limit():
+def test_cli_geocode_fwd_features():
 
     responses.add(
         responses.GET,
