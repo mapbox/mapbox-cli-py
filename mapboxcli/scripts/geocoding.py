@@ -68,12 +68,14 @@ def echo_headers(headers, file=None):
 @click.option('--bbox', default=None,
               help="Restrict forward geocoding to specified bounding box,"
                    "given in minX,minY,maxX,maxY coordinates.")
-@click.option('--first-feature', is_flag=True, default=False,
-              help="Return only the first (most relevant) forward geocoding result "
-              "as a GeoJSON Feature, not a FeatureCollection")
+@click.option('--features', is_flag=True, default=False,
+              help="Return results as line-delimited GeoJSON Feature sequence, "
+                   "not a FeatureCollection")
+@click.option('--limit', type=int,
+              help="Limit the number of returned features")
 @click.pass_context
 def geocoding(ctx, query, forward, include_headers, lat, lon,
-              place_type, output, dataset, country, bbox, first_feature):
+              place_type, output, dataset, country, bbox, features, limit):
     """This command returns places matching an address (forward mode) or
     places matching coordinates (reverse mode).
 
@@ -110,19 +112,20 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
         for q in iter_query(query):
             try:
                 resp = geocoder.forward(
-                    q, types=place_type, lat=lat, lon=lon, country=country, bbox=bbox)
+                    q, types=place_type, lat=lat, lon=lon,
+                    country=country, bbox=bbox, limit=limit)
             except mapbox.errors.ValidationError as exc:
                 raise click.BadParameter(str(exc))
 
             if include_headers:
                 echo_headers(resp.headers, file=stdout)
             if resp.status_code == 200:
-                if not first_feature:
-                    click.echo(resp.text, file=stdout)
-                else:
+                if features:
                     collection = json.loads(resp.text)
-                    feat = collection['features'][0]
-                    click.echo(json.dumps(feat), file=stdout)
+                    for feature in collection['features']:
+                        click.echo(json.dumps(feature), file=stdout)
+                else:
+                    click.echo(resp.text, file=stdout)
             else:
                 raise MapboxCLIException(resp.text.strip())
     else:

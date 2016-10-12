@@ -230,11 +230,11 @@ def test_cli_geocode_invalid_country():
 
 
 @responses.activate
-def test_cli_geocode_fwd_first_feature():
+def test_cli_geocode_fwd_limit():
 
     responses.add(
         responses.GET,
-        'https://api.mapbox.com/geocoding/v5/mapbox.places/1600%20pennsylvania%20ave%20nw.json?access_token=bogus',
+        'https://api.mapbox.com/geocoding/v5/mapbox.places/1600%20pennsylvania%20ave%20nw.json?access_token=bogus&limit=2',
         match_querystring=True,
         body='{"features": [{"name": "first"}, {"name": "second"}]}', status=200,
         content_type='application/json')
@@ -242,8 +242,28 @@ def test_cli_geocode_fwd_first_feature():
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', 'bogus', 'geocoding', '--first-feature',
+        ['--access-token', 'bogus', 'geocoding', '--limit', '2',
          '--forward', '1600 pennsylvania ave nw'],
         catch_exceptions=False)
     assert result.exit_code == 0
-    assert result.output == '{"name": "first"}\n'
+    assert result.output == '{"features": [{"name": "first"}, {"name": "second"}]}'
+
+
+@responses.activate
+def test_cli_geocode_fwd_limit():
+
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/geocoding/v5/mapbox.places/1600%20pennsylvania%20ave%20nw.json?access_token=bogus&limit=2',
+        match_querystring=True,
+        body='{"features": [{"name": "first"}, {"name": "second"}]}', status=200,
+        content_type='application/json')
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', 'bogus', 'geocoding', '--limit', '2', '--features',
+         '--forward', '1600 pennsylvania ave nw'],
+        catch_exceptions=False)
+    assert result.exit_code == 0
+    assert result.output == '{"name": "first"}\n{"name": "second"}\n'
