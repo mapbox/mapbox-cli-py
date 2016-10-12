@@ -71,7 +71,7 @@ def echo_headers(headers, file=None):
 @click.option('--features', is_flag=True, default=False,
               help="Return results as line-delimited GeoJSON Feature sequence, "
                    "not a FeatureCollection")
-@click.option('--limit', type=int,
+@click.option('--limit', type=int, default=None,
               help="Limit the number of returned features")
 @click.pass_context
 def geocoding(ctx, query, forward, include_headers, lat, lon,
@@ -122,8 +122,8 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
             if resp.status_code == 200:
                 if features:
                     collection = json.loads(resp.text)
-                    for feature in collection['features']:
-                        click.echo(json.dumps(feature), file=stdout)
+                    for feat in collection['features']:
+                        click.echo(json.dumps(feat), file=stdout)
                 else:
                     click.echo(resp.text, file=stdout)
             else:
@@ -138,6 +138,11 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
             if include_headers:
                 echo_headers(resp.headers, file=stdout)
             if resp.status_code == 200:
-                click.echo(resp.text, file=stdout)
+                if features:
+                    collection = json.loads(resp.text)
+                    for feat in collection['features']:
+                        click.echo(json.dumps(feat), file=stdout)
+                else:
+                    click.echo(resp.text, file=stdout)
             else:
                 raise MapboxCLIException(resp.text.strip())
