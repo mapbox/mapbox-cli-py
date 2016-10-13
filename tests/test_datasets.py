@@ -685,7 +685,7 @@ def test_cli_dataset_create_tileset():
          '--name', name])
 
     assert result.exit_code == 0
-    body = json.loads(responses.calls[0].request.body)
+    body = json.loads(responses.calls[0].request.body.decode())
     assert body['url'] == 'mapbox://datasets/{0}/{1}'.format(owner, dataset)
     assert body['tileset'] == tileset
     assert body['name'] == name
