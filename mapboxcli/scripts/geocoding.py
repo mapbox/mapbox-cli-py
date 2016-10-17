@@ -131,7 +131,8 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
     else:
         for lon, lat in map(coords_from_query, iter_query(query)):
             try:
-                resp = geocoder.reverse(lon=lon, lat=lat, types=place_type)
+                resp = geocoder.reverse(
+                    lon=lon, lat=lat, types=place_type, limit=limit)
             except mapbox.errors.ValidationError as exc:
                 raise click.BadParameter(str(exc))
 

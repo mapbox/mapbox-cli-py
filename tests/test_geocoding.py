@@ -250,7 +250,33 @@ def test_cli_geocode_fwd_limit():
 
 
 @responses.activate
-def test_cli_geocode_reverse_limit_features():
+def test_cli_geocode_reverse_limit():
+
+    lon, lat = -77.4371, 37.5227
+    res = {"query": [lon, lat],
+           "features": [{"name": "first"}]}
+    body = json.dumps(res)
+
+    responses.add(
+        responses.GET,
+        'https://api.mapbox.com/geocoding/v5/mapbox.places/{0},{1}.json?limit=1&types=country&access_token=pk.test'.format(lon, lat),
+        match_querystring=True,
+        body=body,
+        status=200,
+        content_type='application/json')
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', 'pk.test', 'geocoding', '--reverse',
+         '--limit', '1', '--place-type', 'country'],
+        input='{0},{1}'.format(lon, lat))
+    assert result.exit_code == 0
+    assert result.output.strip() == body
+
+
+@responses.activate
+def test_cli_geocode_reverse_features():
 
     lon, lat = -77.4371, 37.5227
     res = {"query": [lon, lat],
@@ -268,16 +294,7 @@ def test_cli_geocode_reverse_limit_features():
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', 'pk.test', 'geocoding',
-         '--reverse', '--limit', '2'],
-        input='{0},{1}'.format(lon, lat))
-    assert result.exit_code == 0
-    assert result.output.strip() == body
-
-    result = runner.invoke(
-        main_group,
-        ['--access-token', 'pk.test', 'geocoding',
-         '--reverse', '--limit', '2', '--features'],
+        ['--access-token', 'pk.test', 'geocoding', '--reverse', '--features'],
         input='{0},{1}'.format(lon, lat))
     assert result.exit_code == 0
     assert result.output == '{"name": "first"}\n{"name": "second"}\n'
