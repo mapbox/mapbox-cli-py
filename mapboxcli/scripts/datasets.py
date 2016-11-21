@@ -267,50 +267,6 @@ def delete_feature(ctx, dataset, fid):
         raise MapboxCLIException(res.text.strip())
 
 
-@datasets.command(
-    name="batch-update-features",
-    short_help="Insert, update, or delete multiple features in a dataset")
-@click.argument('dataset', required=True)
-@click.argument('puts', required=False, default=None)
-@click.argument('deletes', required=False, default=None)
-@click.option(
-    '--input', '-i', default='-',
-    help="File containing features to insert, update, and/or delete")
-@click.pass_context
-def batch_update_features(ctx, dataset, puts, deletes, input):
-    """Update features of a dataset.
-
-    Up to 100 features may be deleted or modified in one request. PUTS
-    should be a JSON array of GeoJSON features to insert or updated.
-    DELETES should be a JSON array of feature ids to be deleted.
-
-        $ mapbox datasets batch-update-features dataset-id 'puts' 'deletes'
-
-    All endpoints require authentication. An access token with
-    `datasets:write` scope is required, see `mapbox --help`.
-    """
-
-    if puts:
-        puts = json.loads(puts)
-
-    if deletes:
-        deletes = json.loads(deletes)
-
-    if puts is None and deletes is None:
-        stdin = click.open_file(input, 'r')
-        input = json.loads(stdin.read())
-        puts = input['put']
-        deletes = input['delete']
-
-    service = ctx.obj.get('service')
-    res = service.batch_update_features(dataset, puts, deletes)
-
-    if res.status_code == 200:
-        click.echo(res.text)
-    else:
-        raise MapboxCLIException(res.text.strip())
-
-
 @datasets.command(name="create-tileset",
                   short_help="Generate a tileset from a dataset")
 @click.argument('dataset', required=True)

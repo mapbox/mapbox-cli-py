@@ -254,8 +254,6 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  batch-update-features  Insert, update, or delete multiple features in a
-                         dataset
   create                 Create an empty dataset
   create-tileset         Generate a tileset from a dataset
   delete-dataset         Delete a dataset
@@ -431,27 +429,6 @@ Usage: mapbox datasets delete-feature [OPTIONS] DATASET FID
 
 Options:
   --help  Show this message and exit.
-```
-
-### datasets batch-update-features
-```
-Usage: mapbox datasets batch-update-features [OPTIONS] DATASET [PUTS]
-                                             [DELETES]
-
-  Update features of a dataset.
-
-  Up to 100 features may be deleted or modified in one request. PUTS should
-  be a JSON array of GeoJSON features to insert or updated. DELETES should
-  be a JSON array of feature ids to be deleted.
-
-      $ mapbox datasets batch-update-features dataset-id 'puts' 'deletes'
-
-  All endpoints require authentication. An access token with
-  `datasets:write` scope is required, see `mapbox --help`.
-
-Options:
-  -i, --input TEXT  File containing features to insert, update, and/or delete
-  --help            Show this message and exit.
 ```
 
 ### datasets create-tileset
