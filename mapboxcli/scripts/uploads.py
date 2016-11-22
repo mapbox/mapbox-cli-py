@@ -9,8 +9,9 @@ from mapboxcli.errors import MapboxCLIException
 @click.command(short_help="Upload datasets to Mapbox accounts")
 @click.argument('args', nargs=-1, required=True, metavar="[INFILE] TILESET")
 @click.option('--name', default=None, help="Name for the data upload")
+@click.option('--patch', is_flag=True, default=False, help="Patch mode")
 @click.pass_context
-def upload(ctx, args, name):
+def upload(ctx, args, name, patch):
     """Upload data to Mapbox accounts.
     All endpoints require authentication.
     Uploaded data lands at https://www.mapbox.com/data/
@@ -29,6 +30,8 @@ def upload(ctx, args, name):
 
     Note that the tileset must start with your username.
     An access token with upload scope is required, see `mapbox --help`.
+
+    Your account must be flagged in order to use the patch mode feature.
     """
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
 
@@ -57,7 +60,7 @@ def upload(ctx, args, name):
         name = tileset.split(".")[-1]
 
     try:
-        res = service.upload(infile, tileset, name)
+        res = service.upload(infile, tileset, name, patch=patch)
     except (mapbox.errors.ValidationError, IOError) as exc:
         raise click.BadParameter(str(exc))
 
