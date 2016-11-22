@@ -1,3 +1,10 @@
+0.5.0 (not released)
+------------------
+- Output sequence of geojson --features from geocoding (#76)
+- Ability to --limit number of geocoding results (#77)
+- Removed the datasets batch-update-delete functionality (#79)
+- Added patch mode functionality for uploads (#80)
+
 0.4.0 (2016-06-08)
 ------------------
 - Add support for geocoder bounding box filter (#73)
