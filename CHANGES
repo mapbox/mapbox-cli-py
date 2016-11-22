@@ -1,3 +1,7 @@
+0.5.1 (2015-11-22)
+------------------
+- Use mapbox sdk 0.10.1
+
 0.5.0 (2016-11-22)
 ------------------
 - Output sequence of geojson --features from geocoding (#76)
