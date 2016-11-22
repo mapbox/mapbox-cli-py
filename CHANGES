@@ -1,4 +1,4 @@
-0.5.0 (not released)
+0.5.0 (2016-11-22)
 ------------------
 - Output sequence of geojson --features from geocoding (#76)
 - Ability to --limit number of geocoding results (#77)
