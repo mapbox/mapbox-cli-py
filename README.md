@@ -49,7 +49,7 @@ $ mapbox ...
 * [staticmap](#staticmap)
 * [surface](#surface)
 * [upload](#upload)
-* [datasets](#datasets) (Note: this API is currently in private beta. Any requests to this API from outside of Mapbox will result in a 404.)
+* [datasets](#datasets)
 
 For any command that takes waypoints or features as an input you can either specify:
 
