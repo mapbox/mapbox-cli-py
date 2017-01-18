@@ -1,4 +1,5 @@
 from io import BytesIO
+import os
 
 import click
 
@@ -40,12 +41,15 @@ def upload(ctx, args, name, patch):
     if len(args) == 1:
         # Tileset specified, file from stdin
         click.echo("Reading data from stdin (Hit Ctl-C to cancel) ...", err=True)
-        infile = BytesIO(click.File("rb")("-").read())
+        initial_bytes = click.File("rb")("-").read()
+        filelen = len(initial_bytes)
+        infile = BytesIO(initial_bytes)
         tileset = args[0]
     elif len(args) == 2:
         # Infile and Tileset are specified
         try:
             infile = click.File("rb")(args[0])
+            filelen = os.stat(infile.name).st_size
         except click.ClickException:
             raise click.UsageError(
                 "Could not open file: {0} "
@@ -59,10 +63,21 @@ def upload(ctx, args, name, patch):
     if name is None:
         name = tileset.split(".")[-1]
 
-    try:
-        res = service.upload(infile, tileset, name, patch=patch)
-    except (mapbox.errors.ValidationError, IOError) as exc:
-        raise click.BadParameter(str(exc))
+    def staging_cb(num_bytes):
+        pass
+
+    with click.progressbar(length=filelen, label='Staging data') as bar:
+
+        def callback(num_bytes):
+            """Update the progress bar"""
+            bar.update(num_bytes)
+
+        try:
+            res = service.upload(infile, tileset, name, patch=patch,
+                                 callback=callback)
+
+        except (mapbox.errors.ValidationError, IOError) as exc:
+            raise click.BadParameter(str(exc))
 
     if res.status_code == 201:
         click.echo(res.text)
