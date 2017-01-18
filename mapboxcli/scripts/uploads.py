@@ -1,5 +1,6 @@
 from io import BytesIO
 import os
+import sys
 
 import click
 
@@ -66,7 +67,8 @@ def upload(ctx, args, name, patch):
     def staging_cb(num_bytes):
         pass
 
-    with click.progressbar(length=filelen, label='Staging data') as bar:
+    with click.progressbar(length=filelen, label='Staging data',
+                           file=sys.stderr) as bar:
 
         def callback(num_bytes):
             """Update the progress bar"""
