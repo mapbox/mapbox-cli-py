@@ -45,5 +45,4 @@ setup(name='mapboxcli',
       staticmap=mapboxcli.scripts.static:staticmap
       surface=mapboxcli.scripts.surface:surface
       dataset=mapboxcli.scripts.datasets:datasets
-      """
-      )
+      """)
