@@ -64,9 +64,6 @@ def upload(ctx, args, name, patch):
     if name is None:
         name = tileset.split(".")[-1]
 
-    def staging_cb(num_bytes):
-        pass
-
     with click.progressbar(length=filelen, label='Staging data',
                            file=sys.stderr) as bar:
 
@@ -74,12 +71,8 @@ def upload(ctx, args, name, patch):
             """Update the progress bar"""
             bar.update(num_bytes)
 
-        try:
-            res = service.upload(infile, tileset, name, patch=patch,
-                                 callback=callback)
-
-        except (mapbox.errors.ValidationError, IOError) as exc:
-            raise click.BadParameter(str(exc))
+        res = service.upload(infile, tileset, name, patch=patch,
+                             callback=callback)
 
     if res.status_code == 201:
         click.echo(res.text)
