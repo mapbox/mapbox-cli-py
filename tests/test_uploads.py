@@ -58,6 +58,19 @@ class MockSession(object):
         self.key = dst
         return True
 
+    def upload_fileobj(self, data, key, Callback=None):
+        self.data = data
+        self.key = key
+        self.Callback = Callback
+
+        bytes_read = data.read(8192)
+        if bytes_read and self.Callback:
+            self.Callback(len(bytes_read))
+        while bytes_read:
+            bytes_read = data.read(8192)
+            if bytes_read and self.Callback:
+                self.Callback(len(bytes_read))
+
 
 @responses.activate
 def test_cli_upload(monkeypatch):
@@ -95,6 +108,7 @@ def test_cli_upload(monkeypatch):
          'tests/twopoints.geojson',
          username + '.test-data'])
     assert result.exit_code == 0
+    assert "Staging data" in result.output
 
 
 @responses.activate
@@ -133,7 +147,7 @@ def test_cli_upload_unknown_error(monkeypatch):
          'tests/twopoints.geojson',
          username + '.test-data'])
     assert result.exit_code == 1
-    assert result.output == 'Error: {"message":"Something went wrong"}\n'
+    assert result.output.endswith('Error: {"message":"Something went wrong"}\n')
 
 @responses.activate
 def test_cli_upload_doesnotexist(monkeypatch):
