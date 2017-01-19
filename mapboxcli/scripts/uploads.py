@@ -1,3 +1,7 @@
+from io import BytesIO
+import os
+import sys
+
 import click
 
 import mapbox
@@ -40,8 +44,28 @@ def upload(ctx, tileset, source, name, patch):
     if name is None:
         name = tileset.split(".")[-1]
 
-    sourcefile = click.File('rb')(source)
-    res = service.upload(sourcefile, tileset, name, patch=patch)
+    sourcefile = click.File('rb')(source)  # .open()
+
+    if hasattr(sourcefile, 'name'):
+        if sourcefile.name == '<stdin>':
+            filelen = 1
+        else:
+            filelen = os.stat(sourcefile.name).st_size
+    elif hasattr(sourcefile, 'getbuffer'):
+        filelen = len(sourcefile.getbuffer())
+    else:
+        raise ValueError("Bad file!")
+
+    with click.progressbar(length=filelen, label='Uploading data source',
+                           fill_char=u"\u2588", empty_char='-',
+                           file=sys.stderr) as bar:
+
+        def callback(num_bytes):
+            """Update the progress bar"""
+            bar.update(num_bytes)
+
+        res = service.upload(sourcefile, tileset, name, patch=patch,
+                             callback=callback)
 
     if res.status_code == 201:
         click.echo(res.text)

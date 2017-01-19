@@ -106,6 +106,7 @@ def test_cli_upload(monkeypatch):
         ['--access-token', access_token, 'upload', username + '.test-data'
          'tests/twopoints.geojson'])
     assert result.exit_code == 0
+    assert "Uploading data source" in result.output
 
 
 @responses.activate
@@ -142,7 +143,7 @@ def test_cli_upload_unknown_error(monkeypatch):
         ['--access-token', access_token, 'upload', username + '.test-data',
          'tests/twopoints.geojson'])
     assert result.exit_code == 1
-    assert result.output == 'Error: {"message":"Something went wrong"}\n'
+    assert result.output.endswith('Error: {"message":"Something went wrong"}\n')
 
 @responses.activate
 def test_cli_upload_doesnotexist(monkeypatch):
