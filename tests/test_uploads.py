@@ -58,6 +58,19 @@ class MockSession(object):
         self.key = dst
         return True
 
+    def upload_fileobj(self, data, key, Callback=None):
+        self.data = data
+        self.key = key
+        self.Callback = Callback
+
+        bytes_read = data.read(8192)
+        if bytes_read and self.Callback:
+            self.Callback(len(bytes_read))
+        while bytes_read:
+            bytes_read = data.read(8192)
+            if bytes_read and self.Callback:
+                self.Callback(len(bytes_read))
+
 
 @responses.activate
 def test_cli_upload(monkeypatch):
@@ -90,10 +103,8 @@ def test_cli_upload(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', access_token,
-         'upload',
-         'tests/twopoints.geojson',
-         username + '.test-data'])
+        ['--access-token', access_token, 'upload', username + '.test-data'
+         'tests/twopoints.geojson'])
     assert result.exit_code == 0
 
 
@@ -128,10 +139,8 @@ def test_cli_upload_unknown_error(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', access_token,
-         'upload',
-         'tests/twopoints.geojson',
-         username + '.test-data'])
+        ['--access-token', access_token, 'upload', username + '.test-data',
+         'tests/twopoints.geojson'])
     assert result.exit_code == 1
     assert result.output == 'Error: {"message":"Something went wrong"}\n'
 
@@ -197,9 +206,7 @@ def test_cli_upload_stdin(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', access_token,
-         'upload',
-         username + '.test-data'],
+        ['--access-token', access_token, 'upload', username + '.test-data'],
         input='{"type":"FeatureCollection","features":[]}')
     assert result.exit_code == 0
 

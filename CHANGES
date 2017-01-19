@@ -1,3 +1,8 @@
+Next
+----
+- Breaking change: in mapbox-upload, TILESET is now the first positional
+  argument (#85).
+
 0.5.1 (2015-11-22)
 ------------------
 - Use mapbox sdk 0.10.1
