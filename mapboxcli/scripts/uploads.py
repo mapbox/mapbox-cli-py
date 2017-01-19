@@ -38,9 +38,9 @@ def upload(ctx, tileset, source, name, patch):
 
     if name is None:
         name = tileset.split(".")[-1]
-    
-    with click.File('rb')(source) as sourcefile:
-        res = service.upload(sourcefile, tileset, name, patch=patch)
+
+    sourcefile = click.File('rb')(source)
+    res = service.upload(sourcefile, tileset, name, patch=patch)
 
     if res.status_code == 201:
         click.echo(res.text)
