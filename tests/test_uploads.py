@@ -103,12 +103,10 @@ def test_cli_upload(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', access_token,
-         'upload',
-         'tests/twopoints.geojson',
-         username + '.test-data'])
+        ['--access-token', access_token, 'upload', username + '.test-data'
+         'tests/twopoints.geojson'])
     assert result.exit_code == 0
-    assert "Staging data" in result.output
+    assert "Uploading data source" in result.output
 
 
 @responses.activate
@@ -142,10 +140,8 @@ def test_cli_upload_unknown_error(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', access_token,
-         'upload',
-         'tests/twopoints.geojson',
-         username + '.test-data'])
+        ['--access-token', access_token, 'upload', username + '.test-data',
+         'tests/twopoints.geojson'])
     assert result.exit_code == 1
     assert result.output.endswith('Error: {"message":"Something went wrong"}\n')
 
@@ -211,9 +207,7 @@ def test_cli_upload_stdin(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', access_token,
-         'upload',
-         username + '.test-data'],
+        ['--access-token', access_token, 'upload', username + '.test-data'],
         input='{"type":"FeatureCollection","features":[]}')
     assert result.exit_code == 0
 

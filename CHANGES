@@ -1,5 +1,7 @@
-Next
-----
+0.6.0 (Soon)
+------------
+- Breaking change: in mapbox-upload TILESET is now the first positional
+  argument and source file the second, reversing the order set in 0.4.0 (#85).
 - Add a uploads progress bar (#86).
 
 0.5.1 (2015-11-22)
