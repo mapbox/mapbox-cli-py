@@ -44,7 +44,7 @@ def upload(ctx, tileset, source, name, patch):
     if name is None:
         name = tileset.split(".")[-1]
 
-    sourcefile = click.File('rb')(source)  # .open()
+    sourcefile = click.File('rb')(source)
 
     if hasattr(sourcefile, 'name'):
         if sourcefile.name == '<stdin>':
@@ -54,7 +54,7 @@ def upload(ctx, tileset, source, name, patch):
     elif hasattr(sourcefile, 'getbuffer'):
         filelen = len(sourcefile.getbuffer())
     else:
-        raise ValueError("Bad file!")
+        filelen = 1
 
     with click.progressbar(length=filelen, label='Uploading data source',
                            fill_char=u"\u2588", empty_char='-',
