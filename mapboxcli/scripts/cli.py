@@ -37,8 +37,10 @@ def read_config(cfg):
 @cligj.verbose_opt
 @cligj.quiet_opt
 @click.option('--access-token', help="Your Mapbox access token.")
-@click.option('--config', '-c', type=click.Path(exists=True, resolve_path=True),
-              help="Config file")
+@click.option(
+    '--config', '-c', type=click.Path(exists=True,
+    resolve_path=True),
+    help="Config file (default: '{0}/mapbox.ini'".format(click.get_app_dir('mapbox')))
 @click.pass_context
 def main_group(ctx, verbose, quiet, access_token, config):
     """This is the command line interface to Mapbox web services.
