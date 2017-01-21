@@ -110,6 +110,28 @@ def test_cli_upload(monkeypatch):
 
 
 @responses.activate
+def test_cli_create_aws(monkeypatch):
+    """Skip upload and do it all in the 'cloud'"""
+
+    monkeypatch.setattr(mapbox.services.uploads, 'boto3_session', MockSession)
+
+    responses.add(
+        responses.POST,
+        'https://api.mapbox.com/uploads/v1/{0}?access_token={1}'.format(username, access_token),
+        match_querystring=True,
+        body=upload_response_body, status=201,
+        content_type='application/json')
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main_group,
+        ['--access-token', access_token, 'upload', username + '.test-data',
+         'https://s3.amazonaws.com/mapbox/rasterio/RGB.byte.tif'])
+    assert result.exit_code == 0
+    assert '"tileset": "testuser.test1"' in result.output
+
+
+@responses.activate
 def test_cli_upload_unknown_error(monkeypatch):
 
     monkeypatch.setattr(mapbox.services.uploads, 'boto3_session', MockSession)

@@ -3,6 +3,7 @@
 - Breaking change: in mapbox-upload TILESET is now the first positional
   argument and source file the second, reversing the order set in 0.4.0 (#85).
 - Add a uploads progress bar (#86).
+- Skip staging for datasources in accessible S3 buckets (#49).
 
 0.5.1 (2015-11-22)
 ------------------
