@@ -10,11 +10,11 @@ from mapboxcli.errors import MapboxCLIException
 
 @click.command(short_help="Upload datasets to Mapbox accounts")
 @click.argument('tileset', required=True, type=str, metavar='TILESET')
-@click.argument('source', type=str, default='-', metavar='[SOURCE]')
+@click.argument('datasource', type=str, default='-', metavar='[SOURCE]')
 @click.option('--name', default=None, help="Name for the data upload")
 @click.option('--patch', is_flag=True, default=False, help="Enable patch mode")
 @click.pass_context
-def upload(ctx, tileset, source, name, patch):
+def upload(ctx, tileset, datasource, name, patch):
     """Upload data to Mapbox accounts.
 
     Uploaded data lands at https://www.mapbox.com/data/ and can be used
@@ -44,28 +44,31 @@ def upload(ctx, tileset, source, name, patch):
     if name is None:
         name = tileset.split(".")[-1]
 
-    sourcefile = click.File('rb')(source)
+    if datasource.startswith('https://'):
+        # Skip staging. Note this this only works for specific buckets.
+        res = service.create(datasource, tileset, name=name, patch=patch)
 
-    if hasattr(sourcefile, 'name'):
-        if sourcefile.name == '<stdin>':
-            filelen = 1
-        else:
-            filelen = os.stat(sourcefile.name).st_size
-    elif hasattr(sourcefile, 'getbuffer'):
-        filelen = len(sourcefile.getbuffer())
     else:
-        filelen = 1
+        sourcefile = click.File('rb')(datasource)
 
-    with click.progressbar(length=filelen, label='Uploading data source',
-                           fill_char=u"\u2588", empty_char='-',
-                           file=sys.stderr) as bar:
+        if hasattr(sourcefile, 'name'):
+            filelen = (
+                1 if sourcefile.name == '<stdin>'
+                else os.stat(sourcefile.name).st_size)
+        else:
+            filelen = (len(sourcefile.getbuffer())
+                       if hasattr(sourcefile, 'getbuffer') else 1)
 
-        def callback(num_bytes):
-            """Update the progress bar"""
-            bar.update(num_bytes)
+        with click.progressbar(length=filelen, label='Uploading data source',
+                               fill_char=u"\u2588", empty_char='-',
+                               file=sys.stderr) as bar:
 
-        res = service.upload(sourcefile, tileset, name, patch=patch,
-                             callback=callback)
+            def callback(num_bytes):
+                """Update the progress bar"""
+                bar.update(num_bytes)
+
+            res = service.upload(sourcefile, tileset, name, patch=patch,
+                                 callback=callback)
 
     if res.status_code == 201:
         click.echo(res.text)
