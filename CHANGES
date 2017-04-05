@@ -1,4 +1,13 @@
-0.6.0 (2017-01-23)
+0.7.0 (2017-04-05)
+------------------
+- Breaking change: mapbox subcommands like 'upload' are no longer plugins. We
+  are trading extensibility for speed (#95).
+- New feature: when saving a fraction of a second matters, mapbox subcommands
+  can now be executed more quickly via `python -m mapboxcli upload` (#95).
+  The `mapbox` console script remains the best command for ordinary usage on
+  all platforms.
+
+  0.6.0 (2017-01-23)
 ------------------
 - Breaking change: in mapbox-upload TILESET is now the first positional
   argument and source file the second, reversing the order set in 0.4.0 (#85).
