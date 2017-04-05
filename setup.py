@@ -29,8 +29,8 @@ setup(name='mapboxcli',
           'mapbox>=0.11',
           'six'],
       extras_require={
-          'test': ['coveralls', 'pytest>=2.8', 'pytest-cov', 'responses'],
-      },
+          'test': ['coveralls', 'pytest>=2.8', 'pytest-cov', 'responses',
+                   'mock']},
       entry_points="""
       [console_scripts]
       mapbox=mapboxcli.scripts.cli:main_group
