@@ -34,15 +34,4 @@ setup(name='mapboxcli',
       entry_points="""
       [console_scripts]
       mapbox=mapboxcli.scripts.cli:main_group
-
-      [mapboxcli.mapboxcli_commands]
-      config=mapboxcli.scripts.config:config
-      geocoding=mapboxcli.scripts.geocoding:geocoding
-      directions=mapboxcli.scripts.directions:directions
-      distance=mapboxcli.scripts.distance:distance
-      mapmatching=mapboxcli.scripts.mapmatching:match
-      upload=mapboxcli.scripts.uploads:upload
-      staticmap=mapboxcli.scripts.static:staticmap
-      surface=mapboxcli.scripts.surface:surface
-      dataset=mapboxcli.scripts.datasets:datasets
       """)

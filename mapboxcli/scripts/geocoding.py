@@ -91,9 +91,6 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
 
     An access token is required, see `mapbox --help`.
     """
-    verbosity = (ctx.obj and ctx.obj.get('verbosity')) or 2
-    logger = logging.getLogger('mapbox')
-
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     stdout = click.open_file(output, 'w')
 
