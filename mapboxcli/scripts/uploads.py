@@ -60,7 +60,7 @@ def upload(ctx, tileset, datasource, name, patch):
                        if hasattr(sourcefile, 'getbuffer') else 1)
 
         with click.progressbar(length=filelen, label='Uploading data source',
-                               fill_char=u"\u2588", empty_char='-',
+                               fill_char="#", empty_char='-',
                                file=sys.stderr) as bar:
 
             def callback(num_bytes):
