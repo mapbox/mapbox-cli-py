@@ -1,3 +1,7 @@
+0.6.1 (2017-04-10)
+------------------
+- Bugfix, ascii charaters in upload progressbar (see #98)
+
 0.6.0 (2017-01-23)
 ------------------
 - Breaking change: in mapbox-upload TILESET is now the first positional
