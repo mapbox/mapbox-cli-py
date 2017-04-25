@@ -107,6 +107,7 @@ Options:
   -o, --output TEXT               Save output to a file.
   --help                          Show this message and exit.
 ```
+**Note**: Distance API is currently in preview. [Contact us](https://mapbox.com/contact/) for access.
 
 ### geocoding
 ```
