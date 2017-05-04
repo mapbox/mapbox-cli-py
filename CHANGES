@@ -1,3 +1,7 @@
+0.6.2 (2017-05-04)
+------------------
+- use mapbox sdk 0.12.1
+
 0.6.1 (2017-04-10)
 ------------------
 - Bugfix, ascii charaters in upload progressbar (see #98)
