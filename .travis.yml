@@ -1,7 +1,6 @@
 sudo: false
 language: python
 python:
-- '2.6'
 - '2.7'
 - '3.3'
 - '3.4'
@@ -17,14 +16,11 @@ env:
   - PIP_CONSTRAINT=constraints.txt
 install:
 - pip install -U pip
-- pip install -r requirements-dev.txt
-- pip install -e .[test]
+- pip install --no-cache -r requirements-dev.txt
+- pip install --no-cache -e .[test]
 - pip list
-before_script:
-- pip install flake8  # 127 == GitHub editor width
-- if [[ $TRAVIS_PYTHON_VERSION != 2.6 ]]; then flake8 . --count --max-line-length=127 --statistics --exit-zero; fi
 script:
-- py.test --cov mapboxcli --cov-report term-missing
+- py.test -vv --cov mapboxcli --cov-report term-missing
 after_success:
 - coveralls
 deploy:
