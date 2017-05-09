@@ -16,11 +16,11 @@ env:
   - PIP_CONSTRAINT=constraints.txt
 install:
 - pip install -U pip
-- pip install -r requirements-dev.txt
-- pip install -e .[test]
+- pip install --no-cache -r requirements-dev.txt
+- pip install --no-cache -e .[test]
 - pip list
 script:
-- py.test --cov mapboxcli --cov-report term-missing
+- py.test -vv --cov mapboxcli --cov-report term-missing
 after_success:
 - coveralls
 deploy:
