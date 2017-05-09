@@ -1,6 +1,8 @@
 import json
 
 from click.testing import CliRunner
+from mapbox.errors import ValidationError
+from mock import patch
 import responses
 
 from mapboxcli.scripts.cli import main_group
@@ -190,7 +192,7 @@ def test_cli_geocode_rev_headers():
     assert result.output.startswith('Content-Type')
 
 
-def test_cli_geocode_bad_place():
+def test_cli_geocode_fwd_bad_place():
     runner = CliRunner()
 
     result = runner.invoke(
@@ -199,12 +201,32 @@ def test_cli_geocode_bad_place():
         input='Millennium Falcon')
     assert result.exit_code == 2
 
+
+def test_cli_geocode_rev_bad_place():
+    runner = CliRunner()
+
     lon, lat = -77.4371, 37.5227
     result = runner.invoke(
         main_group,
         ['geocoding', '-t', 'spaceship', '--reverse'],
         input='{0},{1}'.format(lon, lat))
     assert result.exit_code == 2
+
+
+@patch('mapboxcli.scripts.geocoding.Geocoder')
+def test_cli_geocode_validation_error_handling(Geocoder):
+    """ValidationError errors are handled"""
+    Geocoder.return_value.place_types.return_value = {'country': 'country'}
+    Geocoder.return_value.reverse.side_effect = ValidationError("Invalid")
+
+    runner = CliRunner()
+    lon, lat = -77.4371, 91.0
+    result = runner.invoke(
+        main_group,
+        ['geocoding', '-t', 'country', '--reverse'],
+        input='{0},{1}'.format(lon, lat))
+    assert result.exit_code == 2
+    assert "Error: Invalid value" in result.output
 
 
 def test_cli_geocode_bad_dataset():

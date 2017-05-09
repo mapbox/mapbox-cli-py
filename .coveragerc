@@ -1,0 +1,3 @@
+[run]
+omit =
+    mapboxcli/__main__.py

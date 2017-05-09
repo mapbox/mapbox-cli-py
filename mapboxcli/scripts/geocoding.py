@@ -5,6 +5,7 @@ import re
 
 import click
 import mapbox
+from mapbox import Geocoder
 
 from mapboxcli.compat import map
 from mapboxcli.errors import MapboxCLIException
@@ -56,7 +57,7 @@ def echo_headers(headers, file=None):
          "is also required.")
 @click.option(
     '--place-type', '-t', multiple=True, metavar='NAME', default=None,
-    type=click.Choice(mapbox.Geocoder().place_types.keys()),
+    type=click.Choice(Geocoder().place_types.keys()),
     help="Restrict results to one or more place types.")
 @click.option('--output', '-o', default='-', help="Save output to a file.")
 @click.option('--dataset', '-d', default='mapbox.places',
@@ -91,13 +92,10 @@ def geocoding(ctx, query, forward, include_headers, lat, lon,
 
     An access token is required, see `mapbox --help`.
     """
-    verbosity = (ctx.obj and ctx.obj.get('verbosity')) or 2
-    logger = logging.getLogger('mapbox')
-
     access_token = (ctx.obj and ctx.obj.get('access_token')) or None
     stdout = click.open_file(output, 'w')
 
-    geocoder = mapbox.Geocoder(name=dataset, access_token=access_token)
+    geocoder = Geocoder(name=dataset, access_token=access_token)
 
     if forward:
         if country:

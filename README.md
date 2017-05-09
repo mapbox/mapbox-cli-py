@@ -458,3 +458,10 @@ Options:
   -n, --name TEXT  Name for the tileset
   --help           Show this message and exit.
 ```
+
+## Alternative command syntax
+
+When saving a fraction of a second matters you can call the mapboxcli module
+directly instead of using the installed program.
+
+```$ python -m mapboxcli --help```

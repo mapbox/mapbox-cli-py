@@ -7,16 +7,17 @@ import os
 import sys
 
 import click
-from click_plugins import with_plugins
 import cligj
-from pkg_resources import iter_entry_points
 
 import mapboxcli
 from mapboxcli.compat import configparser
+from mapboxcli.scripts import (
+    config, geocoding, directions, distance, mapmatching, uploads, static,
+    surface, datasets)
 
 
 def configure_logging(verbosity):
-    log_level = max(10, 30 - 10*verbosity)
+    log_level = max(10, 30 - 10 * verbosity)
     logging.basicConfig(stream=sys.stderr, level=log_level)
 
 
@@ -30,17 +31,15 @@ def read_config(cfg):
     return rv
 
 
-@with_plugins(
-    ep for ep in list(iter_entry_points('mapboxcli.mapboxcli_commands')))
 @click.group()
 @click.version_option(version=mapboxcli.__version__, message='%(version)s')
 @cligj.verbose_opt
 @cligj.quiet_opt
 @click.option('--access-token', help="Your Mapbox access token.")
-@click.option(
-    '--config', '-c', type=click.Path(exists=True,
-    resolve_path=True),
-    help="Config file (default: '{0}/mapbox.ini'".format(click.get_app_dir('mapbox')))
+@click.option('--config', '-c', type=click.Path(exists=True,
+              resolve_path=True),
+              help="Config file (default: '{0}/mapbox.ini'".format(
+                  click.get_app_dir('mapbox')))
 @click.pass_context
 def main_group(ctx, verbose, quiet, access_token, config):
     """This is the command line interface to Mapbox web services.
@@ -94,3 +93,15 @@ def main_group(ctx, verbose, quiet, access_token, config):
 
     ctx.obj['verbosity'] = verbosity
     ctx.obj['access_token'] = access_token
+
+
+# mapbox commands are added here.
+main_group.add_command(config.config)
+main_group.add_command(geocoding.geocoding)
+main_group.add_command(directions.directions)
+main_group.add_command(distance.distance)
+main_group.add_command(mapmatching.match)
+main_group.add_command(uploads.upload)
+main_group.add_command(static.staticmap)
+main_group.add_command(surface.surface)
+main_group.add_command(datasets.datasets)

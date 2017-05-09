@@ -1,3 +1,2 @@
 # Command line interface to Mapbox Web Services
-
-__version__ = '0.6.2'
+__version__ = '0.7.0'
