@@ -1,5 +1,4 @@
 import base64
-import mock
 
 from click.testing import CliRunner
 import responses
