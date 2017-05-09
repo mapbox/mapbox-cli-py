@@ -16,6 +16,12 @@ $ brew install mapbox/cli/mapbox
 (venv)$ pip install mapboxcli
 ```
 
+Installing locally without a virtual environment using
+```
+$ pip install --user mapboxcli
+```
+You'll then need to include ~/.local/bin in your $PATH.
+
 Installing globally is *not recommended* but some users may want to do so under certain circumstances
 ```
 $ sudo pip install mapboxcli
@@ -107,6 +113,7 @@ Options:
   -o, --output TEXT               Save output to a file.
   --help                          Show this message and exit.
 ```
+**Note**: Distance API is currently in preview. [Contact us](https://mapbox.com/contact/) for access.
 
 ### geocoding
 ```

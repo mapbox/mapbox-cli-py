@@ -20,15 +20,19 @@ $ mapbox staticmap --lat $lat --lon $lon --zoom 13 --size 800 800 mapbox.satelli
 Of course we don't need to manually type the coordinates. With a short bash function,
 we can grab the lat/lon from the geocoding results and create a map
 
-```
+```bash
 function showme() {
     local location="$(mapbox geocoding "$1" | jq -c .features[0])"
     local lon=$(echo $location | jq .center[0])
     local lat=$(echo $location | jq .center[1])
-    local tmp=$(mktemp $TMPDIR/$(uuidgen).png)
+    local tmp=$(mktemp $TMPDIR/$(uuidgen).XXX.png)
     mapbox staticmap --lat $lat --lon $lon --zoom ${2:-13} --size 800 800 \
         mapbox.satellite $tmp
-    open $tmp
+    if [ "$(uname)" = "Linux" ]; then
+        xdg-open $tmp
+    else
+        open $tmp
+    fi
 }
 ```
 

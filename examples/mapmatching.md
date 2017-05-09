@@ -8,7 +8,7 @@ allows you to correct the GPS traces against a common base map, OSM.
 You might need to [preprocess the data](https://www.mapbox.com/developers/api/map-matching/#Preprocessing.traces)
 in order to get GeoJSON linestring features.
 
-```
+```json
 {
   "type": "Feature",
   "properties": {
