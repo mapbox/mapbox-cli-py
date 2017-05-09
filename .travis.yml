@@ -19,9 +19,6 @@ install:
 - pip install --no-cache -r requirements-dev.txt
 - pip install --no-cache -e .[test]
 - pip list
-before_script:
-- pip install flake8  # 127 == GitHub editor width
-- if [[ $TRAVIS_PYTHON_VERSION != 2.6 ]]; then flake8 . --count --max-line-length=127 --statistics --exit-zero; fi
 script:
 - py.test -vv --cov mapboxcli --cov-report term-missing
 after_success:
