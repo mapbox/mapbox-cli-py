@@ -11,6 +11,7 @@ username = 'testuser'
 access_token = 'pk.{0}.test'.format(
     base64.b64encode(b'{"u":"testuser"}').decode('utf-8'))
 
+
 upload_response_body = """
     {{"progress": 0,
     "modified": "date.test",
@@ -87,8 +88,9 @@ def test_cli_upload(monkeypatch):
          "sessionToken": "st.test"}}""".format(username=username)
 
     responses.add(
-        responses.GET,
-        'https://api.mapbox.com/uploads/v1/{0}/credentials?access_token={1}'.format(username, access_token),
+        responses.POST,
+        'https://api.mapbox.com/uploads/v1/{0}/credentials?access_token={1}'.format(
+            username, access_token),
         match_querystring=True,
         body=query_body, status=200,
         content_type='application/json')
@@ -103,7 +105,7 @@ def test_cli_upload(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(
         main_group,
-        ['--access-token', access_token, 'upload', username + '.test-data'
+        ['--access-token', access_token, 'upload', username + '.test-data',
          'tests/twopoints.geojson'])
     assert result.exit_code == 0
     assert "Uploading data source" in result.output
@@ -146,8 +148,9 @@ def test_cli_upload_unknown_error(monkeypatch):
          "sessionToken": "st.test"}}""".format(username=username)
 
     responses.add(
-        responses.GET,
-        'https://api.mapbox.com/uploads/v1/{0}/credentials?access_token={1}'.format(username, access_token),
+        responses.POST,
+        'https://api.mapbox.com/uploads/v1/{0}/credentials?access_token={1}'.format(
+            username, access_token),
         match_querystring=True,
         body=query_body, status=200,
         content_type='application/json')
@@ -167,6 +170,7 @@ def test_cli_upload_unknown_error(monkeypatch):
     assert result.exit_code == 1
     assert result.output.endswith('Error: {"message":"Something went wrong"}\n')
 
+
 @responses.activate
 def test_cli_upload_doesnotexist(monkeypatch):
 
@@ -182,8 +186,9 @@ def test_cli_upload_doesnotexist(monkeypatch):
          "sessionToken": "st.test"}}""".format(username=username)
 
     responses.add(
-        responses.GET,
-        'https://api.mapbox.com/uploads/v1/{0}/credentials?access_token={1}'.format(username, access_token),
+        responses.POST,
+        'https://api.mapbox.com/uploads/v1/{0}/credentials?access_token={1}'.format(
+            username, access_token),
         match_querystring=True,
         body=query_body, status=200,
         content_type='application/json')
@@ -213,8 +218,9 @@ def test_cli_upload_stdin(monkeypatch):
          "sessionToken": "st.test"}}""".format(username=username)
 
     responses.add(
-        responses.GET,
-        'https://api.mapbox.com/uploads/v1/{0}/credentials?access_token={1}'.format(username, access_token),
+        responses.POST,
+        'https://api.mapbox.com/uploads/v1/{0}/credentials?access_token={1}'.format(
+            username, access_token),
         match_querystring=True,
         body=query_body, status=200,
         content_type='application/json')

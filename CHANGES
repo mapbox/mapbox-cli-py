@@ -1,4 +1,4 @@
-0.7.0 (2017-04-05)
+0.7.0 (current master)
 ------------------
 - Breaking change: mapbox subcommands like 'upload' are no longer plugins. We
   are trading extensibility for speed (#95).
@@ -6,8 +6,17 @@
   can now be executed more quickly via `python -m mapboxcli upload` (#95).
   The `mapbox` console script remains the best command for ordinary usage on
   all platforms.
+- mapbox sdk 0.12.2
 
-  0.6.0 (2017-01-23)
+0.6.2 (2017-05-04)
+------------------
+- use mapbox sdk 0.12.1
+
+0.6.1 (2017-04-10)
+------------------
+- Bugfix, ascii charaters in upload progressbar (see #98)
+
+0.6.0 (2017-01-23)
 ------------------
 - Breaking change: in mapbox-upload TILESET is now the first positional
   argument and source file the second, reversing the order set in 0.4.0 (#85).
@@ -51,7 +60,7 @@
   two step installation process in the README or satisfy the requirement in
   a single command using pip's `--constraint` option and the mapbox-cli-py
   constraints.txt file (#22).
-  
+
 0.1.0 (2015-12-08)
 ------------------
 - Initial release consists of a `mapbox` command and the following
