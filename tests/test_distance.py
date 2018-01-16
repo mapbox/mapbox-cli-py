@@ -1,3 +1,5 @@
+import re
+
 from click.testing import CliRunner
 import responses
 
@@ -10,6 +12,14 @@ def test_cli_distance():
     responses.add(
         responses.POST,
         'https://api.mapbox.com/distances/v1/mapbox/driving?access_token=bogus',
+        match_querystring=True,
+        body='{"durations":[[0,4977,5951],[4963,0,9349],[5881,9317,0]]}',
+        status=200,
+        content_type='application/json')
+
+    responses.add(
+        responses.GET,
+        re.compile(r'^https://api.mapbox.com/directions-matrix/v1/mapbox/driving.*access_token=bogus$'),
         match_querystring=True,
         body='{"durations":[[0,4977,5951],[4963,0,9349],[5881,9317,0]]}',
         status=200,
@@ -45,6 +55,13 @@ def test_cli_distance_invalid_token():
     responses.add(
         responses.POST,
         'https://api.mapbox.com/distances/v1/mapbox/driving?access_token=INVALID',
+        match_querystring=True,
+        body='{"message":"Not Authorized - Invalid Token"}', status=401,
+        content_type='application/json')
+
+    responses.add(
+        responses.GET,
+        re.compile(r'^https://api.mapbox.com/directions-matrix/v1/mapbox/driving.*access_token=INVALID$'),
         match_querystring=True,
         body='{"message":"Not Authorized - Invalid Token"}', status=401,
         content_type='application/json')
