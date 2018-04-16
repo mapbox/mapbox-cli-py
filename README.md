@@ -56,7 +56,7 @@ $ mapbox ...
 * [surface](#surface)
 * [upload](#upload)
 * [datasets](#datasets)
-* [analytics] (#analytics)
+* [analytics](#analytics)
 
 For any command that takes waypoints or features as an input you can either specify:
 
@@ -463,7 +463,7 @@ Options:
   --help           Show this message and exit.
 ```
 
-## analytics
+### analytics
 ```
 Usage: mapbox analytics [OPTIONS]
 
