@@ -486,7 +486,7 @@ Usage: mapbox analytics [OPTIONS]
 Options:
   -t, --resource-type [tokens|styles|accounts|tilesets]
                                   The resource being requested.  [required]
-  -u, --username TEXT             The username for the account that own the
+  -u, --username TEXT             The username for the account that owns the
                                   resource.  [required]
   -i, --id TEXT                   The id for the resource.
   -s, --start TEXT                The ISO-formatted start date.
