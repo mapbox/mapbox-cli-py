@@ -56,6 +56,7 @@ $ mapbox ...
 * [surface](#surface)
 * [upload](#upload)
 * [datasets](#datasets)
+* [analytics] (#analytics)
 
 For any command that takes waypoints or features as an input you can either specify:
 
@@ -460,6 +461,37 @@ Usage: mapbox datasets create-tileset [OPTIONS] DATASET TILESET
 Options:
   -n, --name TEXT  Name for the tileset
   --help           Show this message and exit.
+```
+
+## analytics
+```
+Usage: mapbox analytics [OPTIONS]
+
+  The Mapbox Analytics API returns the counts per day for a given resource
+  and period.
+
+  Long options:
+
+  $ mapbox analytics --resource-type <resource type> --username <username>
+  --id <resource id> --start <ISO-formatted start date> --end <ISO-formatted
+  end date>
+
+  Short options:
+
+  $ mapbox analytics -t <resource type> -u <username> -i <resource id> -s
+  <ISO-formatted start date> -e <ISO-formatted end date>
+
+  An access token is required.  See "mapbox --help".
+
+Options:
+  -t, --resource-type [tokens|styles|accounts|tilesets]
+                                  The resource being requested.  [required]
+  -u, --username TEXT             The username for the account that own the
+                                  resource.  [required]
+  -i, --id TEXT                   The id for the resource.
+  -s, --start TEXT                The ISO-formatted start date.
+  -e, --end TEXT                  The ISO-formatted end date.
+  --help                          Show this message and exit.
 ```
 
 ## Alternative command syntax
