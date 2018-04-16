@@ -20,7 +20,7 @@ from mapboxcli.errors import MapboxCLIException
   "-u", 
   type=str, 
   required=True,
-  help="The username for the account that own the resource."
+  help="The username for the account that owns the resource."
 )
 
 @click.option(
