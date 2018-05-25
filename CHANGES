@@ -1,5 +1,9 @@
-0.7.0 (current master)
-------------------
+0.8.0
+-----
+- Breaking change: remove the deprecated Distance API
+
+0.7.0
+-----
 - Breaking change: mapbox subcommands like 'upload' are no longer plugins. We
   are trading extensibility for speed (#95).
 - New feature: when saving a fraction of a second matters, mapbox subcommands

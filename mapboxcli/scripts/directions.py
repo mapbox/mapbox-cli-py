@@ -14,9 +14,9 @@ from mapboxcli.errors import MapboxCLIException
               help="Mapbox direction profile id")
 @click.option('--alternatives/--no-alternatives', default=True,
               help="Generate alternative routes?")
-@click.option('--instructions', default="text",
-              type=click.Choice(mapbox.Directions().valid_instruction_formats),
-              help="Format for route instructions")
+# @click.option('--instructions', default="text",
+#               type=click.Choice(mapbox.Directions().valid_instruction_formats),
+#               help="Format for route instructions")
 @click.option('--geometry', default="geojson",
               type=click.Choice(mapbox.Directions().valid_geom_encoding),
               help="Geometry encoding")
