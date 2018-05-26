@@ -45,7 +45,6 @@ from mapboxcli.errors import MapboxCLIException
 )
 
 @click.pass_context
-
 def analytics(ctx, resource_type, username, id, start, end):
   """The Mapbox Analytics API returns the counts per day for
      a given resource and period.
@@ -68,23 +67,17 @@ def analytics(ctx, resource_type, username, id, start, end):
   service = mapbox.Analytics(access_token=access_token)
 
   try:
-    response = service.analytics(
+    res = service.analytics(
       resource_type, 
       username, 
       id=id, 
       start=start, 
       end=end
     )
-  except:
-    raise
+  except mapbox.errors.ValidationError as exc:
+    raise click.BadParameter(str(exc))
 
-  if response.status_code == 200:
-    response_body = response.json()
-    response_body = dumps(response_body)
-    click.echo(response_body)
+  if res.status_code == 200:
+    click.echo(dumps(res.json()))
   else:
-    response_body = response.text
-    response_body = response_body.strip()
-    raise MapboxCLIException(response_body)
-
-
+    raise MapboxCLIException(res.text.strip())
