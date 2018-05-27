@@ -1,1 +1,1 @@
--e git+https://github.com/mapbox/mapbox-sdk-py.git#egg=mapbox
+mapbox==0.14.0
