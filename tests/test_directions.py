@@ -14,6 +14,8 @@ NON_GEOJSON_BODY = ""
 OUTPUT_FILE = "test.json"
 
 def test_cli_directions_validation_error():
+    # --annotations invalid
+
     runner = CliRunner()
 
     result = runner.invoke(
@@ -28,6 +30,40 @@ def test_cli_directions_validation_error():
 
     assert result.exit_code != 0
     assert "Error" in result.output
+
+    # --waypoint-snapping 1.1,1,1 --waypoint-snapping 1.1,1,1
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "test-token",
+            "directions",
+            "--waypoint-snapping", "1.1,1,1",
+            "--waypoint-snapping", "1.1,1,1",
+            "[0, 0]", "[1, 1]"
+        ]
+    )
+
+    assert result.exit_code != 0
+
+    # --waypoint-snapping 1.1 --waypoint-snapping 1.1
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "test-token",
+            "directions",
+            "--waypoint-snapping", "1.1",
+            "--waypoint-snapping", "1.1",
+            "[0, 0]", "[1, 1]"
+        ]
+    )
+
+    assert result.exit_code != 0
 
 
 @responses.activate
@@ -603,6 +639,210 @@ def test_cli_directions_with_continue_straight():
             "--access-token", "test-token",
             "directions",
             "--no-continue-straight",
+            "[0, 0]", "[1, 1]"
+        ]
+    )
+
+    assert result.exit_code == 0
+
+
+@responses.activate
+def test_cli_directions_with_waypoint_snapping():
+   # --waypoint-snapping 1,1,1 --waypoint-snapping 1,1,1
+
+    responses.add(
+        method=responses.GET,
+        url="https://api.mapbox.com/directions/v5" +
+            "/mapbox/driving" +
+            "/0%2C0%3B1%2C1.json" +
+            "?access_token=test-token" +
+            "&alternatives=true" +
+            "&geometries=geojson" +
+            "&steps=true" +
+            "&continue_straight=true" +
+            "&bearings=1%2C1%3B1%2C1" +
+            "&radiuses=1%3B1",
+        match_querystring=True,
+        body=GEOJSON_BODY,
+        status=200
+    )
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "test-token",
+            "directions",
+            "--waypoint-snapping", "1,1,1",
+            "--waypoint-snapping", "1,1,1",
+            "[0, 0]", "[1, 1]"
+        ]
+    )
+
+    assert result.exit_code == 0
+
+   # --waypoint-snapping 1 --waypoint-snapping 1
+
+    responses.add(
+        method=responses.GET,
+        url="https://api.mapbox.com/directions/v5" +
+            "/mapbox/driving" +
+            "/0%2C0%3B1%2C1.json" +
+            "?access_token=test-token" +
+            "&alternatives=true" +
+            "&geometries=geojson" +
+            "&steps=true" +
+            "&continue_straight=true" +
+            "&radiuses=1%3B1",
+        match_querystring=True,
+        body=GEOJSON_BODY,
+        status=200
+    )
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "test-token",
+            "directions",
+            "--waypoint-snapping", "1",
+            "--waypoint-snapping", "1",
+            "[0, 0]", "[1, 1]"
+        ]
+    )
+
+    assert result.exit_code == 0
+
+    # --waypoint-snapping unlimited --waypoint-snapping unlimited
+
+    responses.add(
+        method=responses.GET,
+        url="https://api.mapbox.com/directions/v5" +
+            "/mapbox/driving" +
+            "/0%2C0%3B1%2C1.json" +
+            "?access_token=test-token" +
+            "&alternatives=true" +
+            "&geometries=geojson" +
+            "&steps=true" +
+            "&continue_straight=true" +
+            "&radiuses=unlimited%3Bunlimited",
+        match_querystring=True,
+        body=GEOJSON_BODY,
+        status=200
+    )
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "test-token",
+            "directions",
+            "--waypoint-snapping", "unlimited",
+            "--waypoint-snapping", "unlimited",
+            "[0, 0]", "[1, 1]"
+        ]
+    )
+
+    assert result.exit_code == 0
+
+   # --waypoint-snapping 1,1,1 --waypoint-snapping 1
+
+    responses.add(
+        method=responses.GET,
+        url="https://api.mapbox.com/directions/v5" +
+            "/mapbox/driving" +
+            "/0%2C0%3B1%2C1.json" +
+            "?access_token=test-token" +
+            "&alternatives=true" +
+            "&geometries=geojson" +
+            "&steps=true" +
+            "&continue_straight=true" +
+            "&bearings=1%2C1%3B" +
+            "&radiuses=1%3B1",
+        match_querystring=True,
+        body=GEOJSON_BODY,
+        status=200
+    )
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "test-token",
+            "directions",
+            "--waypoint-snapping", "1,1,1",
+            "--waypoint-snapping", "1",
+            "[0, 0]", "[1, 1]"
+        ]
+    )
+
+    assert result.exit_code == 0
+
+   # --waypoint-snapping 1,1,1 --waypoint-snapping unlimited
+
+    responses.add(
+        method=responses.GET,
+        url="https://api.mapbox.com/directions/v5" +
+            "/mapbox/driving" +
+            "/0%2C0%3B1%2C1.json" +
+            "?access_token=test-token" +
+            "&alternatives=true" +
+            "&geometries=geojson" +
+            "&steps=true" +
+            "&continue_straight=true" +
+            "&bearings=1%2C1%3B" +
+            "&radiuses=1%3Bunlimited",
+        match_querystring=True,
+        body=GEOJSON_BODY,
+        status=200
+    )
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "test-token",
+            "directions",
+            "--waypoint-snapping", "1,1,1",
+            "--waypoint-snapping", "unlimited",
+            "[0, 0]", "[1, 1]"
+        ]
+    )
+
+    assert result.exit_code == 0
+
+   # --waypoint-snapping 1 --waypoint-snapping unlimited
+
+    responses.add(
+        method=responses.GET,
+        url="https://api.mapbox.com/directions/v5" +
+            "/mapbox/driving" +
+            "/0%2C0%3B1%2C1.json" +
+            "?access_token=test-token" +
+            "&alternatives=true" +
+            "&geometries=geojson" +
+            "&steps=true" +
+            "&continue_straight=true" +
+            "&radiuses=1%3Bunlimited",
+        match_querystring=True,
+        body=GEOJSON_BODY,
+        status=200
+    )
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "test-token",
+            "directions",
+            "--waypoint-snapping", "1",
+            "--waypoint-snapping", "unlimited",
             "[0, 0]", "[1, 1]"
         ]
     )
