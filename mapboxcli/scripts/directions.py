@@ -11,7 +11,7 @@ from mapboxcli.errors import MapboxCLIException
 def waypoint_snapping_callback(ctx, param, value):
     results = []
 
-    list_pattern = re.compile("[,]")
+    tuple_pattern = re.compile("[,]")
     int_pattern = re.compile("[0-9]")
 
     # value is an n-tuple, each element of
@@ -42,8 +42,8 @@ def waypoint_snapping_callback(ctx, param, value):
         # (The SDK accepts a three-tuple with ints for 
         # radius, angle, and range.)
 
-        if re.search(list_pattern, element):
-            element = re.split(list_pattern, element)
+        if re.search(tuple_pattern, element):
+            element = re.split(tuple_pattern, element)
 
             for index in range(0, len(element)):
                 try:
