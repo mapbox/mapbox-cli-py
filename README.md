@@ -56,6 +56,7 @@ $ mapbox ...
 * [surface](#surface)
 * [upload](#upload)
 * [datasets](#datasets)
+* [maps](#maps)
 
 For any command that takes waypoints or features as an input you can either specify:
 
@@ -460,6 +461,123 @@ Usage: mapbox datasets create-tileset [OPTIONS] DATASET TILESET
 Options:
   -n, --name TEXT  Name for the tileset
   --help           Show this message and exit.
+```
+
+# maps
+```
+Usage: mapbox maps [OPTIONS] COMMAND [ARGS]...
+
+  The Mapbox Maps API supports reading raster tilesets, vector tilesets, and
+  Mapbox Editor project features.
+
+  An access token is required.  See "mapbox --help".
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  features  Returns features from Mapbox Editor projects
+  marker    Returns a single marker
+  metadata  Returns metadata for a tileset
+  tile      Returns a tile in the specified format
+```
+
+# maps features
+```
+Usage: mapbox maps features [OPTIONS] MAP_ID [OUTPUT]
+
+  Returns vector features from Mapbox Editor projects  as GeoJSON or KML.
+
+  To write output to the console (stdout):
+
+  mapbox maps features <map_id>
+
+  mapbox maps features mapbox.streets
+
+  To write output to a file:
+
+  mapbox maps features <map_id> <output>
+
+  mapbox maps features mapbox.streets features.json
+
+  An access token is required.  See "mapbox --help".
+
+Options:
+  -f, --feature-format [json|kml]
+                                  The vector's feature format
+  --help                          Show this message and exit.
+```
+
+# maps marker
+```
+Usage: mapbox maps marker [OPTIONS] OUTPUT
+
+  Returns a single marker image without any background map.
+
+  mapbox maps marker --marker-name <marker_name> <output>
+
+  mapbox maps marker --marker-name pin-s pin-s.png
+
+  An access token is required.  See "mapbox --help".
+
+Options:
+  -m, --marker-name [pin-s|pin-l]
+                                  The marker's shape and size  [required]
+  -l, --label TEXT                The marker's alphanumeric label
+  -c, --color TEXT                The marker's color
+  --retina / --no-retina          Whether to return the tile in Retina scale
+  --help                          Show this message and exit.
+```
+
+# maps metadata
+```
+Usage: mapbox maps metadata [OPTIONS] MAP_ID [OUTPUT]
+
+  Returns TileJSON metadata for a tileset.
+
+  To write output to the console (stdout):
+
+  mapbox maps metadata <map_id>
+
+  mapbox maps metadata mapbox.streets
+
+  To write output to a file:
+
+  mapbox maps metadata <map_id> <output>
+
+  mapbox maps metadata mapbox.streets metadata.json
+
+  An access token is required.  See "mapbox --help".
+
+Options:
+  --secure / --no-secure  Whether to return HTTPS endpoints
+  --help                  Show this message and exit.
+```
+
+# maps tile
+```
+Usage: mapbox maps tile [OPTIONS] MAP_ID OUTPUT
+
+  Returns an image tile, vector tile, or UTFGrid in the specified file
+  format.
+
+  mapbox maps tile --column <column> --row <row> --zoom--level <zoom_level>
+  <map_id> <output>
+
+  mapbox maps tile --column 0 --row 0 --zoom 0 mapbox.streets tile.png
+
+  An access token is required.  See "mapbox --help".
+
+Options:
+  -x, --column TEXT               The tile's column (x)  [required]
+  -y, --row TEXT                  The tile's row (y)  [required]
+  -z, --zoom-level TEXT           The tile's zoom level (z)  [required]
+  --retina / --no-retina          Whether to return the tile in Retina scale
+  -f, --file-format [grid.json|mvt|png|png32|png64|png128|png256|jpg70|jpg80|jpg90]
+                                  The tile's file format
+  -s, --style-id TEXT             The style id
+  -t, --timestamp TEXT            The style id's ISO-formatted date string
+  --help                          Show this message and exit.
 ```
 
 ## Alternative command syntax
