@@ -49,11 +49,9 @@ $ mapbox ...
 ## Usage
 
 * [directions](#directions)
-* [distance](#distance)
 * [geocoding](#geocoding)
 * [mapmatching](#mapmatching)
 * [staticmap](#staticmap)
-* [surface](#surface)
 * [upload](#upload)
 * [datasets](#datasets)
 
@@ -92,28 +90,6 @@ Options:
   --help                          Show this message and exit.
 ```
 
-### distance
-```
-Usage: mapbox distance [OPTIONS] FEATURES...
-
-  The Distance API returns all travel times between many points (also known
-  as Distance Matrix). This is often used as input for solving routing
-  optimization problems.
-
-    $ mapbox distance "[-122.681, 45.528]" "[-122.716, 45.525]"
-
-  The output is a json object with a "durations" key containing a 2D array
-  of travel times between waypoints.
-
-  An access token is required, see `mapbox --help`.
-
-Options:
-  --profile [driving|cycling|walking]
-                                  Mapbox direction profile id
-  -o, --output TEXT               Save output to a file.
-  --help                          Show this message and exit.
-```
-**Note**: Distance API is currently in preview. [Contact us](https://mapbox.com/contact/) for access.
 
 ### geocoding
 ```
@@ -199,28 +175,6 @@ Options:
   --help                       Show this message and exit.
 ```
 
-### surface
-```
-Usage: mapbox surface [OPTIONS] MAPID LAYER FIELDS FEATURES...
-
-  Mapbox Surface API enables flexible querying of data stored in vector
-  tiles on Mapbox, to create results like elevation profiles.
-
-        $ mapbox surface mapbox.mapbox-terrain-v1 contour ele \ 
-        "[-122.781, 45.528]" "[-122.716, 45.525]"
-
-  An access token is required, see `mapbox --help`.
-
-Options:
-  -z, --zoom INTEGER              Zoom level to query (default: 14)
-  --interpolate / --no-interpolate
-                                  Weighted average interpolation (default:
-                                  True)
-  --geojson / --no-geojson        Return geojson feature collection (default:
-                                  True)
-  -o, --output TEXT               Save output to a file.
-  --help                          Show this message and exit.
-```
 
 ### upload
 ```
