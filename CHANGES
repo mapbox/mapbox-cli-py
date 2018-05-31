@@ -2,6 +2,10 @@
 -----
 - Breaking change: remove the deprecated Distance API
 
+0.7.1
+-----
+- Pin to mapbox-sdk-py version 0.14.0, the most recent compatible version
+
 0.7.0
 -----
 - Breaking change: mapbox subcommands like 'upload' are no longer plugins. We
