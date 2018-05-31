@@ -13,6 +13,16 @@ NON_GEOJSON_BODY = ""
 
 OUTPUT_FILE = "test.json"
 
+# Workaround for https://github.com/mapbox/mapbox-sdk-py/issues/237
+if str(round(0)) == "0.0":
+    # Python 2.7
+    ENCODED_COORDS = "/0.0%2C0.0%3B1.0%2C1.0.json"
+else:
+    # Python 3
+    ENCODED_COORDS = "/0%2C0%3B1%2C1.json"
+
+
+
 def test_cli_directions_validation_error():
     # --annotations invalid
 
@@ -72,7 +82,7 @@ def test_cli_directions_server_error():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -104,7 +114,7 @@ def test_cli_directions():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -137,7 +147,7 @@ def test_cli_directions_with_profile():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving-traffic" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -168,7 +178,7 @@ def test_cli_directions_with_profile():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -199,7 +209,7 @@ def test_cli_directions_with_profile():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/walking" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -230,7 +240,7 @@ def test_cli_directions_with_profile():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/cycling" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -264,7 +274,7 @@ def test_cli_directions_with_alternatives():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -295,7 +305,7 @@ def test_cli_directions_with_alternatives():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=false" +
             "&geometries=geojson" +
@@ -329,7 +339,7 @@ def test_cli_directions_with_geometries():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -360,7 +370,7 @@ def test_cli_directions_with_geometries():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=polyline" +
@@ -391,7 +401,7 @@ def test_cli_directions_with_geometries():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=polyline6" +
@@ -425,7 +435,7 @@ def test_cli_directions_with_overview():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -457,7 +467,7 @@ def test_cli_directions_with_overview():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -489,7 +499,7 @@ def test_cli_directions_with_overview():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -524,7 +534,7 @@ def test_cli_directions_with_steps():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -555,7 +565,7 @@ def test_cli_directions_with_steps():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -589,7 +599,7 @@ def test_cli_directions_with_continue_straight():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -620,7 +630,7 @@ def test_cli_directions_with_continue_straight():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -654,7 +664,7 @@ def test_cli_directions_with_waypoint_snapping():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -688,7 +698,7 @@ def test_cli_directions_with_waypoint_snapping():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -721,7 +731,7 @@ def test_cli_directions_with_waypoint_snapping():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -748,13 +758,13 @@ def test_cli_directions_with_waypoint_snapping():
 
     assert result.exit_code == 0
 
-   # --waypoint-snapping 1,1,1 --waypoint-snapping 1
+    # --waypoint-snapping 1,1,1 --waypoint-snapping 1
 
     responses.add(
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -782,13 +792,14 @@ def test_cli_directions_with_waypoint_snapping():
 
     assert result.exit_code == 0
 
-   # --waypoint-snapping 1,1,1 --waypoint-snapping unlimited
+
+    # --waypoint-snapping 1,1,1 --waypoint-snapping unlimited
 
     responses.add(
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -816,13 +827,13 @@ def test_cli_directions_with_waypoint_snapping():
 
     assert result.exit_code == 0
 
-   # --waypoint-snapping 1 --waypoint-snapping unlimited
+    # --waypoint-snapping 1 --waypoint-snapping unlimited
 
     responses.add(
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -858,7 +869,7 @@ def test_cli_directions_with_annotations():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -890,7 +901,7 @@ def test_cli_directions_with_annotations():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -922,7 +933,7 @@ def test_cli_directions_with_annotations():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -954,7 +965,7 @@ def test_cli_directions_with_annotations():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -989,7 +1000,7 @@ def test_cli_directions_with_language():
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -1017,14 +1028,12 @@ def test_cli_directions_with_language():
 
 
 @responses.activate
-def test_cli_directions_with_output():
-    # --output - (stdout)
-
+def test_cli_directions_stdout():
     responses.add(
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
@@ -1049,13 +1058,14 @@ def test_cli_directions_with_output():
 
     assert result.exit_code == 0
 
-    # --output test.json
 
+@responses.activate
+def test_cli_directions_file_output():
     responses.add(
         method=responses.GET,
         url="https://api.mapbox.com/directions/v5" +
             "/mapbox/driving" +
-            "/0%2C0%3B1%2C1.json" +
+            ENCODED_COORDS +
             "?access_token=test-token" +
             "&alternatives=true" +
             "&geometries=geojson" +
