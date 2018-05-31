@@ -1,6 +1,7 @@
 0.8.0
 -----
 - Breaking change: remove the deprecated Distance API
+- Breaking change: remove the deprecated Surface API
 
 0.7.1
 -----

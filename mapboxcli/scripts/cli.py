@@ -12,8 +12,7 @@ import cligj
 import mapboxcli
 from mapboxcli.compat import configparser
 from mapboxcli.scripts import (
-    config, geocoding, directions, mapmatching, uploads, static,
-    surface, datasets)
+    config, geocoding, directions, mapmatching, uploads, static, datasets)
 
 
 def configure_logging(verbosity):
@@ -102,5 +101,4 @@ main_group.add_command(directions.directions)
 main_group.add_command(mapmatching.match)
 main_group.add_command(uploads.upload)
 main_group.add_command(static.staticmap)
-main_group.add_command(surface.surface)
 main_group.add_command(datasets.datasets)

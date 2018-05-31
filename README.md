@@ -52,7 +52,6 @@ $ mapbox ...
 * [geocoding](#geocoding)
 * [mapmatching](#mapmatching)
 * [staticmap](#staticmap)
-* [surface](#surface)
 * [upload](#upload)
 * [datasets](#datasets)
 
@@ -176,28 +175,6 @@ Options:
   --help                       Show this message and exit.
 ```
 
-### surface
-```
-Usage: mapbox surface [OPTIONS] MAPID LAYER FIELDS FEATURES...
-
-  Mapbox Surface API enables flexible querying of data stored in vector
-  tiles on Mapbox, to create results like elevation profiles.
-
-        $ mapbox surface mapbox.mapbox-terrain-v1 contour ele \ 
-        "[-122.781, 45.528]" "[-122.716, 45.525]"
-
-  An access token is required, see `mapbox --help`.
-
-Options:
-  -z, --zoom INTEGER              Zoom level to query (default: 14)
-  --interpolate / --no-interpolate
-                                  Weighted average interpolation (default:
-                                  True)
-  --geojson / --no-geojson        Return geojson feature collection (default:
-                                  True)
-  -o, --output TEXT               Save output to a file.
-  --help                          Show this message and exit.
-```
 
 ### upload
 ```
