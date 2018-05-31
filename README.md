@@ -68,25 +68,31 @@ Note that functions that accept points only, any non-point feature is filtered o
 ```
 Usage: mapbox directions [OPTIONS] FEATURES...
 
-  Calculate optimal route with turn-by-turn directions between up to 25
-  waypoints.
+  The Mapbox Directions API will show you how to get where you're going.
 
-    $ mapbox directions "[-122.681032, 45.528334]" "[-122.71679, 45.525135]"
+  mapbox directions "[0, 0]" "[1, 1]"
 
-  An access token is required, see `mapbox --help`.
+  An access token is required.  See "mapbox --help".
 
 Options:
-  --profile [mapbox.driving|mapbox.cycling|mapbox.walking]
-                                  Mapbox direction profile id
+  --profile [mapbox/driving|mapbox/driving-traffic|mapbox/walking|mapbox/cycling]
+                                  Routing profile
   --alternatives / --no-alternatives
-                                  Generate alternative routes?
-  --instructions [text|html]      Format for route instructions
-  --geometry [geojson|polyline|false]
-                                  Geometry encoding
-  --steps / --no-steps            Include steps in the response
-  --geojson / --no-geojson        Return geojson feature collection (default:
-                                  full response json)
-  -o, --output TEXT               Save output to a file.
+                                  Whether to try to return alternative routes
+  --geometries [geojson|polyline|polyline6]
+                                  Format of returned geometry
+  --overview [full|simplified|False]
+                                  Type of returned overview geometry
+  --steps / --no-steps            Whether to return steps and turn-by-turn
+                                  instructions
+  --continue-straight / --no-continue-straight
+                                  Whether to see the allowed direction of
+                                  travel when departing the original waypoint
+  --waypoint-snapping TEXT        Controls waypoint snapping
+  --annotations TEXT              Additional metadata along the route
+  --language TEXT                 Language of returned turn-by-turn
+                                  instructions
+  -o, --output TEXT               Save output to a file
   --help                          Show this message and exit.
 ```
 
