@@ -2,6 +2,7 @@
 -----
 - Breaking change: remove the deprecated Distance API
 - Breaking change: remove the deprecated Surface API
+- Pin to mapbox-sdk-py version 0.16.1
 
 0.7.1
 -----
