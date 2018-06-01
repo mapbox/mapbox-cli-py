@@ -1,9 +1,10 @@
 import os
 
 from mapboxcli.scripts.cli import main_group
+from mapboxcli.scripts.directions import waypoint_snapping_callback
 
 from click.testing import CliRunner
-
+import pytest
 import responses
 
 
@@ -13,14 +14,7 @@ NON_GEOJSON_BODY = ""
 
 OUTPUT_FILE = "test.json"
 
-# Workaround for https://github.com/mapbox/mapbox-sdk-py/issues/237
-if str(round(0)) == "0.0":
-    # Python 2.7
-    ENCODED_COORDS = "/0.0%2C0.0%3B1.0%2C1.0.json"
-else:
-    # Python 3
-    ENCODED_COORDS = "/0%2C0%3B1%2C1.json"
-
+ENCODED_COORDS = "/0.0%2C0.0%3B1.0%2C1.0.json"
 
 
 def test_cli_directions_validation_error():
@@ -792,7 +786,6 @@ def test_cli_directions_with_waypoint_snapping():
 
     assert result.exit_code == 0
 
-
     # --waypoint-snapping 1,1,1 --waypoint-snapping unlimited
 
     responses.add(
@@ -938,7 +931,7 @@ def test_cli_directions_with_annotations():
             "&alternatives=true" +
             "&geometries=geojson" +
             "&steps=true" +
-            "&continue_straight=true" + 
+            "&continue_straight=true" +
             "&annotations=speed",
         match_querystring=True,
         body=GEOJSON_BODY,
@@ -970,7 +963,7 @@ def test_cli_directions_with_annotations():
             "&alternatives=true" +
             "&geometries=geojson" +
             "&steps=true" +
-            "&continue_straight=true" + 
+            "&continue_straight=true" +
             "&annotations=duration%2Cdistance%2Cspeed",
         match_querystring=True,
         body=GEOJSON_BODY,
@@ -1091,3 +1084,16 @@ def test_cli_directions_file_output():
     assert result.exit_code == 0
     assert os.stat(OUTPUT_FILE)
     os.remove(OUTPUT_FILE)
+
+
+@pytest.mark.parametrize("input_snap,expected", [
+    ("1,1,1", [(1, 1, 1)]),
+    ("1", [1]),
+    ("unlimited", ["unlimited"]),
+])
+def test_waypoint_callback(input_snap, expected):
+    wpt = waypoint_snapping_callback(None, None, [input_snap])
+    assert wpt == expected
+
+    wpt = waypoint_snapping_callback(None, None, (u"1", u"unlimited"))
+    assert wpt == [1, "unlimited"]

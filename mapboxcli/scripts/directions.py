@@ -77,7 +77,7 @@ def waypoint_snapping_callback(ctx, param, value):
         # nor a comma, then assume that the user intended 
         # to pass in a str.
         #
-        # Do nothing since the element is aready a str.
+        # Do nothing since the element is already a str.
         #
         # (The Directions SDK accepts a str for unlimited radius.)
 
@@ -85,6 +85,7 @@ def waypoint_snapping_callback(ctx, param, value):
             results.append(element)
 
     return results
+
 
 @click.command(short_help="Routing between waypoints")
 
