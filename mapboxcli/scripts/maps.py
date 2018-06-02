@@ -177,14 +177,11 @@ def features(ctx, map_id, output, feature_format):
 
     service = ctx.obj.get("service")
 
-    try:
-        res = service.features(
-            map_id,
-            feature_format=feature_format,
-        )
-    except mapbox.errors.ValidationError as exc:
-        raise click.BadParameter(str(exc))
-
+    res = service.features(
+        map_id,
+        feature_format=feature_format,
+    )
+    
     if res.status_code == 200:
         if output and feature_format == "json":
            output.write(json.dumps(res.json()))
@@ -247,13 +244,10 @@ def metadata(ctx, map_id, output, secure):
 
     service = ctx.obj.get("service")
 
-    try:
-        res = service.metadata(
-            map_id,
-            secure=secure
-        )
-    except mapbox.errors.ValidationError as exc:
-        raise click.BadParameter(str(exc))
+    res = service.metadata(
+        map_id,
+        secure=secure
+    )
 
     if res.status_code == 200:
         if output:
