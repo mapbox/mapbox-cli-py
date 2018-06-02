@@ -1,7 +1,6 @@
 * [Directions](directions.md)
-* [Distances](distances.md)
+* [Geocoding](geocoding.md)
 * [Mapmatching](mapmatching.md)
 * [Staticmaps](static_maps.md)
-* [Surface](surface.md)
 * [Geocoding](geocoding.md)
 * [Analytics](analytics.md)
