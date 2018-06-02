@@ -1,1 +1,1 @@
-# -e git+https://github.com/mapbox/mapbox-sdk-py.git#egg=mapbox
+-e git+https://github.com/mapbox/mapbox-sdk-py.git#egg=mapbox
