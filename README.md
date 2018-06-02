@@ -49,11 +49,9 @@ $ mapbox ...
 ## Usage
 
 * [directions](#directions)
-* [distance](#distance)
 * [geocoding](#geocoding)
 * [mapmatching](#mapmatching)
 * [staticmap](#staticmap)
-* [surface](#surface)
 * [upload](#upload)
 * [datasets](#datasets)
 * [maps](#maps)
@@ -71,50 +69,34 @@ Note that functions that accept points only, any non-point feature is filtered o
 ```
 Usage: mapbox directions [OPTIONS] FEATURES...
 
-  Calculate optimal route with turn-by-turn directions between up to 25
-  waypoints.
+  The Mapbox Directions API will show you how to get where you're going.
 
-    $ mapbox directions "[-122.681032, 45.528334]" "[-122.71679, 45.525135]"
+  mapbox directions "[0, 0]" "[1, 1]"
 
-  An access token is required, see `mapbox --help`.
+  An access token is required.  See "mapbox --help".
 
 Options:
-  --profile [mapbox.driving|mapbox.cycling|mapbox.walking]
-                                  Mapbox direction profile id
+  --profile [mapbox/driving|mapbox/driving-traffic|mapbox/walking|mapbox/cycling]
+                                  Routing profile
   --alternatives / --no-alternatives
-                                  Generate alternative routes?
-  --instructions [text|html]      Format for route instructions
-  --geometry [geojson|polyline|false]
-                                  Geometry encoding
-  --steps / --no-steps            Include steps in the response
-  --geojson / --no-geojson        Return geojson feature collection (default:
-                                  full response json)
-  -o, --output TEXT               Save output to a file.
+                                  Whether to try to return alternative routes
+  --geometries [geojson|polyline|polyline6]
+                                  Format of returned geometry
+  --overview [full|simplified|False]
+                                  Type of returned overview geometry
+  --steps / --no-steps            Whether to return steps and turn-by-turn
+                                  instructions
+  --continue-straight / --no-continue-straight
+                                  Whether to see the allowed direction of
+                                  travel when departing the original waypoint
+  --waypoint-snapping TEXT        Controls waypoint snapping
+  --annotations TEXT              Additional metadata along the route
+  --language TEXT                 Language of returned turn-by-turn
+                                  instructions
+  -o, --output TEXT               Save output to a file
   --help                          Show this message and exit.
 ```
 
-### distance
-```
-Usage: mapbox distance [OPTIONS] FEATURES...
-
-  The Distance API returns all travel times between many points (also known
-  as Distance Matrix). This is often used as input for solving routing
-  optimization problems.
-
-    $ mapbox distance "[-122.681, 45.528]" "[-122.716, 45.525]"
-
-  The output is a json object with a "durations" key containing a 2D array
-  of travel times between waypoints.
-
-  An access token is required, see `mapbox --help`.
-
-Options:
-  --profile [driving|cycling|walking]
-                                  Mapbox direction profile id
-  -o, --output TEXT               Save output to a file.
-  --help                          Show this message and exit.
-```
-**Note**: Distance API is currently in preview. [Contact us](https://mapbox.com/contact/) for access.
 
 ### geocoding
 ```
@@ -200,28 +182,6 @@ Options:
   --help                       Show this message and exit.
 ```
 
-### surface
-```
-Usage: mapbox surface [OPTIONS] MAPID LAYER FIELDS FEATURES...
-
-  Mapbox Surface API enables flexible querying of data stored in vector
-  tiles on Mapbox, to create results like elevation profiles.
-
-        $ mapbox surface mapbox.mapbox-terrain-v1 contour ele \ 
-        "[-122.781, 45.528]" "[-122.716, 45.525]"
-
-  An access token is required, see `mapbox --help`.
-
-Options:
-  -z, --zoom INTEGER              Zoom level to query (default: 14)
-  --interpolate / --no-interpolate
-                                  Weighted average interpolation (default:
-                                  True)
-  --geojson / --no-geojson        Return geojson feature collection (default:
-                                  True)
-  -o, --output TEXT               Save output to a file.
-  --help                          Show this message and exit.
-```
 
 ### upload
 ```
