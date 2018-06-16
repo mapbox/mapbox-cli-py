@@ -15,11 +15,9 @@ from mapboxcli.scripts import (
     config, 
     geocoding, 
     directions, 
-    distance, 
     mapmatching, 
     uploads, 
     static,
-    surface, 
     datasets,
     tilesets
 )
