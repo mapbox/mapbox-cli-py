@@ -56,6 +56,7 @@ $ mapbox ...
 * [surface](#surface)
 * [upload](#upload)
 * [datasets](#datasets)
+* [tilesets](#tilesets)
 
 For any command that takes waypoints or features as an input you can either specify:
 
@@ -461,6 +462,28 @@ Options:
   -n, --name TEXT  Name for the tileset
   --help           Show this message and exit.
 ```
+
+### tilesets
+```
+Usage: mapbox tilesets [OPTIONS]
+
+  The Mapbox Tilesets API supports reading metadata for raster and vector
+  tilesets.
+
+  mapbox tilesets
+
+  An access token is required.  See "mapbox --help".
+
+Options:
+  -t, --tileset-type [raster|vector]
+                                  Filter results by type
+  -v, --visibility [private|public]
+                                  Filter results by visibility
+  -s, --sortby [created|modified]
+                                  Sort results by timestamp
+  -l, --limit TEXT                Limit number of results (pagination)
+  --help                          Show this message and exit.
+  ```
 
 ## Alternative command syntax
 
