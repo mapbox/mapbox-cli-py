@@ -4,3 +4,4 @@
 * [Staticmaps](static_maps.md)
 * [Surface](surface.md)
 * [Geocoding](geocoding.md)
+* [Tilesets](tilesets.md)
