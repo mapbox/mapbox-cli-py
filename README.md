@@ -20,7 +20,7 @@ Installing locally without a virtual environment using
 ```
 $ pip install --user mapboxcli
 ```
-You'll then need to include ~/.local/bin in your $PATH.
+You'll then need to include `~/.local/bin` in your $PATH.
 
 Installing globally is *not recommended* but some users may want to do so under certain circumstances
 ```
