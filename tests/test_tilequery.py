@@ -202,7 +202,8 @@ def test_tilequery_negative_lon():
             "--access-token", "pk.test",
             "tilequery",
             "mapbox.mapbox-streets-v10",
-            "-- -0.0",
+            "--",
+            "-0.0",
             "1.1"
         ]
     )
@@ -236,7 +237,8 @@ def test_tilequery_negative_lat():
             "tilequery",
             "mapbox.mapbox-streets-v10",
             "0.0",
-            "-- -1.1"
+            "--",
+            "-1.1"
         ]
     )
 
