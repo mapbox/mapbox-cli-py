@@ -56,6 +56,7 @@ $ mapbox ...
 * [surface](#surface)
 * [upload](#upload)
 * [datasets](#datasets)
+* [tilequery](#tilequery)
 
 For any command that takes waypoints or features as an input you can either specify:
 
@@ -460,6 +461,40 @@ Usage: mapbox datasets create-tileset [OPTIONS] DATASET TILESET
 Options:
   -n, --name TEXT  Name for the tileset
   --help           Show this message and exit.
+```
+
+### tilequery
+
+```
+Usage: mapbox tilequery [OPTIONS] MAP_ID... LON LAT
+
+  Returns data about specific features from vector tilesets.
+
+    $ mapbox tilequery <map_id> <lon> <lat>
+
+    $ mapbox tilequery mapbox.mapbox-streets-v10 0.0 1.1
+
+    Note: Preface negative longitude or latitude arguments with --.
+
+    $ mapbox tilequery <map_id> -- <-lon> <lat>
+
+    $ mapbox tilequery mapbox.mapbox-streets-v10 -- -0.0 1.1
+
+    $ mapbox tilequery <map_id> <lon> -- <-lat>
+
+    $ mapbox tilequery mapbox.mapbox-streets-v10 0.0 -- -1.1
+
+  An access token is required.  See "mapbox --help".
+
+Options:
+  -r, --radius INTEGER RANGE      The approximate distance in meters to query
+  -l, --limit INTEGER RANGE       The number of features to return
+  --dedupe / --no-dedupe          Whether to remove duplicate results
+  -g, --geometry [linestring|point|polygon]
+                                  The geometry type to query
+  -y, --layer TEXT                The list of layers to query
+  -o, --output FILENAME           Whether to save the results to a file
+  --help                          Show this message and exit.
 ```
 
 ## Alternative command syntax
