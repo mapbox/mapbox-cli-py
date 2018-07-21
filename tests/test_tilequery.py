@@ -177,7 +177,73 @@ def test_tilequery_two_mapids():
     assert result.exit_code == 0
     assert result.output == "{\"key\": \"value\"}" + "\n"
     
-    
+ 
+@activate
+def test_tilequery_negative_lon():
+    add(
+        method=GET,
+        url="https://api.mapbox.com" +
+        "/v4" +
+        "/mapbox.mapbox-streets-v10" +
+        "/tilequery" +
+        "/-0.0%2C1.1.json" +
+        "?access_token=pk.test" +
+        "&dedupe=true",
+        match_querystring=True,
+        body="{\"key\": \"value\"}",
+        status=200
+    )
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "pk.test",
+            "tilequery",
+            "mapbox.mapbox-streets-v10",
+            "-- -0.0",
+            "1.1"
+        ]
+    )
+
+    assert result.exit_code == 0
+    assert result.output == "{\"key\": \"value\"}" + "\n"
+
+
+@activate
+def test_tilequery_negative_lat():
+    add(
+        method=GET,
+        url="https://api.mapbox.com" +
+        "/v4" +
+        "/mapbox.mapbox-streets-v10" +
+        "/tilequery" +
+        "/0.0%2C-1.1.json" +
+        "?access_token=pk.test" +
+        "&dedupe=true",
+        match_querystring=True,
+        body="{\"key\": \"value\"}",
+        status=200
+    )
+
+    runner = CliRunner()
+
+    result = runner.invoke(
+        main_group,
+        [
+            "--access-token", "pk.test",
+            "tilequery",
+            "mapbox.mapbox-streets-v10",
+            "0.0",
+            "-- -1.1"
+        ]
+    )
+
+    assert result.exit_code == 0
+    assert result.output == "{\"key\": \"value\"}" + "\n"
+
+
 @activate
 @mark.parametrize("radius", ["0", "1000", "1000000"])
 def test_tilequery_with_radius(radius):
