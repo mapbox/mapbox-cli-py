@@ -15,11 +15,9 @@ from mapboxcli.scripts import (
     config, 
     geocoding, 
     directions, 
-    distance, 
     mapmatching, 
     uploads, 
     static,
-    surface, 
     datasets,
     tilequery
 )
@@ -108,10 +106,8 @@ def main_group(ctx, verbose, quiet, access_token, config):
 main_group.add_command(config.config)
 main_group.add_command(geocoding.geocoding)
 main_group.add_command(directions.directions)
-main_group.add_command(distance.distance)
 main_group.add_command(mapmatching.match)
 main_group.add_command(uploads.upload)
 main_group.add_command(static.staticmap)
-main_group.add_command(surface.surface)
 main_group.add_command(datasets.datasets)
 main_group.add_command(tilequery.tilequery)
