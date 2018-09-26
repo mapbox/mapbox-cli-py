@@ -101,8 +101,8 @@ def tilequery(ctx, map_id, lon, lat, radius,
     try:
         res = service.tilequery(
             list(map_id),
-            float(lon),
-            float(lat),
+            lon=float(lon),
+            lat=float(lat),
             radius=radius,
             limit=limit,
             dedupe=dedupe,
