@@ -399,7 +399,7 @@ def test_cli_tilequery_with_layers():
         "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true" +
-        "&layers=layer0,layer1,layer2",
+        "&layers=layer0%2Clayer1%2Clayer2",
         match_querystring=True,
         body='{"key": "value"}',
         status=200
@@ -582,7 +582,7 @@ def test_cli_tilequery_with_radius_and_layers():
         "?access_token=pk.test" +
         "&radius=25" +
         "&dedupe=true" + 
-        "&layers=layer0,layer1,layer2",
+        "&layers=layer0%2Clayer1%2Clayer2",
         match_querystring=True,
         body='{"key": "value"}',
         status=200
@@ -699,7 +699,7 @@ def test_cli_tilequery_with_radius_limit_and_layers():
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" + 
-        "&layers=layer0,layer1,layer2",
+        "&layers=layer0%2Clayer1%2Clayer2",
         match_querystring=True,
         body='{"key": "value"}',
         status=200
@@ -780,7 +780,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_and_layers():
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" +
-        "&layers=layer0,layer1,layer2",
+        "&layers=layer0%2Clayer1%2Clayer2",
         match_querystring=True,
         body='{"key": "value"}',
         status=200
@@ -823,7 +823,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_geometry_and_layers():
         "&limit=25" +
         "&dedupe=true" +
         "&geometry=linestring" +
-        "&layers=layer0,layer1,layer2",
+        "&layers=layer0%2Clayer1%2Clayer2",
         match_querystring=True,
         body='{"key": "value"}',
         status=200
@@ -867,7 +867,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_geometry_layers_and_output():
         "&limit=25" +
         "&dedupe=true" +
         "&geometry=linestring" +
-        "&layers=layer0,layer1,layer2",
+        "&layers=layer0%2Clayer1%2Clayer2",
         match_querystring=True,
         body='{"key": "value"}',
         status=200
@@ -913,7 +913,7 @@ def test_cli_tilequery_short_options():
         "&limit=25" +
         "&dedupe=true" +
         "&geometry=linestring" +
-        "&layers=layer0,layer1,layer2",
+        "&layers=layer0%2Clayer1%2Clayer2",
         match_querystring=True,
         body='{"key": "value"}',
         status=200
