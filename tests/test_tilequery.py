@@ -27,7 +27,7 @@ def test_cli_tilequery_radius_invalid():
             "--access-token", "pk.test",
             "tilequery",
             "--radius", "-- -1",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
@@ -49,7 +49,7 @@ def test_cli_tilequery_limit_invalid(limit):
             "--access-token", "pk.test",
             "tilequery",
             "--limit", limit,
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
@@ -67,7 +67,7 @@ def test_cli_tilequery_validation_error():
         [
             "--access-token", "pk.test",
             "tilequery",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "--",
             "-181.0",
             "1.1"
@@ -84,13 +84,13 @@ def test_cli_tilequery_server_error():
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=500
     )
 
@@ -101,7 +101,7 @@ def test_cli_tilequery_server_error():
         [
             "--access-token", "pk.test",
             "tilequery",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
@@ -112,18 +112,18 @@ def test_cli_tilequery_server_error():
 
 
 @activate
-def test_tilequery_one_mapid():
+def test_cli_tilequery_one_mapid():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -134,29 +134,29 @@ def test_tilequery_one_mapid():
         [
             "--access-token", "pk.test",
             "tilequery",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_two_mapids():
+def test_cli_tilequery_two_mapids():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v9%2Cmapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v7,mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -167,30 +167,30 @@ def test_tilequery_two_mapids():
         [
             "--access-token", "pk.test",
             "tilequery",
-            "mapbox.mapbox-streets-v9",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v7",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
     
  
 @activate
-def test_tilequery_negative_lon():
+def test_cli_tilequery_negative_lon():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/-0.0%2C1.1.json" +
+        "/-0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -201,7 +201,7 @@ def test_tilequery_negative_lon():
         [
             "--access-token", "pk.test",
             "tilequery",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "--",
             "-0.0",
             "1.1"
@@ -209,22 +209,22 @@ def test_tilequery_negative_lon():
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_negative_lat():
+def test_cli_tilequery_negative_lat():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C-1.1.json" +
+        "/0.0,-1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -235,7 +235,7 @@ def test_tilequery_negative_lat():
         [
             "--access-token", "pk.test",
             "tilequery",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "--",
             "-1.1"
@@ -243,24 +243,24 @@ def test_tilequery_negative_lat():
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
 @mark.parametrize("radius", ["0", "1000", "1000000"])
-def test_tilequery_with_radius(radius):
+def test_cli_tilequery_with_radius(radius):
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius={}".format(radius) +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -272,31 +272,31 @@ def test_tilequery_with_radius(radius):
             "--access-token", "pk.test",
             "tilequery",
             "--radius", radius,
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
 @mark.parametrize("limit", ["1", "25", "50"])
-def test_tilequery_with_limit(limit):
+def test_cli_tilequery_with_limit(limit):
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&limit={}".format(limit) +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -308,29 +308,29 @@ def test_tilequery_with_limit(limit):
             "--access-token", "pk.test",
             "tilequery",
             "--limit", limit,
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_dedupe():
+def test_cli_tilequery_with_dedupe():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -342,31 +342,31 @@ def test_tilequery_with_dedupe():
             "--access-token", "pk.test",
             "tilequery",
             "--dedupe",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
 @mark.parametrize("geometry", ["linestring", "point", "polygon"])
-def test_tilequery_with_geometry(geometry):
+def test_cli_tilequery_with_geometry(geometry):
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true" +
         "&geometry={}".format(geometry),
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -378,30 +378,30 @@ def test_tilequery_with_geometry(geometry):
             "--access-token", "pk.test",
             "tilequery",
             "--geometry", geometry,
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_layers():
+def test_cli_tilequery_with_layers():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true" +
-        "&layers=layer0%2Clayer1%2Clayer2",
+        "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -415,29 +415,29 @@ def test_tilequery_with_layers():
             "--layer", "layer0",
             "--layer", "layer1",
             "--layer", "layer2",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_output():
+def test_cli_tilequery_with_output():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -449,7 +449,7 @@ def test_tilequery_with_output():
             "--access-token", "pk.test",
             "tilequery",
             "--output", "output.json",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
@@ -461,20 +461,20 @@ def test_tilequery_with_output():
 
 
 @activate
-def test_tilequery_with_radius_and_limit():
+def test_cli_tilequery_with_radius_and_limit():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -487,30 +487,30 @@ def test_tilequery_with_radius_and_limit():
             "tilequery",
             "--radius", "25",
             "--limit", "25",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_and_dedupe():
+def test_cli_tilequery_with_radius_and_dedupe():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -523,31 +523,31 @@ def test_tilequery_with_radius_and_dedupe():
             "tilequery",
             "--radius", "25",
             "--dedupe",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_and_geometry():
+def test_cli_tilequery_with_radius_and_geometry():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&dedupe=true" + 
         "&geometry=linestring",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -560,31 +560,31 @@ def test_tilequery_with_radius_and_geometry():
             "tilequery",
             "--radius", "25",
             "--geometry", "linestring",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_and_layers():
+def test_cli_tilequery_with_radius_and_layers():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&dedupe=true" + 
-        "&layers=layer0%2Clayer1%2Clayer2",
+        "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -599,31 +599,31 @@ def test_tilequery_with_radius_and_layers():
             "--layer", "layer0",
             "--layer", "layer1",
             "--layer", "layer2",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_limit_and_dedupe():
+def test_cli_tilequery_with_radius_limit_and_dedupe():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -637,32 +637,32 @@ def test_tilequery_with_radius_limit_and_dedupe():
             "--radius", "25",
             "--limit", "25",
             "--dedupe",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_limit_and_geometry():
+def test_cli_tilequery_with_radius_limit_and_geometry():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" + 
         "&geometry=linestring",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -676,32 +676,32 @@ def test_tilequery_with_radius_limit_and_geometry():
             "--radius", "25",
             "--limit", "25",
             "--geometry", "linestring",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_limit_and_layers():
+def test_cli_tilequery_with_radius_limit_and_layers():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" + 
-        "&layers=layer0%2Clayer1%2Clayer2",
+        "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -717,32 +717,32 @@ def test_tilequery_with_radius_limit_and_layers():
             "--layer", "layer0",
             "--layer", "layer1",
             "--layer", "layer2",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_limit_dedupe_and_geometry():
+def test_cli_tilequery_with_radius_limit_dedupe_and_geometry():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" +
         "&geometry=linestring",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -757,32 +757,32 @@ def test_tilequery_with_radius_limit_dedupe_and_geometry():
             "--limit", "25",
             "--dedupe",
             "--geometry", "linestring",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_limit_dedupe_and_layers():
+def test_cli_tilequery_with_radius_limit_dedupe_and_layers():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" +
-        "&layers=layer0%2Clayer1%2Clayer2",
+        "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -799,33 +799,33 @@ def test_tilequery_with_radius_limit_dedupe_and_layers():
             "--layer", "layer0",
             "--layer", "layer1",
             "--layer", "layer2",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_limit_dedupe_geometry_and_layers():
+def test_cli_tilequery_with_radius_limit_dedupe_geometry_and_layers():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" +
         "&geometry=linestring" +
-        "&layers=layer0%2Clayer1%2Clayer2",
+        "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -843,33 +843,33 @@ def test_tilequery_with_radius_limit_dedupe_geometry_and_layers():
             "--layer", "layer0",
             "--layer", "layer1",
             "--layer", "layer2",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
     )
 
     assert result.exit_code == 0
-    assert result.output == "{\"key\": \"value\"}" + "\n"
+    assert result.output == '{"key":"value"}' + "\n"
 
 
 @activate
-def test_tilequery_with_radius_limit_dedupe_geometry_layers_and_output():
+def test_cli_tilequery_with_radius_limit_dedupe_geometry_layers_and_output():
     add(
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" +
         "&geometry=linestring" +
-        "&layers=layer0%2Clayer1%2Clayer2",
+        "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -888,7 +888,7 @@ def test_tilequery_with_radius_limit_dedupe_geometry_layers_and_output():
             "--layer", "layer1",
             "--layer", "layer2",
             "--output", "output.json",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
@@ -905,17 +905,17 @@ def test_cli_tilequery_short_options():
         method=GET,
         url="https://api.mapbox.com" +
         "/v4" +
-        "/mapbox.mapbox-streets-v10" +
+        "/mapbox.mapbox-streets-v8" +
         "/tilequery" +
-        "/0.0%2C1.1.json" +
+        "/0.0,1.1.json" +
         "?access_token=pk.test" +
         "&radius=25" +
         "&limit=25" +
         "&dedupe=true" +
         "&geometry=linestring" +
-        "&layers=layer0%2Clayer1%2Clayer2",
+        "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body="{\"key\": \"value\"}",
+        body='{"key":"value"}',
         status=200
     )
 
@@ -934,7 +934,7 @@ def test_cli_tilequery_short_options():
             "-y", "layer1",
             "-y", "layer2",
             "-o", "output.json",
-            "mapbox.mapbox-streets-v10",
+            "mapbox.mapbox-streets-v8",
             "0.0",
             "1.1"
         ]
