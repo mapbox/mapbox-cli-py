@@ -90,7 +90,7 @@ def test_cli_tilequery_server_error():
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=500
     )
 
@@ -123,7 +123,7 @@ def test_cli_tilequery_one_mapid():
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -141,7 +141,7 @@ def test_cli_tilequery_one_mapid():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -156,7 +156,7 @@ def test_cli_tilequery_two_mapids():
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -175,7 +175,7 @@ def test_cli_tilequery_two_mapids():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
     
  
 @activate
@@ -190,7 +190,7 @@ def test_cli_tilequery_negative_lon():
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -209,7 +209,7 @@ def test_cli_tilequery_negative_lon():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -224,7 +224,7 @@ def test_cli_tilequery_negative_lat():
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -243,7 +243,7 @@ def test_cli_tilequery_negative_lat():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -260,7 +260,7 @@ def test_cli_tilequery_with_radius(radius):
         "&radius={}".format(radius) +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -279,7 +279,7 @@ def test_cli_tilequery_with_radius(radius):
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -296,7 +296,7 @@ def test_cli_tilequery_with_limit(limit):
         "&limit={}".format(limit) +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -315,7 +315,7 @@ def test_cli_tilequery_with_limit(limit):
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -330,7 +330,7 @@ def test_cli_tilequery_with_dedupe():
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -349,7 +349,7 @@ def test_cli_tilequery_with_dedupe():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -366,7 +366,7 @@ def test_cli_tilequery_with_geometry(geometry):
         "&dedupe=true" +
         "&geometry={}".format(geometry),
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -385,7 +385,7 @@ def test_cli_tilequery_with_geometry(geometry):
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -401,7 +401,7 @@ def test_cli_tilequery_with_layers():
         "&dedupe=true" +
         "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -422,7 +422,7 @@ def test_cli_tilequery_with_layers():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -437,7 +437,7 @@ def test_cli_tilequery_with_output():
         "?access_token=pk.test" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -474,7 +474,7 @@ def test_cli_tilequery_with_radius_and_limit():
         "&limit=25" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -494,7 +494,7 @@ def test_cli_tilequery_with_radius_and_limit():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -510,7 +510,7 @@ def test_cli_tilequery_with_radius_and_dedupe():
         "&radius=25" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -530,7 +530,7 @@ def test_cli_tilequery_with_radius_and_dedupe():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -547,7 +547,7 @@ def test_cli_tilequery_with_radius_and_geometry():
         "&dedupe=true" + 
         "&geometry=linestring",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -567,7 +567,7 @@ def test_cli_tilequery_with_radius_and_geometry():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -584,7 +584,7 @@ def test_cli_tilequery_with_radius_and_layers():
         "&dedupe=true" + 
         "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -606,7 +606,7 @@ def test_cli_tilequery_with_radius_and_layers():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -623,7 +623,7 @@ def test_cli_tilequery_with_radius_limit_and_dedupe():
         "&limit=25" +
         "&dedupe=true",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -644,7 +644,7 @@ def test_cli_tilequery_with_radius_limit_and_dedupe():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -662,7 +662,7 @@ def test_cli_tilequery_with_radius_limit_and_geometry():
         "&dedupe=true" + 
         "&geometry=linestring",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -683,7 +683,7 @@ def test_cli_tilequery_with_radius_limit_and_geometry():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -701,7 +701,7 @@ def test_cli_tilequery_with_radius_limit_and_layers():
         "&dedupe=true" + 
         "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -724,7 +724,7 @@ def test_cli_tilequery_with_radius_limit_and_layers():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -742,7 +742,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_and_geometry():
         "&dedupe=true" +
         "&geometry=linestring",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -764,7 +764,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_and_geometry():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -782,7 +782,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_and_layers():
         "&dedupe=true" +
         "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -806,7 +806,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_and_layers():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -825,7 +825,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_geometry_and_layers():
         "&geometry=linestring" +
         "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -850,7 +850,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_geometry_and_layers():
     )
 
     assert result.exit_code == 0
-    assert result.output == '{"key":"value"}' + "\n"
+    assert result.output == '{"key": "value"}' + "\n"
 
 
 @activate
@@ -869,7 +869,7 @@ def test_cli_tilequery_with_radius_limit_dedupe_geometry_layers_and_output():
         "&geometry=linestring" +
         "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
@@ -915,7 +915,7 @@ def test_cli_tilequery_short_options():
         "&geometry=linestring" +
         "&layers=layer0,layer1,layer2",
         match_querystring=True,
-        body='{"key":"value"}',
+        body='{"key": "value"}',
         status=200
     )
 
