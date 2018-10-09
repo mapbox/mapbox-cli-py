@@ -77,19 +77,19 @@ def tilequery(ctx, map_id, lon, lat, radius,
 
          $ mapbox tilequery <map_id> <lon> <lat>
 
-         $ mapbox tilequery mapbox.mapbox-streets-v10 0.0 1.1
+         $ mapbox tilequery mapbox.mapbox-streets-v8 0.0 1.1
 
 
          Note: Preface negative longitude or latitude arguments with --.
 
          $ mapbox tilequery <map_id> -- <-lon> <lat>
 
-         $ mapbox tilequery mapbox.mapbox-streets-v10 -- -0.0 1.1
+         $ mapbox tilequery mapbox.mapbox-streets-v8 -- -0.0 1.1
 
 
          $ mapbox tilequery <map_id> <lon> -- <-lat>
 
-         $ mapbox tilequery mapbox.mapbox-streets-v10 0.0 -- -1.1
+         $ mapbox tilequery mapbox.mapbox-streets-v8 0.0 -- -1.1
 
        An access token is required.  See "mapbox --help".
     """
