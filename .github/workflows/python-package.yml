@@ -31,7 +31,7 @@ jobs:
         python -m pip install --no-cache -r requirements-dev.txt
     - name: Install mapboxcli from source
       run: |
-        pip install -e . 
+        pip install --no-cache -e .
     - name: Test with pytest
       run: |
         pytest -vv
