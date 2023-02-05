@@ -29,7 +29,9 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        python -m pip install --upgrade .
+    - name: Install mapboxcli from source
+      run: |
+        pip install -e . 
     - name: Test with pytest
       run: |
         pytest -vv
